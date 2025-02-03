@@ -374,7 +374,8 @@ namespace yy {
     /// An auxiliary type to compute the largest semantic type.
     union union_type
     {
-      // ID
+      // "identifier"
+      // expression
       char dummy1[sizeof (std::string)];
     };
 
@@ -425,7 +426,11 @@ namespace yy {
     YYEOF = 0,                     // "end of file"
     YYerror = 256,                 // error
     YYUNDEF = 257,                 // "invalid token"
-    ID = 258                       // ID
+    ID = 258,                      // "identifier"
+    ASTERIKS = 259,                // "*"
+    PLUS = 260,                    // "+"
+    MINUS = 261,                   // "-"
+    SLASH = 262                    // "/"
       };
       /// Backward compatibility alias (Bison 3.6).
       typedef token_kind_type yytokentype;
@@ -442,14 +447,19 @@ namespace yy {
     {
       enum symbol_kind_type
       {
-        YYNTOKENS = 4, ///< Number of tokens.
+        YYNTOKENS = 8, ///< Number of tokens.
         S_YYEMPTY = -2,
         S_YYEOF = 0,                             // "end of file"
         S_YYerror = 1,                           // error
         S_YYUNDEF = 2,                           // "invalid token"
-        S_ID = 3,                                // ID
-        S_YYACCEPT = 4,                          // $accept
-        S_program = 5                            // program
+        S_ID = 3,                                // "identifier"
+        S_ASTERIKS = 4,                          // "*"
+        S_PLUS = 5,                              // "+"
+        S_MINUS = 6,                             // "-"
+        S_SLASH = 7,                             // "/"
+        S_YYACCEPT = 8,                          // $accept
+        S_program = 9,                           // program
+        S_expression = 10                        // expression
       };
     };
 
@@ -486,7 +496,8 @@ namespace yy {
       {
         switch (this->kind ())
     {
-      case symbol_kind::S_ID: // ID
+      case symbol_kind::S_ID: // "identifier"
+      case symbol_kind::S_expression: // expression
         value.move< std::string > (std::move (that.value));
         break;
 
@@ -551,7 +562,8 @@ namespace yy {
         // Value type destructor.
 switch (yykind)
     {
-      case symbol_kind::S_ID: // ID
+      case symbol_kind::S_ID: // "identifier"
+      case symbol_kind::S_expression: // expression
         value.template destroy< std::string > ();
         break;
 
@@ -765,6 +777,66 @@ switch (yykind)
       make_ID (const std::string& v, const location_type& l)
       {
         return symbol_type (token::ID, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_ASTERIKS (location_type l)
+      {
+        return symbol_type (token::ASTERIKS, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_ASTERIKS (const location_type& l)
+      {
+        return symbol_type (token::ASTERIKS, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_PLUS (location_type l)
+      {
+        return symbol_type (token::PLUS, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_PLUS (const location_type& l)
+      {
+        return symbol_type (token::PLUS, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_MINUS (location_type l)
+      {
+        return symbol_type (token::MINUS, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_MINUS (const location_type& l)
+      {
+        return symbol_type (token::MINUS, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_SLASH (location_type l)
+      {
+        return symbol_type (token::SLASH, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_SLASH (const location_type& l)
+      {
+        return symbol_type (token::SLASH, l);
       }
 #endif
 
@@ -1097,8 +1169,8 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 3,     ///< Last index in yytable_.
-      yynnts_ = 2,  ///< Number of nonterminal symbols.
+      yylast_ = 16,     ///< Last index in yytable_.
+      yynnts_ = 3,  ///< Number of nonterminal symbols.
       yyfinal_ = 4 ///< Termination state number.
     };
 
@@ -1143,10 +1215,11 @@ switch (yykind)
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     1,     2,     3
+       2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
+       5,     6,     7
     };
     // Last valid token kind.
-    const int code_max = 258;
+    const int code_max = 262;
 
     if (t <= 0)
       return symbol_kind::S_YYEOF;
@@ -1165,7 +1238,8 @@ switch (yykind)
   {
     switch (this->kind ())
     {
-      case symbol_kind::S_ID: // ID
+      case symbol_kind::S_ID: // "identifier"
+      case symbol_kind::S_expression: // expression
         value.copy< std::string > (YY_MOVE (that.value));
         break;
 
@@ -1200,7 +1274,8 @@ switch (yykind)
     super_type::move (s);
     switch (this->kind ())
     {
-      case symbol_kind::S_ID: // ID
+      case symbol_kind::S_ID: // "identifier"
+      case symbol_kind::S_expression: // expression
         value.move< std::string > (YY_MOVE (s.value));
         break;
 
@@ -1270,7 +1345,7 @@ switch (yykind)
 
 
 } // yy
-#line 1274 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.hpp"
+#line 1349 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.hpp"
 
 
 

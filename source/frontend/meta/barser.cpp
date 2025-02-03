@@ -207,7 +207,8 @@ namespace yy {
   {
     switch (that.kind ())
     {
-      case symbol_kind::S_ID: // ID
+      case symbol_kind::S_ID: // "identifier"
+      case symbol_kind::S_expression: // expression
         value.YY_MOVE_OR_COPY< std::string > (YY_MOVE (that.value));
         break;
 
@@ -226,7 +227,8 @@ namespace yy {
   {
     switch (that.kind ())
     {
-      case symbol_kind::S_ID: // ID
+      case symbol_kind::S_ID: // "identifier"
+      case symbol_kind::S_expression: // expression
         value.move< std::string > (YY_MOVE (that.value));
         break;
 
@@ -245,7 +247,8 @@ namespace yy {
     state = that.state;
     switch (that.kind ())
     {
-      case symbol_kind::S_ID: // ID
+      case symbol_kind::S_ID: // "identifier"
+      case symbol_kind::S_expression: // expression
         value.copy< std::string > (that.value);
         break;
 
@@ -263,7 +266,8 @@ namespace yy {
     state = that.state;
     switch (that.kind ())
     {
-      case symbol_kind::S_ID: // ID
+      case symbol_kind::S_ID: // "identifier"
+      case symbol_kind::S_expression: // expression
         value.move< std::string > (that.value);
         break;
 
@@ -526,7 +530,8 @@ namespace yy {
          when using variants.  */
       switch (yyr1_[yyn])
     {
-      case symbol_kind::S_ID: // ID
+      case symbol_kind::S_ID: // "identifier"
+      case symbol_kind::S_expression: // expression
         yylhs.value.emplace< std::string > ();
         break;
 
@@ -550,28 +555,53 @@ namespace yy {
         {
           switch (yyn)
             {
-  case 2: // program: ID
-#line 21 "meta/barser.y"
+  case 4: // expression: expression "+" expression
+#line 36 "meta/barser.y"
+                                             {
+        yylhs.value.as < std::string > () = "(" + yystack_[2].value.as < std::string > () + " + " + yystack_[0].value.as < std::string > () + ")";
+        std::cout << yylhs.value.as < std::string > () << "\n";
+    }
+#line 565 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+    break;
+
+  case 5: // expression: expression "*" expression
+#line 40 "meta/barser.y"
+                                             {
+        yylhs.value.as < std::string > () = "(" + yystack_[2].value.as < std::string > () + " * " + yystack_[0].value.as < std::string > () + ")";
+        std::cout << yylhs.value.as < std::string > () << "\n";
+    }
+#line 574 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+    break;
+
+  case 6: // expression: expression "-" expression
+#line 44 "meta/barser.y"
+                                             {
+        yylhs.value.as < std::string > () = "(" + yystack_[2].value.as < std::string > () + " - " + yystack_[0].value.as < std::string > () + ")";
+        std::cout << yylhs.value.as < std::string > () << "\n";
+    }
+#line 583 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+    break;
+
+  case 7: // expression: expression "/" expression
+#line 48 "meta/barser.y"
+                                             {
+        yylhs.value.as < std::string > () = "(" + yystack_[2].value.as < std::string > () + " / " + yystack_[0].value.as < std::string > () + ")";
+        std::cout << yylhs.value.as < std::string > () << "\n";
+    }
+#line 592 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+    break;
+
+  case 8: // expression: "identifier"
+#line 52 "meta/barser.y"
               {
-        std::cout << *yystack_[0].location.begin.filename << ":" << yystack_[0].location.begin.line << ":" << yystack_[0].location.begin.column << "-";
-        std::cout << *yystack_[0].location.end.filename << ":" << yystack_[0].location.end.line << ":" << yystack_[0].location.end.column << "\t";
-        std::cout << yystack_[0].value.as < std::string > () << "\n";
+        yylhs.value.as < std::string > () = yystack_[0].value.as < std::string > ();
+        std::cout << yylhs.value.as < std::string > () << "\n";
     }
-#line 561 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
-    break;
-
-  case 3: // program: ID program
-#line 26 "meta/barser.y"
-                      {
-        std::cout << *yystack_[1].location.begin.filename << ":" << yystack_[1].location.begin.line << ":" << yystack_[1].location.begin.column << "-";
-        std::cout << *yystack_[1].location.end.filename << ":" << yystack_[1].location.end.line << ":" << yystack_[1].location.end.column << "\t";
-        std::cout << yystack_[1].value.as < std::string > () << "\n";
-    }
-#line 571 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 601 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
 
-#line 575 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 605 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
 
             default:
               break;
@@ -923,62 +953,67 @@ namespace yy {
   }
 
 
-  const signed char parser::yypact_ninf_ = -4;
+  const signed char parser::yypact_ninf_ = -3;
 
   const signed char parser::yytable_ninf_ = -1;
 
   const signed char
   parser::yypact_[] =
   {
-      -3,    -3,     1,    -4,    -4
+      -1,    -3,    12,     4,    -3,     4,    -1,    -1,    -1,    -1,
+      -3,     9,     9,    -3
   };
 
   const signed char
   parser::yydefact_[] =
   {
-       0,     2,     0,     3,     1
+       0,     8,     0,     2,     1,     3,     0,     0,     0,     0,
+       5,     4,     6,     7
   };
 
   const signed char
   parser::yypgoto_[] =
   {
-      -4,     2
+      -3,    -3,    -2
   };
 
   const signed char
   parser::yydefgoto_[] =
   {
-       0,     2
+       0,     2,     3
   };
 
   const signed char
   parser::yytable_[] =
   {
-       1,     4,     0,     3
+       5,     0,     1,     0,    10,    11,    12,    13,     6,     7,
+       8,     9,     4,     6,     0,     1,     9
   };
 
   const signed char
   parser::yycheck_[] =
   {
-       3,     0,    -1,     1
+       2,    -1,     3,    -1,     6,     7,     8,     9,     4,     5,
+       6,     7,     0,     4,    -1,     3,     7
   };
 
   const signed char
   parser::yystos_[] =
   {
-       0,     3,     5,     5,     0
+       0,     3,     9,    10,     0,    10,     4,     5,     6,     7,
+      10,    10,    10,    10
   };
 
   const signed char
   parser::yyr1_[] =
   {
-       0,     4,     5,     5
+       0,     8,     9,     9,    10,    10,    10,    10,    10
   };
 
   const signed char
   parser::yyr2_[] =
   {
-       0,     2,     1,     2
+       0,     2,     1,     2,     3,     3,     3,     3,     1
   };
 
 
@@ -988,8 +1023,8 @@ namespace yy {
   const char*
   const parser::yytname_[] =
   {
-  "\"end of file\"", "error", "\"invalid token\"", "ID", "$accept",
-  "program", YY_NULLPTR
+  "\"end of file\"", "error", "\"invalid token\"", "\"identifier\"",
+  "\"*\"", "\"+\"", "\"-\"", "\"/\"", "$accept", "program", "expression", YY_NULLPTR
   };
 #endif
 
@@ -998,7 +1033,7 @@ namespace yy {
   const signed char
   parser::yyrline_[] =
   {
-       0,    21,    21,    26
+       0,    31,    31,    32,    36,    40,    44,    48,    52
   };
 
   void
@@ -1030,6 +1065,6 @@ namespace yy {
 
 
 } // yy
-#line 1034 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 1069 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
 
-#line 33 "meta/barser.y"
+#line 58 "meta/barser.y"

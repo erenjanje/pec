@@ -25,6 +25,19 @@ ID [a-z_][a-zA-Z0-9_]*
 {ID} {
     return yy::parser::make_ID(yytext, loc);
 }
+"+" {
+    return yy::parser::make_PLUS(loc);
+}
+"*" {
+    return yy::parser::make_ASTERIKS(loc);
+}
+"-" {
+    return yy::parser::make_MINUS(loc);
+}
+"/" {
+    return yy::parser::make_SLASH(loc);
+}
+
 \n {
     yyextra.begin.line += 1;
     yyextra.begin.column = 1;

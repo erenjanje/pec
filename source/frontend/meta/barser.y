@@ -11,22 +11,47 @@ extern "C" yy::parser::symbol_type yylex(void*);
 #include <iostream>
 }
 
-%token <std::string>ID
+%token <std::string>ID "identifier"
+
+%token ASTERIKS "*"
+%token PLUS "+"
+%token MINUS "-"
+%token SLASH "/"
+
+%left "+" "-"
+%left "*" "/"
+
+%nterm <std::string>expression
 
 %start program
 
 %%
 
 program
-    : ID[val] {
-        std::cout << *@val.begin.filename << ":" << @val.begin.line << ":" << @val.begin.column << "-";
-        std::cout << *@val.end.filename << ":" << @val.end.line << ":" << @val.end.column << "\t";
-        std::cout << $val << "\n";
+    : expression
+    | program expression
+    ;
+
+expression[ret]
+    : expression[left] "+" expression[right] {
+        $ret = "(" + $left + " + " + $right + ")";
+        std::cout << $ret << "\n";
     }
-    | ID[val] program {
-        std::cout << *@val.begin.filename << ":" << @val.begin.line << ":" << @val.begin.column << "-";
-        std::cout << *@val.end.filename << ":" << @val.end.line << ":" << @val.end.column << "\t";
-        std::cout << $val << "\n";
+    | expression[left] "*" expression[right] {
+        $ret = "(" + $left + " * " + $right + ")";
+        std::cout << $ret << "\n";
+    }
+    | expression[left] "-" expression[right] {
+        $ret = "(" + $left + " - " + $right + ")";
+        std::cout << $ret << "\n";
+    }
+    | expression[left] "/" expression[right] {
+        $ret = "(" + $left + " / " + $right + ")";
+        std::cout << $ret << "\n";
+    }
+    | ID[val] {
+        $ret = $val;
+        std::cout << $ret << "\n";
     }
     ;
 
