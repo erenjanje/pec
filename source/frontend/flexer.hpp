@@ -1,7 +1,3 @@
 #pragma once
 
-extern "C" {
-
-#include "flexer.h"
-
-}
+#include "meta/flexer.hpp"

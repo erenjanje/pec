@@ -2,10 +2,12 @@
 #define yyHEADER_H 1
 #define yyIN_HEADER 1
 
-#line 5 "flexer.h"
-#include "barser.h"
+#line 5 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/flexer.hpp"
+#include "barser.hpp"
+#define YY_DECL extern "C" int yylex(yy::parser::value_type* value, yy::parser::location_type* loc, void* yyscanner)
+#define YY_EXTRA_TYPE yy::parser::location_type
 
-#line 8 "flexer.h"
+#line 10 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/flexer.hpp"
 
 #define  YY_INT_ALIGNED short int
 
@@ -17,18 +19,6 @@
 #define YY_FLEX_SUBMINOR_VERSION 4
 #if YY_FLEX_SUBMINOR_VERSION > 0
 #define FLEX_BETA
-#endif
-
-#ifdef yyget_lval
-#define yyget_lval_ALREADY_DEFINED
-#else
-#define yyget_lval yyget_lval
-#endif
-
-#ifdef yyset_lval
-#define yyset_lval_ALREADY_DEFINED
-#else
-#define yyset_lval yyset_lval
 #endif
 
 /* First, we deal with  platform-specific or compiler-specific issues. */
@@ -288,10 +278,6 @@ int yyget_column  ( yyscan_t yyscanner );
 
 void yyset_column ( int _column_no , yyscan_t yyscanner );
 
-YYSTYPE * yyget_lval ( yyscan_t yyscanner );
-
-void yyset_lval ( YYSTYPE * yylval_param , yyscan_t yyscanner );
-
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
  */
@@ -337,11 +323,9 @@ static int yy_flex_strlen ( const char * , yyscan_t yyscanner);
 #ifndef YY_DECL
 #define YY_DECL_IS_OURS 1
 
-extern int yylex \
-               (YYSTYPE * yylval_param , yyscan_t yyscanner);
+extern int yylex (yyscan_t yyscanner);
 
-#define YY_DECL int yylex \
-               (YYSTYPE * yylval_param , yyscan_t yyscanner)
+#define YY_DECL int yylex (yyscan_t yyscanner)
 #endif /* !YY_DECL */
 
 /* yy_get_previous_state - get the state just before the EOB char was reached */
@@ -503,9 +487,9 @@ extern int yylex \
 #undef yyTABLES_NAME
 #endif
 
-#line 19 "lexer.l"
+#line 35 "meta/flexer.l"
 
 
-#line 509 "flexer.h"
+#line 493 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/flexer.hpp"
 #undef yyIN_HEADER
 #endif /* yyHEADER_H */
