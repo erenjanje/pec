@@ -4,7 +4,7 @@
 
 #line 5 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/flexer.hpp"
 #include "barser.hpp"
-#define YY_DECL extern "C" int yylex(yy::parser::value_type* value, yy::parser::location_type* loc, void* yyscanner)
+#define YY_DECL extern "C" yy::parser::symbol_type yylex(void* yyscanner)
 #define YY_EXTRA_TYPE yy::parser::location_type
 
 #line 10 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/flexer.hpp"
@@ -487,7 +487,7 @@ extern int yylex (yyscan_t yyscanner);
 #undef yyTABLES_NAME
 #endif
 
-#line 35 "meta/flexer.l"
+#line 38 "meta/flexer.l"
 
 
 #line 493 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/flexer.hpp"

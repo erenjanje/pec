@@ -1,6 +1,6 @@
 #line 1 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/flexer.cpp"
 #include "barser.hpp"
-#define YY_DECL extern "C" int yylex(yy::parser::value_type* value, yy::parser::location_type* loc, void* yyscanner)
+#define YY_DECL extern "C" yy::parser::symbol_type yylex(void* yyscanner)
 #define YY_EXTRA_TYPE yy::parser::location_type
 
 #line 6 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/flexer.cpp"
@@ -429,7 +429,7 @@ static const flex_int16_t yy_chk[12] =
 #include <iostream>
 #define YY_USER_ACTION yyextra.end.line = yyextra.begin.line; \
     yyextra.end.column = yyextra.begin.column + yyleng; \
-    *loc = yyextra; \
+    loc = yyextra; \
     yyextra.begin = yyextra.end;
 #line 434 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/flexer.cpp"
 #line 435 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/flexer.cpp"
@@ -694,8 +694,10 @@ YY_DECL
 	{
 #line 22 "meta/flexer.l"
 
+#line 24 "meta/flexer.l"
+    auto loc = yy::parser::location_type();
 
-#line 698 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/flexer.cpp"
+#line 700 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/flexer.cpp"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -750,11 +752,9 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 24 "meta/flexer.l"
+#line 26 "meta/flexer.l"
 {
-    std::cout << *loc->begin.filename << ":" << loc->begin.line << ":" << loc->begin.column << "-";
-    std::cout << *loc->end.filename << ":" << loc->end.line << ":" << loc->end.column << "\n";
-    return yy::parser::token::ID;
+    return yy::parser::make_ID(yytext, loc);
 }
 	YY_BREAK
 case 2:
@@ -771,14 +771,18 @@ YY_RULE_SETUP
 #line 33 "meta/flexer.l"
 
 	YY_BREAK
+case YY_STATE_EOF(INITIAL):
+#line 34 "meta/flexer.l"
+{
+    return yy::parser::make_YYEOF(loc);
+}
+	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 35 "meta/flexer.l"
+#line 38 "meta/flexer.l"
 ECHO;
 	YY_BREAK
-#line 779 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/flexer.cpp"
-case YY_STATE_EOF(INITIAL):
-	yyterminate();
+#line 785 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/flexer.cpp"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1946,7 +1950,7 @@ void yyfree (void * ptr , yyscan_t yyscanner)
 
 #define YYTABLES_NAME "yytables"
 
-#line 35 "meta/flexer.l"
+#line 38 "meta/flexer.l"
 
 
     const char* ZORT = "zartzurtzartzurt";
