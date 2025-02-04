@@ -208,6 +208,8 @@ namespace yy {
     switch (that.kind ())
     {
       case symbol_kind::S_ID: // "identifier"
+      case symbol_kind::S_TYPE: // "type identifier"
+      case symbol_kind::S_CONSTANT: // "constant identifier"
       case symbol_kind::S_expression: // expression
         value.YY_MOVE_OR_COPY< std::string > (YY_MOVE (that.value));
         break;
@@ -228,6 +230,8 @@ namespace yy {
     switch (that.kind ())
     {
       case symbol_kind::S_ID: // "identifier"
+      case symbol_kind::S_TYPE: // "type identifier"
+      case symbol_kind::S_CONSTANT: // "constant identifier"
       case symbol_kind::S_expression: // expression
         value.move< std::string > (YY_MOVE (that.value));
         break;
@@ -248,6 +252,8 @@ namespace yy {
     switch (that.kind ())
     {
       case symbol_kind::S_ID: // "identifier"
+      case symbol_kind::S_TYPE: // "type identifier"
+      case symbol_kind::S_CONSTANT: // "constant identifier"
       case symbol_kind::S_expression: // expression
         value.copy< std::string > (that.value);
         break;
@@ -267,6 +273,8 @@ namespace yy {
     switch (that.kind ())
     {
       case symbol_kind::S_ID: // "identifier"
+      case symbol_kind::S_TYPE: // "type identifier"
+      case symbol_kind::S_CONSTANT: // "constant identifier"
       case symbol_kind::S_expression: // expression
         value.move< std::string > (that.value);
         break;
@@ -531,6 +539,8 @@ namespace yy {
       switch (yyr1_[yyn])
     {
       case symbol_kind::S_ID: // "identifier"
+      case symbol_kind::S_TYPE: // "type identifier"
+      case symbol_kind::S_CONSTANT: // "constant identifier"
       case symbol_kind::S_expression: // expression
         yylhs.value.emplace< std::string > ();
         break;
@@ -555,53 +565,278 @@ namespace yy {
         {
           switch (yyn)
             {
-  case 4: // expression: expression "+" expression
-#line 36 "meta/barser.y"
+  case 5: // statement: "let" "identifier" "=" expression ";"
+#line 76 "meta/barser.y"
+                                            {
+        std::cout << "let " << "(" << yystack_[3].value.as < std::string > () << ")" << " = " << yystack_[1].value.as < std::string > () << "\n";
+        yylhs.location.begin = yystack_[4].location.begin;
+        yylhs.location.end = yystack_[1].location.end;
+    }
+#line 576 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+    break;
+
+  case 6: // statement: "var" "identifier" "=" expression ";"
+#line 81 "meta/barser.y"
+                                            {
+        std::cout << "var " << "(" << yystack_[3].value.as < std::string > () << ")" << " = " << yystack_[1].value.as < std::string > () << "\n";
+        yylhs.location.begin = yystack_[4].location.begin;
+        yylhs.location.end = yystack_[1].location.end;
+    }
+#line 586 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+    break;
+
+  case 7: // statement: "const" "constant identifier" "=" expression ";"
+#line 86 "meta/barser.y"
+                                                    {
+        std::cout << "const " << "(" << yystack_[3].value.as < std::string > () << ")" << " = " << yystack_[1].value.as < std::string > () << "\n";
+        yylhs.location.begin = yystack_[4].location.begin;
+        yylhs.location.end = yystack_[1].location.end;
+    }
+#line 596 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+    break;
+
+  case 8: // expression: expression "+" expression
+#line 94 "meta/barser.y"
                                              {
         yylhs.value.as < std::string > () = "(" + yystack_[2].value.as < std::string > () + " + " + yystack_[0].value.as < std::string > () + ")";
         std::cout << yylhs.value.as < std::string > () << "\n";
+        yylhs.location.begin = yystack_[2].location.begin;
+        yylhs.location.end = yystack_[0].location.end;
     }
-#line 565 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 607 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 5: // expression: expression "*" expression
-#line 40 "meta/barser.y"
+  case 9: // expression: expression "*" expression
+#line 100 "meta/barser.y"
                                              {
         yylhs.value.as < std::string > () = "(" + yystack_[2].value.as < std::string > () + " * " + yystack_[0].value.as < std::string > () + ")";
         std::cout << yylhs.value.as < std::string > () << "\n";
+        yylhs.location.begin = yystack_[2].location.begin;
+        yylhs.location.end = yystack_[0].location.end;
     }
-#line 574 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 618 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 6: // expression: expression "-" expression
-#line 44 "meta/barser.y"
+  case 10: // expression: expression "-" expression
+#line 106 "meta/barser.y"
                                              {
         yylhs.value.as < std::string > () = "(" + yystack_[2].value.as < std::string > () + " - " + yystack_[0].value.as < std::string > () + ")";
         std::cout << yylhs.value.as < std::string > () << "\n";
+        yylhs.location.begin = yystack_[2].location.begin;
+        yylhs.location.end = yystack_[0].location.end;
     }
-#line 583 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 629 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 7: // expression: expression "/" expression
-#line 48 "meta/barser.y"
+  case 11: // expression: expression "/" expression
+#line 112 "meta/barser.y"
                                              {
         yylhs.value.as < std::string > () = "(" + yystack_[2].value.as < std::string > () + " / " + yystack_[0].value.as < std::string > () + ")";
         std::cout << yylhs.value.as < std::string > () << "\n";
+        yylhs.location.begin = yystack_[2].location.begin;
+        yylhs.location.end = yystack_[0].location.end;
     }
-#line 592 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 640 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 8: // expression: "identifier"
-#line 52 "meta/barser.y"
+  case 12: // expression: expression "==" expression
+#line 118 "meta/barser.y"
+                                              {
+        yylhs.value.as < std::string > () = "(" + yystack_[2].value.as < std::string > () + " == " + yystack_[0].value.as < std::string > () + ")";
+        std::cout << yylhs.value.as < std::string > () << "\n";
+        yylhs.location.begin = yystack_[2].location.begin;
+        yylhs.location.end = yystack_[0].location.end;
+    }
+#line 651 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+    break;
+
+  case 13: // expression: expression "<" expression
+#line 124 "meta/barser.y"
+                                             {
+        yylhs.value.as < std::string > () = "(" + yystack_[2].value.as < std::string > () + " < " + yystack_[0].value.as < std::string > () + ")";
+        std::cout << yylhs.value.as < std::string > () << "\n";
+        yylhs.location.begin = yystack_[2].location.begin;
+        yylhs.location.end = yystack_[0].location.end;
+    }
+#line 662 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+    break;
+
+  case 14: // expression: expression ">" expression
+#line 130 "meta/barser.y"
+                                             {
+        yylhs.value.as < std::string > () = "(" + yystack_[2].value.as < std::string > () + " > " + yystack_[0].value.as < std::string > () + ")";
+        std::cout << yylhs.value.as < std::string > () << "\n";
+        yylhs.location.begin = yystack_[2].location.begin;
+        yylhs.location.end = yystack_[0].location.end;
+    }
+#line 673 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+    break;
+
+  case 15: // expression: expression "<=" expression
+#line 136 "meta/barser.y"
+                                              {
+        yylhs.value.as < std::string > () = "(" + yystack_[2].value.as < std::string > () + " <= " + yystack_[0].value.as < std::string > () + ")";
+        std::cout << yylhs.value.as < std::string > () << "\n";
+        yylhs.location.begin = yystack_[2].location.begin;
+        yylhs.location.end = yystack_[0].location.end;
+    }
+#line 684 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+    break;
+
+  case 16: // expression: expression ">=" expression
+#line 142 "meta/barser.y"
+                                              {
+        yylhs.value.as < std::string > () = "(" + yystack_[2].value.as < std::string > () + " >= " + yystack_[0].value.as < std::string > () + ")";
+        std::cout << yylhs.value.as < std::string > () << "\n";
+        yylhs.location.begin = yystack_[2].location.begin;
+        yylhs.location.end = yystack_[0].location.end;
+    }
+#line 695 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+    break;
+
+  case 17: // expression: expression "!=" expression
+#line 148 "meta/barser.y"
+                                              {
+        yylhs.value.as < std::string > () = "(" + yystack_[2].value.as < std::string > () + " != " + yystack_[0].value.as < std::string > () + ")";
+        std::cout << yylhs.value.as < std::string > () << "\n";
+        yylhs.location.begin = yystack_[2].location.begin;
+        yylhs.location.end = yystack_[0].location.end;
+    }
+#line 706 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+    break;
+
+  case 18: // expression: expression "and" expression
+#line 154 "meta/barser.y"
+                                               {
+        yylhs.value.as < std::string > () = "(" + yystack_[2].value.as < std::string > () + " and " + yystack_[0].value.as < std::string > () + ")";
+        std::cout << yylhs.value.as < std::string > () << "\n";
+        yylhs.location.begin = yystack_[2].location.begin;
+        yylhs.location.end = yystack_[0].location.end;
+    }
+#line 717 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+    break;
+
+  case 19: // expression: expression "or" expression
+#line 160 "meta/barser.y"
+                                              {
+        yylhs.value.as < std::string > () = "(" + yystack_[2].value.as < std::string > () + " or " + yystack_[0].value.as < std::string > () + ")";
+        std::cout << yylhs.value.as < std::string > () << "\n";
+        yylhs.location.begin = yystack_[2].location.begin;
+        yylhs.location.end = yystack_[0].location.end;
+    }
+#line 728 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+    break;
+
+  case 20: // expression: expression "&" expression
+#line 166 "meta/barser.y"
+                                             {
+        yylhs.value.as < std::string > () = "(" + yystack_[2].value.as < std::string > () + " & " + yystack_[0].value.as < std::string > () + ")";
+        std::cout << yylhs.value.as < std::string > () << "\n";
+        yylhs.location.begin = yystack_[2].location.begin;
+        yylhs.location.end = yystack_[0].location.end;
+    }
+#line 739 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+    break;
+
+  case 21: // expression: expression "|" expression
+#line 172 "meta/barser.y"
+                                             {
+        yylhs.value.as < std::string > () = "(" + yystack_[2].value.as < std::string > () + " | " + yystack_[0].value.as < std::string > () + ")";
+        std::cout << yylhs.value.as < std::string > () << "\n";
+        yylhs.location.begin = yystack_[2].location.begin;
+        yylhs.location.end = yystack_[0].location.end;
+    }
+#line 750 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+    break;
+
+  case 22: // expression: expression "xor" expression
+#line 178 "meta/barser.y"
+                                               {
+        yylhs.value.as < std::string > () = "(" + yystack_[2].value.as < std::string > () + " xor " + yystack_[0].value.as < std::string > () + ")";
+        std::cout << yylhs.value.as < std::string > () << "\n";
+        yylhs.location.begin = yystack_[2].location.begin;
+        yylhs.location.end = yystack_[0].location.end;
+    }
+#line 761 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+    break;
+
+  case 23: // expression: "-" expression
+#line 184 "meta/barser.y"
+                                       {
+        yylhs.value.as < std::string > () = "(" + std::string("-") + yystack_[0].value.as < std::string > () + ")";
+        std::cout << yylhs.value.as < std::string > () << "\n";
+        yylhs.location.begin = yystack_[1].location.begin;
+        yylhs.location.end = yystack_[0].location.end;
+    }
+#line 772 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+    break;
+
+  case 24: // expression: "not" expression
+#line 190 "meta/barser.y"
+                                         {
+        yylhs.value.as < std::string > () = "(" + std::string("not ") + yystack_[0].value.as < std::string > () + ")";
+        std::cout << yylhs.value.as < std::string > () << "\n";
+        yylhs.location.begin = yystack_[1].location.begin;
+        yylhs.location.end = yystack_[0].location.end;
+    }
+#line 783 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+    break;
+
+  case 25: // expression: "~" expression
+#line 196 "meta/barser.y"
+                                       {
+        yylhs.value.as < std::string > () = "(" + std::string("~") + yystack_[0].value.as < std::string > () + ")";
+        std::cout << yylhs.value.as < std::string > () << "\n";
+        yylhs.location.begin = yystack_[1].location.begin;
+        yylhs.location.end = yystack_[0].location.end;
+    }
+#line 794 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+    break;
+
+  case 26: // expression: "type identifier" expression
+#line 202 "meta/barser.y"
+                                             {
+        yylhs.value.as < std::string > () = "(" + yystack_[1].value.as < std::string > () + " " + yystack_[0].value.as < std::string > () + ")";
+        std::cout << yylhs.value.as < std::string > () << "\n";
+        yylhs.location.begin = yystack_[1].location.begin;
+        yylhs.location.end = yystack_[0].location.end;
+    }
+#line 805 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+    break;
+
+  case 27: // expression: "identifier"
+#line 208 "meta/barser.y"
               {
         yylhs.value.as < std::string > () = yystack_[0].value.as < std::string > ();
         std::cout << yylhs.value.as < std::string > () << "\n";
+        yylhs.location = yystack_[0].location;
     }
-#line 601 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 815 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+    break;
+
+  case 28: // expression: "constant identifier"
+#line 213 "meta/barser.y"
+                    {
+        yylhs.value.as < std::string > () = yystack_[0].value.as < std::string > ();
+        std::cout << yylhs.value.as < std::string > () << "\n";
+        yylhs.location = yystack_[0].location;
+    }
+#line 825 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+    break;
+
+  case 29: // expression: "(" expression ")"
+#line 218 "meta/barser.y"
+                               {
+        yylhs.value.as < std::string > () = yystack_[1].value.as < std::string > ();
+        std::cout << yylhs.value.as < std::string > () << "\n";
+        yylhs.location.begin = yystack_[2].location.begin;
+        yylhs.location.end = yystack_[0].location.end;
+    }
+#line 836 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
 
-#line 605 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 840 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
 
             default:
               break;
@@ -953,67 +1188,126 @@ namespace yy {
   }
 
 
-  const signed char parser::yypact_ninf_ = -3;
+  const signed char parser::yypact_ninf_ = -14;
 
   const signed char parser::yytable_ninf_ = -1;
 
-  const signed char
+  const short
   parser::yypact_[] =
   {
-      -1,    -3,    12,     4,    -3,     4,    -1,    -1,    -1,    -1,
-      -3,     9,     9,    -3
+     -14,    39,   -14,   -14,   136,   -14,   136,   136,   136,   136,
+      -2,     6,     5,   -14,    66,   175,   -14,   -14,   -14,   155,
+     -12,   -11,   -10,   136,   136,   136,   136,   136,   136,   136,
+     136,   136,   136,   136,   136,   136,   136,   136,   -14,   -14,
+     136,   136,   136,   -13,   195,   195,   -13,   191,   191,   191,
+     191,   191,   191,    45,    45,   -14,   -14,   -14,    83,   100,
+     117,   -14,   -14,   -14
   };
 
   const signed char
   parser::yydefact_[] =
   {
-       0,     8,     0,     2,     1,     3,     0,     0,     0,     0,
-       5,     4,     6,     7
+       3,     0,     1,    27,     0,    28,     0,     0,     0,     0,
+       0,     0,     0,     2,     0,    26,    23,    24,    25,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     4,    29,
+       0,     0,     0,     9,     8,    10,    11,    12,    13,    14,
+      15,    16,    17,    18,    19,    20,    21,    22,     0,     0,
+       0,     5,     6,     7
   };
 
   const signed char
   parser::yypgoto_[] =
   {
-      -3,    -3,    -2
+     -14,   -14,   -14,    -4
   };
 
   const signed char
   parser::yydefgoto_[] =
   {
-       0,     2,     3
+       0,     1,    13,    14
   };
 
   const signed char
   parser::yytable_[] =
   {
-       5,     0,     1,     0,    10,    11,    12,    13,     6,     7,
-       8,     9,     4,     6,     0,     1,     9
+      15,    20,    16,    17,    18,    19,    35,    36,    37,    21,
+      22,    40,    41,    42,     0,     0,     0,     0,     0,    43,
+      44,    45,    46,    47,    48,    49,    50,    51,    52,    53,
+      54,    55,    56,    57,     0,     0,    58,    59,    60,     2,
+       0,     0,     3,     4,     5,     0,     0,     6,     0,     0,
+       0,    23,    24,    25,    26,     7,     0,     0,     0,     0,
+       0,     8,     0,     9,    35,    36,    37,     0,     0,    10,
+      11,    12,    23,    24,    25,    26,    27,    28,    29,    30,
+      31,    32,     0,    33,    34,    35,    36,    37,     0,    23,
+      24,    25,    26,    27,    28,    29,    30,    31,    32,    38,
+      33,    34,    35,    36,    37,     0,    23,    24,    25,    26,
+      27,    28,    29,    30,    31,    32,    61,    33,    34,    35,
+      36,    37,     0,    23,    24,    25,    26,    27,    28,    29,
+      30,    31,    32,    62,    33,    34,    35,    36,    37,     3,
+       4,     5,     0,     0,     6,     0,     0,     0,     0,     0,
+      63,     0,     7,     0,     0,     0,     0,     0,     8,     0,
+       9,    23,    24,    25,    26,    27,    28,    29,    30,    31,
+      32,     0,    33,    34,    35,    36,    37,     0,     0,     0,
+      39,    23,    24,    25,    26,    27,    28,    29,    30,    31,
+      32,     0,    33,    34,    35,    36,    37,    23,    24,    25,
+      26,    23,     0,     0,    26,     0,     0,     0,    33,    34,
+      35,    36,    37,     0,    35,    36,    37
   };
 
   const signed char
   parser::yycheck_[] =
   {
-       2,    -1,     3,    -1,     6,     7,     8,     9,     4,     5,
-       6,     7,     0,     4,    -1,     3,     7
+       4,     3,     6,     7,     8,     9,    19,    20,    21,     3,
+       5,    23,    23,    23,    -1,    -1,    -1,    -1,    -1,    23,
+      24,    25,    26,    27,    28,    29,    30,    31,    32,    33,
+      34,    35,    36,    37,    -1,    -1,    40,    41,    42,     0,
+      -1,    -1,     3,     4,     5,    -1,    -1,     8,    -1,    -1,
+      -1,     6,     7,     8,     9,    16,    -1,    -1,    -1,    -1,
+      -1,    22,    -1,    24,    19,    20,    21,    -1,    -1,    30,
+      31,    32,     6,     7,     8,     9,    10,    11,    12,    13,
+      14,    15,    -1,    17,    18,    19,    20,    21,    -1,     6,
+       7,     8,     9,    10,    11,    12,    13,    14,    15,    33,
+      17,    18,    19,    20,    21,    -1,     6,     7,     8,     9,
+      10,    11,    12,    13,    14,    15,    33,    17,    18,    19,
+      20,    21,    -1,     6,     7,     8,     9,    10,    11,    12,
+      13,    14,    15,    33,    17,    18,    19,    20,    21,     3,
+       4,     5,    -1,    -1,     8,    -1,    -1,    -1,    -1,    -1,
+      33,    -1,    16,    -1,    -1,    -1,    -1,    -1,    22,    -1,
+      24,     6,     7,     8,     9,    10,    11,    12,    13,    14,
+      15,    -1,    17,    18,    19,    20,    21,    -1,    -1,    -1,
+      25,     6,     7,     8,     9,    10,    11,    12,    13,    14,
+      15,    -1,    17,    18,    19,    20,    21,     6,     7,     8,
+       9,     6,    -1,    -1,     9,    -1,    -1,    -1,    17,    18,
+      19,    20,    21,    -1,    19,    20,    21
   };
 
   const signed char
   parser::yystos_[] =
   {
-       0,     3,     9,    10,     0,    10,     4,     5,     6,     7,
-      10,    10,    10,    10
+       0,    37,     0,     3,     4,     5,     8,    16,    22,    24,
+      30,    31,    32,    38,    39,    39,    39,    39,    39,    39,
+       3,     3,     5,     6,     7,     8,     9,    10,    11,    12,
+      13,    14,    15,    17,    18,    19,    20,    21,    33,    25,
+      23,    23,    23,    39,    39,    39,    39,    39,    39,    39,
+      39,    39,    39,    39,    39,    39,    39,    39,    39,    39,
+      39,    33,    33,    33
   };
 
   const signed char
   parser::yyr1_[] =
   {
-       0,     8,     9,     9,    10,    10,    10,    10,    10
+       0,    36,    37,    37,    38,    38,    38,    38,    39,    39,
+      39,    39,    39,    39,    39,    39,    39,    39,    39,    39,
+      39,    39,    39,    39,    39,    39,    39,    39,    39,    39
   };
 
   const signed char
   parser::yyr2_[] =
   {
-       0,     2,     1,     2,     3,     3,     3,     3,     1
+       0,     2,     2,     0,     2,     5,     5,     5,     3,     3,
+       3,     3,     3,     3,     3,     3,     3,     3,     3,     3,
+       3,     3,     3,     2,     2,     2,     2,     1,     1,     3
   };
 
 
@@ -1024,16 +1318,23 @@ namespace yy {
   const parser::yytname_[] =
   {
   "\"end of file\"", "error", "\"invalid token\"", "\"identifier\"",
-  "\"*\"", "\"+\"", "\"-\"", "\"/\"", "$accept", "program", "expression", YY_NULLPTR
+  "\"type identifier\"", "\"constant identifier\"", "\"*\"", "\"+\"",
+  "\"-\"", "\"/\"", "\"==\"", "\"<\"", "\">\"", "\"<=\"", "\">=\"",
+  "\"!=\"", "\"not\"", "\"and\"", "\"or\"", "\"&\"", "\"|\"", "\"xor\"",
+  "\"~\"", "\"=\"", "\"(\"", "\")\"", "\"[\"", "\"]\"", "\"{\"", "\"}\"",
+  "\"let\"", "\"var\"", "\"const\"", "\";\"", "CAST", "UNARY", "$accept",
+  "program", "statement", "expression", YY_NULLPTR
   };
 #endif
 
 
 #if YYDEBUG
-  const signed char
+  const unsigned char
   parser::yyrline_[] =
   {
-       0,    31,    31,    32,    36,    40,    44,    48,    52
+       0,    70,    70,    71,    75,    76,    81,    86,    94,   100,
+     106,   112,   118,   124,   130,   136,   142,   148,   154,   160,
+     166,   172,   178,   184,   190,   196,   202,   208,   213,   218
   };
 
   void
@@ -1065,6 +1366,6 @@ namespace yy {
 
 
 } // yy
-#line 1069 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 1370 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
 
-#line 58 "meta/barser.y"
+#line 226 "meta/barser.y"

@@ -10,7 +10,10 @@ int main() {
     loc.begin.initialize(&filename, 1, 1);
     loc.end.initialize(&filename, 1, 1);
     yyset_extra(loc, scanner);
-    auto data = std::string("zurt - bort / hart + kurt * zart");
+    auto data = std::string(
+        "let x = (Int32 a) + !(b + c);\n"
+        "var y = Int64 x Float / g;"
+    );
     auto buf = yy_scan_bytes(data.data(), data.size(), scanner);
     // yy_switch_to_buffer(buf, scanner);
     auto parser = yy::parser(scanner);

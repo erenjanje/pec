@@ -487,7 +487,7 @@ extern int yylex (yyscan_t yyscanner);
 #undef yyTABLES_NAME
 #endif
 
-#line 51 "meta/flexer.l"
+#line 82 "meta/flexer.l"
 
 
 #line 493 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/flexer.hpp"
