@@ -12,7 +12,7 @@ int main() {
     yyset_extra(loc, scanner);
     auto data = std::string(
         "let x = (Int32 a) + !(b + c);\n"
-        "var y = Int64 Float x / g;"
+        "var y = int64 Float x / g;"
     );
     auto buf = yy_scan_bytes(data.data(), data.size(), scanner);
     // yy_switch_to_buffer(buf, scanner);

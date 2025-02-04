@@ -53,7 +53,7 @@
 #  endif
 # endif
 
-#line 6 "meta/barser.y"
+#line 7 "meta/barser.y"
 namespace pec {
 #line 59 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/location.hh"
 
@@ -299,7 +299,7 @@ namespace pec {
     return ostr;
   }
 
-#line 6 "meta/barser.y"
+#line 7 "meta/barser.y"
 } // pec
 #line 305 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/location.hh"
 

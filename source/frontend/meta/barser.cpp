@@ -42,7 +42,7 @@
 
 
 // Unqualified %code blocks.
-#line 14 "meta/barser.y"
+#line 15 "meta/barser.y"
 
 extern "C" pec::parser::symbol_type yylex(void*);
 #include <iostream>
@@ -138,7 +138,7 @@ extern "C" pec::parser::symbol_type yylex(void*);
 #define YYERROR         goto yyerrorlab
 #define YYRECOVERING()  (!!yyerrstatus_)
 
-#line 6 "meta/barser.y"
+#line 7 "meta/barser.y"
 namespace pec {
 #line 144 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
 
@@ -150,6 +150,7 @@ namespace pec {
 #else
     :
 #endif
+      yy_lac_established_ (false),
       yyscanner (yyscanner_yyarg)
   {}
 
@@ -432,6 +433,10 @@ namespace pec {
     /// The return value of parse ().
     int yyresult;
 
+    // Discard the LAC context in case there still is one left from a
+    // previous invocation.
+    yy_lac_discard_ ("init");
+
 #if YY_EXCEPTIONS
     try
 #endif // YY_EXCEPTIONS
@@ -506,6 +511,8 @@ namespace pec {
     yyn += yyla.kind ();
     if (yyn < 0 || yylast_ < yyn || yycheck_[yyn] != yyla.kind ())
       {
+        if (!yy_lac_establish_ (yyla.kind ()))
+          goto yyerrlab;
         goto yydefault;
       }
 
@@ -515,6 +522,9 @@ namespace pec {
       {
         if (yy_table_value_is_error_ (yyn))
           goto yyerrlab;
+        if (!yy_lac_establish_ (yyla.kind ()))
+          goto yyerrlab;
+
         yyn = -yyn;
         goto yyreduce;
       }
@@ -525,6 +535,7 @@ namespace pec {
 
     // Shift the lookahead token.
     yypush_ ("Shifting", state_type (yyn), YY_MOVE (yyla));
+    yy_lac_discard_ ("shift");
     goto yynewstate;
 
 
@@ -582,255 +593,255 @@ namespace pec {
           switch (yyn)
             {
   case 5: // statement: "let" "identifier" "=" expression ";"
-#line 81 "meta/barser.y"
+#line 82 "meta/barser.y"
                                             {
         std::cout << "let " << "(" << yystack_[3].value.as < std::string > () << ")" << " = "; yystack_[1].value.as < pec::Child<pec::Expression> > ()->print(std::cout, 0); "\n";
         yylhs.location.begin = yystack_[4].location.begin;
         yylhs.location.end = yystack_[1].location.end;
     }
-#line 592 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 603 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
   case 6: // statement: "var" "identifier" "=" expression ";"
-#line 86 "meta/barser.y"
+#line 87 "meta/barser.y"
                                             {
         std::cout << "var " << "(" << yystack_[3].value.as < std::string > () << ")" << " = "; yystack_[1].value.as < pec::Child<pec::Expression> > ()->print(std::cout, 0); "\n";
         yylhs.location.begin = yystack_[4].location.begin;
         yylhs.location.end = yystack_[1].location.end;
     }
-#line 602 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 613 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
   case 7: // statement: "const" "constant identifier" "=" expression ";"
-#line 91 "meta/barser.y"
+#line 92 "meta/barser.y"
                                                     {
         std::cout << "const " << "(" << yystack_[3].value.as < std::string > () << ")" << " = "; yystack_[1].value.as < pec::Child<pec::Expression> > ()->print(std::cout, 0); "\n";
         yylhs.location.begin = yystack_[4].location.begin;
         yylhs.location.end = yystack_[1].location.end;
     }
-#line 612 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 623 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
   case 8: // expression: expression "+" expression
-#line 99 "meta/barser.y"
+#line 100 "meta/barser.y"
                                              {
         yylhs.value.as < pec::Child<pec::Expression> > () = make<Binary>(Binary::Operator::Add, std::move(yystack_[2].value.as < pec::Child<pec::Expression> > ()), std::move(yystack_[0].value.as < pec::Child<pec::Expression> > ()));
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 622 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 633 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
   case 9: // expression: expression "*" expression
-#line 104 "meta/barser.y"
+#line 105 "meta/barser.y"
                                              {
         yylhs.value.as < pec::Child<pec::Expression> > () = make<Binary>(Binary::Operator::Multiply, std::move(yystack_[2].value.as < pec::Child<pec::Expression> > ()), std::move(yystack_[0].value.as < pec::Child<pec::Expression> > ()));
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 632 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 643 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
   case 10: // expression: expression "-" expression
-#line 109 "meta/barser.y"
+#line 110 "meta/barser.y"
                                              {
         yylhs.value.as < pec::Child<pec::Expression> > () = make<Binary>(Binary::Operator::Subtract, std::move(yystack_[2].value.as < pec::Child<pec::Expression> > ()), std::move(yystack_[0].value.as < pec::Child<pec::Expression> > ()));
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 642 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 653 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
   case 11: // expression: expression "/" expression
-#line 114 "meta/barser.y"
+#line 115 "meta/barser.y"
                                              {
         yylhs.value.as < pec::Child<pec::Expression> > () = make<Binary>(Binary::Operator::Divide, std::move(yystack_[2].value.as < pec::Child<pec::Expression> > ()), std::move(yystack_[0].value.as < pec::Child<pec::Expression> > ()));
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 652 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 663 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
   case 12: // expression: expression "==" expression
-#line 119 "meta/barser.y"
+#line 120 "meta/barser.y"
                                               {
         yylhs.value.as < pec::Child<pec::Expression> > () = make<Binary>(Binary::Operator::Equals, std::move(yystack_[2].value.as < pec::Child<pec::Expression> > ()), std::move(yystack_[0].value.as < pec::Child<pec::Expression> > ()));
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 662 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 673 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
   case 13: // expression: expression "<" expression
-#line 124 "meta/barser.y"
+#line 125 "meta/barser.y"
                                              {
         yylhs.value.as < pec::Child<pec::Expression> > () = make<Binary>(Binary::Operator::LittleThan, std::move(yystack_[2].value.as < pec::Child<pec::Expression> > ()), std::move(yystack_[0].value.as < pec::Child<pec::Expression> > ()));
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 672 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 683 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
   case 14: // expression: expression ">" expression
-#line 129 "meta/barser.y"
+#line 130 "meta/barser.y"
                                              {
         yylhs.value.as < pec::Child<pec::Expression> > () = make<Binary>(Binary::Operator::GreaterThan, std::move(yystack_[2].value.as < pec::Child<pec::Expression> > ()), std::move(yystack_[0].value.as < pec::Child<pec::Expression> > ()));
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 682 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 693 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
   case 15: // expression: expression "<=" expression
-#line 134 "meta/barser.y"
+#line 135 "meta/barser.y"
                                               {
         yylhs.value.as < pec::Child<pec::Expression> > () = make<Binary>(Binary::Operator::LittleEquals, std::move(yystack_[2].value.as < pec::Child<pec::Expression> > ()), std::move(yystack_[0].value.as < pec::Child<pec::Expression> > ()));
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 692 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 703 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
   case 16: // expression: expression ">=" expression
-#line 139 "meta/barser.y"
+#line 140 "meta/barser.y"
                                               {
         yylhs.value.as < pec::Child<pec::Expression> > () = make<Binary>(Binary::Operator::GreaterEquals, std::move(yystack_[2].value.as < pec::Child<pec::Expression> > ()), std::move(yystack_[0].value.as < pec::Child<pec::Expression> > ()));
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 702 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 713 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
   case 17: // expression: expression "!=" expression
-#line 144 "meta/barser.y"
+#line 145 "meta/barser.y"
                                               {
         yylhs.value.as < pec::Child<pec::Expression> > () = make<Binary>(Binary::Operator::NotEquals, std::move(yystack_[2].value.as < pec::Child<pec::Expression> > ()), std::move(yystack_[0].value.as < pec::Child<pec::Expression> > ()));
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 712 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 723 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
   case 18: // expression: expression "and" expression
-#line 149 "meta/barser.y"
+#line 150 "meta/barser.y"
                                                {
         yylhs.value.as < pec::Child<pec::Expression> > () = make<Binary>(Binary::Operator::And, std::move(yystack_[2].value.as < pec::Child<pec::Expression> > ()), std::move(yystack_[0].value.as < pec::Child<pec::Expression> > ()));
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 722 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 733 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
   case 19: // expression: expression "or" expression
-#line 154 "meta/barser.y"
+#line 155 "meta/barser.y"
                                               {
         yylhs.value.as < pec::Child<pec::Expression> > () = make<Binary>(Binary::Operator::Or, std::move(yystack_[2].value.as < pec::Child<pec::Expression> > ()), std::move(yystack_[0].value.as < pec::Child<pec::Expression> > ()));
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 732 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 743 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
   case 20: // expression: expression "&" expression
-#line 159 "meta/barser.y"
+#line 160 "meta/barser.y"
                                              {
         yylhs.value.as < pec::Child<pec::Expression> > () = make<Binary>(Binary::Operator::Band, std::move(yystack_[2].value.as < pec::Child<pec::Expression> > ()), std::move(yystack_[0].value.as < pec::Child<pec::Expression> > ()));
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 742 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 753 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
   case 21: // expression: expression "|" expression
-#line 164 "meta/barser.y"
+#line 165 "meta/barser.y"
                                              {
         yylhs.value.as < pec::Child<pec::Expression> > () = make<Binary>(Binary::Operator::Bor, std::move(yystack_[2].value.as < pec::Child<pec::Expression> > ()), std::move(yystack_[0].value.as < pec::Child<pec::Expression> > ()));
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 752 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 763 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
   case 22: // expression: expression "xor" expression
-#line 169 "meta/barser.y"
+#line 170 "meta/barser.y"
                                                {
         yylhs.value.as < pec::Child<pec::Expression> > () = make<Binary>(Binary::Operator::Xor, std::move(yystack_[2].value.as < pec::Child<pec::Expression> > ()), std::move(yystack_[0].value.as < pec::Child<pec::Expression> > ()));
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 762 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 773 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
   case 23: // expression: "-" expression
-#line 174 "meta/barser.y"
+#line 175 "meta/barser.y"
                                        {
         yylhs.value.as < pec::Child<pec::Expression> > () = make<Unary>(Unary::Operator::Negate, std::move(yystack_[0].value.as < pec::Child<pec::Expression> > ()));
         yylhs.location.begin = yystack_[1].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 772 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 783 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
   case 24: // expression: "not" expression
-#line 179 "meta/barser.y"
+#line 180 "meta/barser.y"
                                          {
         yylhs.value.as < pec::Child<pec::Expression> > () = make<Unary>(Unary::Operator::Not, std::move(yystack_[0].value.as < pec::Child<pec::Expression> > ()));
         yylhs.location.begin = yystack_[1].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 782 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 793 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
   case 25: // expression: "~" expression
-#line 184 "meta/barser.y"
+#line 185 "meta/barser.y"
                                        {
         yylhs.value.as < pec::Child<pec::Expression> > () = make<Unary>(Unary::Operator::Bnot, std::move(yystack_[0].value.as < pec::Child<pec::Expression> > ()));
         yylhs.location.begin = yystack_[1].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 792 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 803 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
   case 26: // expression: "type identifier" expression
-#line 189 "meta/barser.y"
+#line 190 "meta/barser.y"
                                              {
         yylhs.value.as < pec::Child<pec::Expression> > () = make<Cast>(yystack_[1].value.as < std::string > (), std::move(yystack_[0].value.as < pec::Child<pec::Expression> > ()));
         yylhs.location.begin = yystack_[1].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 802 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 813 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
   case 27: // expression: "identifier"
-#line 194 "meta/barser.y"
+#line 195 "meta/barser.y"
               {
         yylhs.value.as < pec::Child<pec::Expression> > () = make<Identifier>(yystack_[0].value.as < std::string > ());
         yylhs.location = yystack_[0].location;
     }
-#line 811 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 822 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
   case 28: // expression: "constant identifier"
-#line 198 "meta/barser.y"
+#line 199 "meta/barser.y"
                     {
         yylhs.value.as < pec::Child<pec::Expression> > () = make<Constant>(yystack_[0].value.as < std::string > ());
         yylhs.location = yystack_[0].location;
     }
-#line 820 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 831 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
   case 29: // expression: "(" expression ")"
-#line 202 "meta/barser.y"
+#line 203 "meta/barser.y"
                                {
         yylhs.value.as < pec::Child<pec::Expression> > () = std::move(yystack_[1].value.as < pec::Child<pec::Expression> > ());
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 830 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 841 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
 
-#line 834 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 845 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
 
             default:
               break;
@@ -942,6 +953,7 @@ namespace pec {
       YYLLOC_DEFAULT (error_token.location, yyerror_range, 2);
 
       // Shift the error token.
+      yy_lac_discard_ ("error recovery");
       error_token.state = state_type (yyn);
       yypush_ ("Shifting", YY_MOVE (error_token));
     }
@@ -1008,50 +1020,18 @@ namespace pec {
     error (yyexc.location, yyexc.what ());
   }
 
-  /* Return YYSTR after stripping away unnecessary quotes and
-     backslashes, so that it's suitable for yyerror.  The heuristic is
-     that double-quoting is unnecessary unless the string contains an
-     apostrophe, a comma, or backslash (other than backslash-backslash).
-     YYSTR is taken from yytname.  */
-  std::string
-  parser::yytnamerr_ (const char *yystr)
-  {
-    if (*yystr == '"')
-      {
-        std::string yyr;
-        char const *yyp = yystr;
-
-        for (;;)
-          switch (*++yyp)
-            {
-            case '\'':
-            case ',':
-              goto do_not_strip_quotes;
-
-            case '\\':
-              if (*++yyp != '\\')
-                goto do_not_strip_quotes;
-              else
-                goto append;
-
-            append:
-            default:
-              yyr += *yyp;
-              break;
-
-            case '"':
-              return yyr;
-            }
-      do_not_strip_quotes: ;
-      }
-
-    return yystr;
-  }
-
-  std::string
+  const char *
   parser::symbol_name (symbol_kind_type yysymbol)
   {
-    return yytnamerr_ (yytname_[yysymbol]);
+    static const char *const yy_sname[] =
+    {
+    "end of file", "error", "invalid token", "identifier",
+  "type identifier", "constant identifier", "*", "+", "-", "/", "==", "<",
+  ">", "<=", ">=", "!=", "not", "and", "or", "&", "|", "xor", "~", "=",
+  "(", ")", "[", "]", "{", "}", "let", "var", "const", ";", "CAST",
+  "UNARY", "$accept", "program", "statement", "expression", YY_NULLPTR
+    };
+    return yy_sname[yysymbol];
   }
 
 
@@ -1068,29 +1048,28 @@ namespace pec {
     // Actual number of expected tokens
     int yycount = 0;
 
-    const int yyn = yypact_[+yyparser_.yystack_[0].state];
-    if (!yy_pact_value_is_default_ (yyn))
-      {
-        /* Start YYX at -YYN if negative to avoid negative indexes in
-           YYCHECK.  In other words, skip the first -YYN actions for
-           this state because they are default actions.  */
-        const int yyxbegin = yyn < 0 ? -yyn : 0;
-        // Stay within bounds of both yycheck and yytname.
-        const int yychecklim = yylast_ - yyn + 1;
-        const int yyxend = yychecklim < YYNTOKENS ? yychecklim : YYNTOKENS;
-        for (int yyx = yyxbegin; yyx < yyxend; ++yyx)
-          if (yycheck_[yyx + yyn] == yyx && yyx != symbol_kind::S_YYerror
-              && !yy_table_value_is_error_ (yytable_[yyx + yyn]))
-            {
-              if (!yyarg)
-                ++yycount;
-              else if (yycount == yyargn)
-                return 0;
-              else
-                yyarg[yycount++] = YY_CAST (symbol_kind_type, yyx);
-            }
-      }
+#if YYDEBUG
+    // Execute LAC once. We don't care if it is successful, we
+    // only do it for the sake of debugging output.
+    if (!yyparser_.yy_lac_established_)
+      yyparser_.yy_lac_check_ (yyla_.kind ());
+#endif
 
+    for (int yyx = 0; yyx < YYNTOKENS; ++yyx)
+      {
+        symbol_kind_type yysym = YY_CAST (symbol_kind_type, yyx);
+        if (yysym != symbol_kind::S_YYerror
+            && yysym != symbol_kind::S_YYUNDEF
+            && yyparser_.yy_lac_check_ (yysym))
+          {
+            if (!yyarg)
+              ++yycount;
+            else if (yycount == yyargn)
+              return 0;
+            else
+              yyarg[yycount++] = yysym;
+          }
+      }
     if (yyarg && yycount == 0 && 0 < yyargn)
       yyarg[0] = symbol_kind::S_YYEMPTY;
     return yycount;
@@ -1099,6 +1078,145 @@ namespace pec {
 
 
 
+  bool
+  parser::yy_lac_check_ (symbol_kind_type yytoken) const
+  {
+    // Logically, the yylac_stack's lifetime is confined to this function.
+    // Clear it, to get rid of potential left-overs from previous call.
+    yylac_stack_.clear ();
+    // Reduce until we encounter a shift and thereby accept the token.
+#if YYDEBUG
+    YYCDEBUG << "LAC: checking lookahead " << symbol_name (yytoken) << ':';
+#endif
+    std::ptrdiff_t lac_top = 0;
+    while (true)
+      {
+        state_type top_state = (yylac_stack_.empty ()
+                                ? yystack_[lac_top].state
+                                : yylac_stack_.back ());
+        int yyrule = yypact_[+top_state];
+        if (yy_pact_value_is_default_ (yyrule)
+            || (yyrule += yytoken) < 0 || yylast_ < yyrule
+            || yycheck_[yyrule] != yytoken)
+          {
+            // Use the default action.
+            yyrule = yydefact_[+top_state];
+            if (yyrule == 0)
+              {
+                YYCDEBUG << " Err\n";
+                return false;
+              }
+          }
+        else
+          {
+            // Use the action from yytable.
+            yyrule = yytable_[yyrule];
+            if (yy_table_value_is_error_ (yyrule))
+              {
+                YYCDEBUG << " Err\n";
+                return false;
+              }
+            if (0 < yyrule)
+              {
+                YYCDEBUG << " S" << yyrule << '\n';
+                return true;
+              }
+            yyrule = -yyrule;
+          }
+        // By now we know we have to simulate a reduce.
+        YYCDEBUG << " R" << yyrule - 1;
+        // Pop the corresponding number of values from the stack.
+        {
+          std::ptrdiff_t yylen = yyr2_[yyrule];
+          // First pop from the LAC stack as many tokens as possible.
+          std::ptrdiff_t lac_size = std::ptrdiff_t (yylac_stack_.size ());
+          if (yylen < lac_size)
+            {
+              yylac_stack_.resize (std::size_t (lac_size - yylen));
+              yylen = 0;
+            }
+          else if (lac_size)
+            {
+              yylac_stack_.clear ();
+              yylen -= lac_size;
+            }
+          // Only afterwards look at the main stack.
+          // We simulate popping elements by incrementing lac_top.
+          lac_top += yylen;
+        }
+        // Keep top_state in sync with the updated stack.
+        top_state = (yylac_stack_.empty ()
+                     ? yystack_[lac_top].state
+                     : yylac_stack_.back ());
+        // Push the resulting state of the reduction.
+        state_type state = yy_lr_goto_state_ (top_state, yyr1_[yyrule]);
+        YYCDEBUG << " G" << int (state);
+        yylac_stack_.push_back (state);
+      }
+  }
+
+  // Establish the initial context if no initial context currently exists.
+  bool
+  parser::yy_lac_establish_ (symbol_kind_type yytoken)
+  {
+    /* Establish the initial context for the current lookahead if no initial
+       context is currently established.
+
+       We define a context as a snapshot of the parser stacks.  We define
+       the initial context for a lookahead as the context in which the
+       parser initially examines that lookahead in order to select a
+       syntactic action.  Thus, if the lookahead eventually proves
+       syntactically unacceptable (possibly in a later context reached via a
+       series of reductions), the initial context can be used to determine
+       the exact set of tokens that would be syntactically acceptable in the
+       lookahead's place.  Moreover, it is the context after which any
+       further semantic actions would be erroneous because they would be
+       determined by a syntactically unacceptable token.
+
+       yy_lac_establish_ should be invoked when a reduction is about to be
+       performed in an inconsistent state (which, for the purposes of LAC,
+       includes consistent states that don't know they're consistent because
+       their default reductions have been disabled).
+
+       For parse.lac=full, the implementation of yy_lac_establish_ is as
+       follows.  If no initial context is currently established for the
+       current lookahead, then check if that lookahead can eventually be
+       shifted if syntactic actions continue from the current context.  */
+    if (yy_lac_established_)
+      return true;
+    else
+      {
+#if YYDEBUG
+        YYCDEBUG << "LAC: initial context established for "
+                 << symbol_name (yytoken) << '\n';
+#endif
+        yy_lac_established_ = true;
+        return yy_lac_check_ (yytoken);
+      }
+  }
+
+  // Discard any previous initial lookahead context.
+  void
+  parser::yy_lac_discard_ (const char* event)
+  {
+   /* Discard any previous initial lookahead context because of Event,
+      which may be a lookahead change or an invalidation of the currently
+      established initial context for the current lookahead.
+
+      The most common example of a lookahead change is a shift.  An example
+      of both cases is syntax error recovery.  That is, a syntax error
+      occurs when the lookahead is syntactically erroneous for the
+      currently established initial context, so error recovery manipulates
+      the parser stacks to try to find a new initial context in which the
+      current lookahead is syntactically acceptable.  If it fails to find
+      such a context, it discards the lookahead.  */
+    if (yy_lac_established_)
+      {
+        YYCDEBUG << "LAC: initial context discarded due to "
+                 << event << '\n';
+        yy_lac_established_ = false;
+      }
+  }
 
 
   int
@@ -1120,14 +1238,12 @@ namespace pec {
          been a previous inconsistent state, consistent state with a
          non-default action, or user semantic action that manipulated
          yyla.  (However, yyla is currently not documented for users.)
-       - Of course, the expected token list depends on states to have
-         correct lookahead information, and it depends on the parser not
-         to perform extra reductions after fetching a lookahead from the
-         scanner and before detecting a syntax error.  Thus, state merging
-         (from LALR or IELR) and default reductions corrupt the expected
-         token list.  However, the list is correct for canonical LR with
-         one exception: it will still contain any token that will not be
-         accepted due to an error action in a later state.
+         In the first two cases, it might appear that the current syntax
+         error should have been detected in the previous state when
+         yy_lac_check was invoked.  However, at that time, there might
+         have been a different syntax error that discarded a different
+         initial context during error recovery, leaving behind the
+         current lookahead.
     */
 
     if (!yyctx.lookahead ().empty ())
@@ -1305,30 +1421,15 @@ namespace pec {
   };
 
 
-#if YYDEBUG || 1
-  // YYTNAME[SYMBOL-NUM] -- String name of the symbol SYMBOL-NUM.
-  // First, the terminals, then, starting at \a YYNTOKENS, nonterminals.
-  const char*
-  const parser::yytname_[] =
-  {
-  "\"end of file\"", "error", "\"invalid token\"", "\"identifier\"",
-  "\"type identifier\"", "\"constant identifier\"", "\"*\"", "\"+\"",
-  "\"-\"", "\"/\"", "\"==\"", "\"<\"", "\">\"", "\"<=\"", "\">=\"",
-  "\"!=\"", "\"not\"", "\"and\"", "\"or\"", "\"&\"", "\"|\"", "\"xor\"",
-  "\"~\"", "\"=\"", "\"(\"", "\")\"", "\"[\"", "\"]\"", "\"{\"", "\"}\"",
-  "\"let\"", "\"var\"", "\"const\"", "\";\"", "CAST", "UNARY", "$accept",
-  "program", "statement", "expression", YY_NULLPTR
-  };
-#endif
 
 
 #if YYDEBUG
   const unsigned char
   parser::yyrline_[] =
   {
-       0,    75,    75,    76,    80,    81,    86,    91,    99,   104,
-     109,   114,   119,   124,   129,   134,   139,   144,   149,   154,
-     159,   164,   169,   174,   179,   184,   189,   194,   198,   202
+       0,    76,    76,    77,    81,    82,    87,    92,   100,   105,
+     110,   115,   120,   125,   130,   135,   140,   145,   150,   155,
+     160,   165,   170,   175,   180,   185,   190,   195,   199,   203
   };
 
   void
@@ -1359,8 +1460,8 @@ namespace pec {
 #endif // YYDEBUG
 
 
-#line 6 "meta/barser.y"
+#line 7 "meta/barser.y"
 } // pec
-#line 1365 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 1466 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
 
-#line 209 "meta/barser.y"
+#line 210 "meta/barser.y"

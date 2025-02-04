@@ -1,6 +1,7 @@
 %require "3.2"
 %language "c++"
-%define parse.error verbose
+%define parse.error detailed
+%define parse.lac full
 %locations
 %define api.value.type variant
 %define api.namespace {pec}

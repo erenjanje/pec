@@ -45,7 +45,7 @@
 #ifndef YY_YY_D_DESKTOP_PROGRAMLAMA_CPP_PEC_SOURCE_FRONTEND_META_BARSER_HPP_INCLUDED
 # define YY_YY_D_DESKTOP_PROGRAMLAMA_CPP_PEC_SOURCE_FRONTEND_META_BARSER_HPP_INCLUDED
 // "%code requires" blocks.
-#line 10 "meta/barser.y"
+#line 11 "meta/barser.y"
 
 #include "frontend/parser.hpp"
 
@@ -183,7 +183,7 @@
 # define YYDEBUG 0
 #endif
 
-#line 6 "meta/barser.y"
+#line 7 "meta/barser.y"
 namespace pec {
 #line 189 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.hpp"
 
@@ -667,7 +667,7 @@ switch (yykind)
       }
 
       /// The user-facing name of this symbol.
-      std::string name () const YY_NOEXCEPT
+      const char *name () const YY_NOEXCEPT
       {
         return parser::symbol_name (this->kind ());
       }
@@ -808,7 +808,7 @@ switch (yykind)
 
     /// The user-facing name of the symbol whose (internal) number is
     /// YYSYMBOL.  No bounds checking.
-    static std::string symbol_name (symbol_kind_type yysymbol);
+    static const char *symbol_name (symbol_kind_type yysymbol);
 
     // Implementation of make_symbol for each token kind.
 #if 201103L <= YY_CPLUSPLUS
@@ -1379,6 +1379,16 @@ switch (yykind)
     parser& operator= (const parser&);
 #endif
 
+    /// Check the lookahead yytoken.
+    /// \returns  true iff the token will be eventually shifted.
+    bool yy_lac_check_ (symbol_kind_type yytoken) const;
+    /// Establish the initial context if no initial context currently exists.
+    /// \returns  true iff the token will be eventually shifted.
+    bool yy_lac_establish_ (symbol_kind_type yytoken);
+    /// Discard any previous initial lookahead context because of event.
+    /// \param event  the event which caused the lookahead to be discarded.
+    ///               Only used for debbuging output.
+    void yy_lac_discard_ (const char* event);
 
     /// Stored state numbers (used for stacks).
     typedef signed char state_type;
@@ -1411,11 +1421,6 @@ switch (yykind)
     /// are valid, yet not members of the token_kind_type enum.
     static symbol_kind_type yytranslate_ (int t) YY_NOEXCEPT;
 
-    /// Convert the symbol name \a n to a form suitable for a diagnostic.
-    static std::string yytnamerr_ (const char *yystr);
-
-    /// For a symbol, its name in clear.
-    static const char* const yytname_[];
 
 
     // Tables.
@@ -1659,6 +1664,15 @@ switch (yykind)
 
     /// The stack.
     stack_type yystack_;
+    /// The stack for LAC.
+    /// Logically, the yy_lac_stack's lifetime is confined to the function
+    /// yy_lac_check_. We just store it as a member of this class to hold
+    /// on to the memory and to avoid frequent reallocations.
+    /// Since yy_lac_check_ is const, this member must be mutable.
+    mutable std::vector<state_type> yylac_stack_;
+    /// Whether an initial LAC context was established.
+    bool yy_lac_established_;
+
 
     /// Push a new state on the stack.
     /// \param m    a debug message to display
@@ -1869,9 +1883,9 @@ switch (yykind)
   }
 
 
-#line 6 "meta/barser.y"
+#line 7 "meta/barser.y"
 } // pec
-#line 1875 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.hpp"
+#line 1889 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.hpp"
 
 
 
