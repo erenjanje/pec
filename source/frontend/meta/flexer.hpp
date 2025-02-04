@@ -4,8 +4,8 @@
 
 #line 5 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/flexer.hpp"
 #include "barser.hpp"
-#define YY_DECL extern "C" yy::parser::symbol_type yylex(void* yyscanner)
-#define YY_EXTRA_TYPE yy::parser::location_type
+#define YY_DECL extern "C" pec::parser::symbol_type yylex(void* yyscanner)
+#define YY_EXTRA_TYPE pec::parser::location_type
 
 #line 10 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/flexer.hpp"
 

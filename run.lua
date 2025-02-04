@@ -5,7 +5,7 @@ end
 
 local function build_release()
     print("\x1b[33mRelease\x1b[0m")
-    return os.execute("cmake --build build/release --parallel 8")
+    return os.execute("cmake --build build/release")
 end
 
 local function build()

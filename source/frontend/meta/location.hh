@@ -32,7 +32,7 @@
 
 /**
  ** \file D:/Desktop/Programlama/cpp/pec/source/frontend/meta/location.hh
- ** Define the yy::location class.
+ ** Define the pec::location class.
  */
 
 #ifndef YY_YY_D_DESKTOP_PROGRAMLAMA_CPP_PEC_SOURCE_FRONTEND_META_LOCATION_HH_INCLUDED
@@ -53,8 +53,9 @@
 #  endif
 # endif
 
-namespace yy {
-#line 58 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/location.hh"
+#line 6 "meta/barser.y"
+namespace pec {
+#line 59 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/location.hh"
 
   /// A point in a source file.
   class position
@@ -298,7 +299,8 @@ namespace yy {
     return ostr;
   }
 
-} // yy
-#line 303 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/location.hh"
+#line 6 "meta/barser.y"
+} // pec
+#line 305 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/location.hh"
 
 #endif // !YY_YY_D_DESKTOP_PROGRAMLAMA_CPP_PEC_SOURCE_FRONTEND_META_LOCATION_HH_INCLUDED

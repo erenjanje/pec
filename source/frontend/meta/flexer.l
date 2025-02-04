@@ -5,8 +5,8 @@
 
 %top{
 #include "barser.hpp"
-#define YY_DECL extern "C" yy::parser::symbol_type yylex(void* yyscanner)
-#define YY_EXTRA_TYPE yy::parser::location_type
+#define YY_DECL extern "C" pec::parser::symbol_type yylex(void* yyscanner)
+#define YY_EXTRA_TYPE pec::parser::location_type
 }
 
 %{
@@ -23,50 +23,50 @@ type [A-Z]{identifier_inner}[a-z]{identifier_inner}
 constant [A-Z][A-Z0-9_]*
 
 %%
-    auto loc = yy::parser::location_type();
+    auto loc = pec::parser::location_type();
 
-"let" { return yy::parser::make_LET(loc); }
-"var" { return yy::parser::make_VAR(loc); }
-"const" { return yy::parser::make_CONST(loc); }
+"let" { return pec::parser::make_LET(loc); }
+"var" { return pec::parser::make_VAR(loc); }
+"const" { return pec::parser::make_CONST(loc); }
 
-"+" { return yy::parser::make_PLUS(loc); }
-"*" { return yy::parser::make_ASTERIKS(loc); }
-"-" { return yy::parser::make_MINUS(loc); }
-"/" { return yy::parser::make_SLASH(loc); }
+"+" { return pec::parser::make_PLUS(loc); }
+"*" { return pec::parser::make_ASTERIKS(loc); }
+"-" { return pec::parser::make_MINUS(loc); }
+"/" { return pec::parser::make_SLASH(loc); }
 
-"==" { return yy::parser::make_EQUALS(loc); }
-"<" { return yy::parser::make_LT(loc); }
-">" { return yy::parser::make_GT(loc); }
-"<=" { return yy::parser::make_LE(loc); }
-">=" { return yy::parser::make_GE(loc); }
-"!=" { return yy::parser::make_NEQUALS(loc); }
+"==" { return pec::parser::make_EQUALS(loc); }
+"<" { return pec::parser::make_LT(loc); }
+">" { return pec::parser::make_GT(loc); }
+"<=" { return pec::parser::make_LE(loc); }
+">=" { return pec::parser::make_GE(loc); }
+"!=" { return pec::parser::make_NEQUALS(loc); }
 
-"not" { return yy::parser::make_NOT(loc); }
-"!" { return yy::parser::make_NOT(loc); }
-"and" { return yy::parser::make_AND(loc); }
-"&&" { return yy::parser::make_AND(loc); }
-"or" { return yy::parser::make_OR(loc); }
-"||" { return yy::parser::make_OR(loc); }
+"not" { return pec::parser::make_NOT(loc); }
+"!" { return pec::parser::make_NOT(loc); }
+"and" { return pec::parser::make_AND(loc); }
+"&&" { return pec::parser::make_AND(loc); }
+"or" { return pec::parser::make_OR(loc); }
+"||" { return pec::parser::make_OR(loc); }
 
-"&" { return yy::parser::make_BAND(loc); }
-"|" { return yy::parser::make_BOR(loc); }
-"xor" { return yy::parser::make_XOR(loc); }
-"~" { return yy::parser::make_BNOT(loc); }
+"&" { return pec::parser::make_BAND(loc); }
+"|" { return pec::parser::make_BOR(loc); }
+"xor" { return pec::parser::make_XOR(loc); }
+"~" { return pec::parser::make_BNOT(loc); }
 
-"=" { return yy::parser::make_ASSIGN(loc); }
+"=" { return pec::parser::make_ASSIGN(loc); }
 
-"(" { return yy::parser::make_LPAREN(loc); }
-")" { return yy::parser::make_RPAREN(loc); }
-"[" { return yy::parser::make_LBRACK(loc); }
-"]" { return yy::parser::make_RBRACK(loc); }
-"{" { return yy::parser::make_LBRACE(loc); }
-"}" { return yy::parser::make_RBRACE(loc); }
+"(" { return pec::parser::make_LPAREN(loc); }
+")" { return pec::parser::make_RPAREN(loc); }
+"[" { return pec::parser::make_LBRACK(loc); }
+"]" { return pec::parser::make_RBRACK(loc); }
+"{" { return pec::parser::make_LBRACE(loc); }
+"}" { return pec::parser::make_RBRACE(loc); }
 
-";" { return yy::parser::make_SEMICOLON(loc); }
+";" { return pec::parser::make_SEMICOLON(loc); }
 
-{identifier} { return yy::parser::make_ID(yytext, loc); }
-{type} { return yy::parser::make_TYPE(yytext, loc); }
-{constant} { return yy::parser::make_CONSTANT(yytext, loc); }
+{identifier} { return pec::parser::make_ID(yytext, loc); }
+{type} { return pec::parser::make_TYPE(yytext, loc); }
+{constant} { return pec::parser::make_CONSTANT(yytext, loc); }
 
 \n {
     yyextra.begin.line += 1;
@@ -74,7 +74,7 @@ constant [A-Z][A-Z0-9_]*
 }
 <<EOF>> {
     YY_USER_ACTION;
-    return yy::parser::make_YYEOF(loc);
+    return pec::parser::make_YYEOF(loc);
 }
 .
 

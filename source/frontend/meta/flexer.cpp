@@ -1,7 +1,7 @@
 #line 1 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/flexer.cpp"
 #include "barser.hpp"
-#define YY_DECL extern "C" yy::parser::symbol_type yylex(void* yyscanner)
-#define YY_EXTRA_TYPE yy::parser::location_type
+#define YY_DECL extern "C" pec::parser::symbol_type yylex(void* yyscanner)
+#define YY_EXTRA_TYPE pec::parser::location_type
 
 #line 6 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/flexer.cpp"
 
@@ -737,7 +737,7 @@ YY_DECL
 #line 25 "meta/flexer.l"
 
 #line 27 "meta/flexer.l"
-    auto loc = yy::parser::location_type();
+    auto loc = pec::parser::location_type();
 
 #line 742 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/flexer.cpp"
 
@@ -795,172 +795,172 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 29 "meta/flexer.l"
-{ return yy::parser::make_LET(loc); }
+{ return pec::parser::make_LET(loc); }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
 #line 30 "meta/flexer.l"
-{ return yy::parser::make_VAR(loc); }
+{ return pec::parser::make_VAR(loc); }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
 #line 31 "meta/flexer.l"
-{ return yy::parser::make_CONST(loc); }
+{ return pec::parser::make_CONST(loc); }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 33 "meta/flexer.l"
-{ return yy::parser::make_PLUS(loc); }
+{ return pec::parser::make_PLUS(loc); }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 34 "meta/flexer.l"
-{ return yy::parser::make_ASTERIKS(loc); }
+{ return pec::parser::make_ASTERIKS(loc); }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 35 "meta/flexer.l"
-{ return yy::parser::make_MINUS(loc); }
+{ return pec::parser::make_MINUS(loc); }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 36 "meta/flexer.l"
-{ return yy::parser::make_SLASH(loc); }
+{ return pec::parser::make_SLASH(loc); }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 38 "meta/flexer.l"
-{ return yy::parser::make_EQUALS(loc); }
+{ return pec::parser::make_EQUALS(loc); }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
 #line 39 "meta/flexer.l"
-{ return yy::parser::make_LT(loc); }
+{ return pec::parser::make_LT(loc); }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 40 "meta/flexer.l"
-{ return yy::parser::make_GT(loc); }
+{ return pec::parser::make_GT(loc); }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 41 "meta/flexer.l"
-{ return yy::parser::make_LE(loc); }
+{ return pec::parser::make_LE(loc); }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
 #line 42 "meta/flexer.l"
-{ return yy::parser::make_GE(loc); }
+{ return pec::parser::make_GE(loc); }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
 #line 43 "meta/flexer.l"
-{ return yy::parser::make_NEQUALS(loc); }
+{ return pec::parser::make_NEQUALS(loc); }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 45 "meta/flexer.l"
-{ return yy::parser::make_NOT(loc); }
+{ return pec::parser::make_NOT(loc); }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 46 "meta/flexer.l"
-{ return yy::parser::make_NOT(loc); }
+{ return pec::parser::make_NOT(loc); }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 47 "meta/flexer.l"
-{ return yy::parser::make_AND(loc); }
+{ return pec::parser::make_AND(loc); }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 48 "meta/flexer.l"
-{ return yy::parser::make_AND(loc); }
+{ return pec::parser::make_AND(loc); }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 49 "meta/flexer.l"
-{ return yy::parser::make_OR(loc); }
+{ return pec::parser::make_OR(loc); }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 50 "meta/flexer.l"
-{ return yy::parser::make_OR(loc); }
+{ return pec::parser::make_OR(loc); }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
 #line 52 "meta/flexer.l"
-{ return yy::parser::make_BAND(loc); }
+{ return pec::parser::make_BAND(loc); }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
 #line 53 "meta/flexer.l"
-{ return yy::parser::make_BOR(loc); }
+{ return pec::parser::make_BOR(loc); }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
 #line 54 "meta/flexer.l"
-{ return yy::parser::make_XOR(loc); }
+{ return pec::parser::make_XOR(loc); }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
 #line 55 "meta/flexer.l"
-{ return yy::parser::make_BNOT(loc); }
+{ return pec::parser::make_BNOT(loc); }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
 #line 57 "meta/flexer.l"
-{ return yy::parser::make_ASSIGN(loc); }
+{ return pec::parser::make_ASSIGN(loc); }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
 #line 59 "meta/flexer.l"
-{ return yy::parser::make_LPAREN(loc); }
+{ return pec::parser::make_LPAREN(loc); }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
 #line 60 "meta/flexer.l"
-{ return yy::parser::make_RPAREN(loc); }
+{ return pec::parser::make_RPAREN(loc); }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
 #line 61 "meta/flexer.l"
-{ return yy::parser::make_LBRACK(loc); }
+{ return pec::parser::make_LBRACK(loc); }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
 #line 62 "meta/flexer.l"
-{ return yy::parser::make_RBRACK(loc); }
+{ return pec::parser::make_RBRACK(loc); }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
 #line 63 "meta/flexer.l"
-{ return yy::parser::make_LBRACE(loc); }
+{ return pec::parser::make_LBRACE(loc); }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
 #line 64 "meta/flexer.l"
-{ return yy::parser::make_RBRACE(loc); }
+{ return pec::parser::make_RBRACE(loc); }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
 #line 66 "meta/flexer.l"
-{ return yy::parser::make_SEMICOLON(loc); }
+{ return pec::parser::make_SEMICOLON(loc); }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
 #line 68 "meta/flexer.l"
-{ return yy::parser::make_ID(yytext, loc); }
+{ return pec::parser::make_ID(yytext, loc); }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
 #line 69 "meta/flexer.l"
-{ return yy::parser::make_TYPE(yytext, loc); }
+{ return pec::parser::make_TYPE(yytext, loc); }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
 #line 70 "meta/flexer.l"
-{ return yy::parser::make_CONSTANT(yytext, loc); }
+{ return pec::parser::make_CONSTANT(yytext, loc); }
 	YY_BREAK
 case 35:
 /* rule 35 can match eol */
@@ -971,17 +971,17 @@ YY_RULE_SETUP
     yyextra.begin.column = 1;
 }
 	YY_BREAK
-case 36:
-YY_RULE_SETUP
-#line 76 "meta/flexer.l"
-
-	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 77 "meta/flexer.l"
+#line 76 "meta/flexer.l"
 {
     YY_USER_ACTION;
-    return yy::parser::make_YYEOF(loc);
+    return pec::parser::make_YYEOF(loc);
 }
+	YY_BREAK
+case 36:
+YY_RULE_SETUP
+#line 80 "meta/flexer.l"
+
 	YY_BREAK
 case 37:
 YY_RULE_SETUP

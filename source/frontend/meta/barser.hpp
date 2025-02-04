@@ -33,7 +33,7 @@
 
 /**
  ** \file D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.hpp
- ** Define the yy::parser class.
+ ** Define the pec::parser class.
  */
 
 // C++ LALR(1) parser skeleton written by Akim Demaille.
@@ -44,6 +44,12 @@
 
 #ifndef YY_YY_D_DESKTOP_PROGRAMLAMA_CPP_PEC_SOURCE_FRONTEND_META_BARSER_HPP_INCLUDED
 # define YY_YY_D_DESKTOP_PROGRAMLAMA_CPP_PEC_SOURCE_FRONTEND_META_BARSER_HPP_INCLUDED
+// "%code requires" blocks.
+#line 10 "meta/barser.y"
+
+#include "frontend/parser.hpp"
+
+#line 53 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.hpp"
 
 
 # include <cstdlib> // std::abort
@@ -177,8 +183,9 @@
 # define YYDEBUG 0
 #endif
 
-namespace yy {
-#line 182 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.hpp"
+#line 6 "meta/barser.y"
+namespace pec {
+#line 189 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.hpp"
 
 
 
@@ -374,11 +381,13 @@ namespace yy {
     /// An auxiliary type to compute the largest semantic type.
     union union_type
     {
+      // expression
+      char dummy1[sizeof (pec::Child<pec::Expression>)];
+
       // "identifier"
       // "type identifier"
       // "constant identifier"
-      // expression
-      char dummy1[sizeof (std::string)];
+      char dummy2[sizeof (std::string)];
     };
 
     /// The size of the largest semantic type.
@@ -555,10 +564,13 @@ namespace yy {
       {
         switch (this->kind ())
     {
+      case symbol_kind::S_expression: // expression
+        value.move< pec::Child<pec::Expression> > (std::move (that.value));
+        break;
+
       case symbol_kind::S_ID: // "identifier"
       case symbol_kind::S_TYPE: // "type identifier"
       case symbol_kind::S_CONSTANT: // "constant identifier"
-      case symbol_kind::S_expression: // expression
         value.move< std::string > (std::move (that.value));
         break;
 
@@ -581,6 +593,20 @@ namespace yy {
 #else
       basic_symbol (typename Base::kind_type t, const location_type& l)
         : Base (t)
+        , location (l)
+      {}
+#endif
+
+#if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, pec::Child<pec::Expression>&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const pec::Child<pec::Expression>& v, const location_type& l)
+        : Base (t)
+        , value (v)
         , location (l)
       {}
 #endif
@@ -623,10 +649,13 @@ namespace yy {
         // Value type destructor.
 switch (yykind)
     {
+      case symbol_kind::S_expression: // expression
+        value.template destroy< pec::Child<pec::Expression> > ();
+        break;
+
       case symbol_kind::S_ID: // "identifier"
       case symbol_kind::S_TYPE: // "type identifier"
       case symbol_kind::S_CONSTANT: // "constant identifier"
-      case symbol_kind::S_expression: // expression
         value.template destroy< std::string > ();
         break;
 
@@ -1724,10 +1753,13 @@ switch (yykind)
   {
     switch (this->kind ())
     {
+      case symbol_kind::S_expression: // expression
+        value.copy< pec::Child<pec::Expression> > (YY_MOVE (that.value));
+        break;
+
       case symbol_kind::S_ID: // "identifier"
       case symbol_kind::S_TYPE: // "type identifier"
       case symbol_kind::S_CONSTANT: // "constant identifier"
-      case symbol_kind::S_expression: // expression
         value.copy< std::string > (YY_MOVE (that.value));
         break;
 
@@ -1762,10 +1794,13 @@ switch (yykind)
     super_type::move (s);
     switch (this->kind ())
     {
+      case symbol_kind::S_expression: // expression
+        value.move< pec::Child<pec::Expression> > (YY_MOVE (s.value));
+        break;
+
       case symbol_kind::S_ID: // "identifier"
       case symbol_kind::S_TYPE: // "type identifier"
       case symbol_kind::S_CONSTANT: // "constant identifier"
-      case symbol_kind::S_expression: // expression
         value.move< std::string > (YY_MOVE (s.value));
         break;
 
@@ -1834,8 +1869,9 @@ switch (yykind)
   }
 
 
-} // yy
-#line 1839 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.hpp"
+#line 6 "meta/barser.y"
+} // pec
+#line 1875 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.hpp"
 
 
 
