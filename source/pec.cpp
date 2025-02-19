@@ -17,7 +17,10 @@ auto main() -> int {
         // "x & x;\n"
         // "let (a, b) = x;"
         // "let ((a, b), ((c, d), e, f, g)) = z;"
-        "let ((a, Int32 b), ((c, d), e, f, g)) = z;"
+        "let ((a, Int32 b), ((c, d), e, f, g)) = {\n"
+        "let a = y;\n"
+        "let b = z;\n"
+        "};"
     );
 
     const auto buf = yy_scan_bytes(data.data(), data.size(), scanner);

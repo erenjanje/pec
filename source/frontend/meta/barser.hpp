@@ -403,6 +403,7 @@ namespace pec {
       char dummy6[sizeof (std::string)];
 
       // program
+      // statement_list
       char dummy7[sizeof (std::vector<Child<Statement>>)];
     };
 
@@ -549,7 +550,8 @@ namespace pec {
         S_general_pattern = 41,                  // general_pattern
         S_type = 42,                             // type
         S_statement = 43,                        // statement
-        S_expression = 44                        // expression
+        S_statement_list = 44,                   // statement_list
+        S_expression = 45                        // expression
       };
     };
 
@@ -614,6 +616,7 @@ namespace pec {
         break;
 
       case symbol_kind::S_program: // program
+      case symbol_kind::S_statement_list: // statement_list
         value.move< std::vector<Child<Statement>> > (std::move (that.value));
         break;
 
@@ -790,6 +793,7 @@ switch (yykind)
         break;
 
       case symbol_kind::S_program: // program
+      case symbol_kind::S_statement_list: // statement_list
         value.template destroy< std::vector<Child<Statement>> > ();
         break;
 
@@ -1844,9 +1848,9 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 197,     ///< Last index in yytable_.
-      yynnts_ = 8,  ///< Number of nonterminal symbols.
-      yyfinal_ = 2 ///< Termination state number.
+      yylast_ = 235,     ///< Last index in yytable_.
+      yynnts_ = 9,  ///< Number of nonterminal symbols.
+      yyfinal_ = 3 ///< Termination state number.
     };
 
 
@@ -1945,6 +1949,7 @@ switch (yykind)
         break;
 
       case symbol_kind::S_program: // program
+      case symbol_kind::S_statement_list: // statement_list
         value.copy< std::vector<Child<Statement>> > (YY_MOVE (that.value));
         break;
 
@@ -2007,6 +2012,7 @@ switch (yykind)
         break;
 
       case symbol_kind::S_program: // program
+      case symbol_kind::S_statement_list: // statement_list
         value.move< std::vector<Child<Statement>> > (YY_MOVE (s.value));
         break;
 
@@ -2077,7 +2083,7 @@ switch (yykind)
 
 #line 8 "meta/barser.y"
 } // pec
-#line 2081 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.hpp"
+#line 2087 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.hpp"
 
 
 

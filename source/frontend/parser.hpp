@@ -157,7 +157,9 @@ struct Cast final : Expression {
 };
 
 struct Block final : Expression {
-    std::vector<Child<Expression>> statements;
+    std::vector<Child<Statement>> statements;
+
+    explicit Block(std::vector<Child<Statement>> statements);
     std::ostream& print(std::ostream& os, int indentation) const override;
 };
 

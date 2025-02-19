@@ -68,24 +68,22 @@ extern "C" pec::parser::symbol_type yylex(void*);
 %left "&" "|" "xor"
 %left UNARY
 
+%nterm <Child<Statement>>statement
+%nterm <std::vector<Child<Statement>>>statement_list
+%nterm <std::vector<Child<Statement>>>program
+
 %nterm <Child<Type>>type
 %nterm <TuplePattern>pattern_list
 %nterm <Child<Pattern>>general_pattern
 %nterm <Child<Pattern>>pattern
-%nterm <std::vector<Child<Statement>>>program
 %nterm <Child<Expression>>expression
-%nterm <Child<Statement>>statement
 
 %start program
 
 %%
 
 program
-    : program[others] statement[stmt] {
-        ret.emplace_back(std::move($stmt));
-    }
-    | %empty {
-    }
+    : statement_list[statements] { ret = std::move($statements); }
     ;
 
 pattern_list
@@ -161,6 +159,16 @@ statement
         @$.begin = @1.begin;
         @$.end = @expr.end;
     }
+    ;
+
+statement_list
+    : statement_list[prev] statement[next] {
+        $$ = std::move($prev);
+        $$.emplace_back(std::move($next));
+        @$.begin = @prev.begin;
+        @$.end = @next.end;
+    }
+    | %empty {}
     ;
 
 expression
@@ -269,6 +277,11 @@ expression
     }
     | "(" expression[expr] ")" {
         $$ = std::move($expr);
+        @$.begin = @1.begin;
+        @$.end = @3.end;
+    }
+    | "{" statement_list[statements] "}" {
+        $$ = make<Block>(std::move($statements));
         @$.begin = @1.begin;
         @$.end = @3.end;
     }

@@ -119,6 +119,20 @@ auto Cast::print(std::ostream& os, int indentation) const -> std::ostream& {
     os << "\n" << INDENT << ")";
     return os;
 }
+Block::Block(std::vector<Child<Statement>> statements) : statements(std::move(statements)) {}
+
+std::ostream& Block::print(std::ostream& os, int indentation) const {
+    os << "Block{\n";
+    for (int i = 0; i < statements.size(); i++) {
+        os << NEXT_INDENT;
+        statements[i]->print(os, indentation + 1);
+        if (i != statements.size() - 1) {
+            os << "\n";
+        }
+    }
+    os << "\n" << INDENT << "}";
+    return os;
+}
 
 auto pec::operator<<(std::ostream& os, Binary::Operator op) -> std::ostream& {
     switch (op) {

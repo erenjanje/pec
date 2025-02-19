@@ -238,6 +238,7 @@ namespace pec {
         break;
 
       case symbol_kind::S_program: // program
+      case symbol_kind::S_statement_list: // statement_list
         value.YY_MOVE_OR_COPY< std::vector<Child<Statement>> > (YY_MOVE (that.value));
         break;
 
@@ -284,6 +285,7 @@ namespace pec {
         break;
 
       case symbol_kind::S_program: // program
+      case symbol_kind::S_statement_list: // statement_list
         value.move< std::vector<Child<Statement>> > (YY_MOVE (that.value));
         break;
 
@@ -330,6 +332,7 @@ namespace pec {
         break;
 
       case symbol_kind::S_program: // program
+      case symbol_kind::S_statement_list: // statement_list
         value.copy< std::vector<Child<Statement>> > (that.value);
         break;
 
@@ -375,6 +378,7 @@ namespace pec {
         break;
 
       case symbol_kind::S_program: // program
+      case symbol_kind::S_statement_list: // statement_list
         value.move< std::vector<Child<Statement>> > (that.value);
         break;
 
@@ -675,6 +679,7 @@ namespace pec {
         break;
 
       case symbol_kind::S_program: // program
+      case symbol_kind::S_statement_list: // statement_list
         yylhs.value.emplace< std::vector<Child<Statement>> > ();
         break;
 
@@ -698,366 +703,384 @@ namespace pec {
         {
           switch (yyn)
             {
-  case 2: // program: program statement
-#line 84 "meta/barser.y"
-                                      {
-        ret.emplace_back(std::move(yystack_[0].value.as < Child<Statement> > ()));
-    }
-#line 707 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+  case 2: // program: statement_list
+#line 86 "meta/barser.y"
+                                 { ret = std::move(yystack_[0].value.as < std::vector<Child<Statement>> > ()); }
+#line 710 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 3: // program: %empty
-#line 87 "meta/barser.y"
-             {
-    }
-#line 714 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
-    break;
-
-  case 4: // pattern_list: pattern_list "," pattern
-#line 92 "meta/barser.y"
+  case 3: // pattern_list: pattern_list "," pattern
+#line 90 "meta/barser.y"
                                           {
         yylhs.value.as < TuplePattern > () = std::move(yystack_[2].value.as < TuplePattern > ());
         yylhs.value.as < TuplePattern > ().elements.emplace_back(std::move(yystack_[0].value.as < Child<Pattern> > ()));
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 725 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 721 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 5: // pattern_list: pattern
-#line 98 "meta/barser.y"
+  case 4: // pattern_list: pattern
+#line 96 "meta/barser.y"
                    {
         yylhs.value.as < TuplePattern > ().elements.emplace_back(std::move(yystack_[0].value.as < Child<Pattern> > ()));
         yylhs.location = yystack_[0].location;
     }
-#line 734 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 730 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 6: // pattern: "identifier"
-#line 105 "meta/barser.y"
+  case 5: // pattern: "identifier"
+#line 103 "meta/barser.y"
              {
         yylhs.value.as < Child<Pattern> > () = make<IdentifierPattern>(nullptr, std::move(yystack_[0].value.as < std::string > ()));
         yylhs.location = yystack_[0].location;
     }
-#line 743 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 739 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 7: // pattern: "constant identifier"
-#line 109 "meta/barser.y"
+  case 6: // pattern: "constant identifier"
+#line 107 "meta/barser.y"
                    {
         yylhs.value.as < Child<Pattern> > () = make<IdentifierPattern>(nullptr, std::move(yystack_[0].value.as < std::string > ()));
         yylhs.location = yystack_[0].location;
     }
-#line 752 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 748 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 8: // pattern: "type identifier" "identifier"
-#line 113 "meta/barser.y"
+  case 7: // pattern: "type identifier" "identifier"
+#line 111 "meta/barser.y"
                                    {
         yylhs.value.as < Child<Pattern> > () = make<IdentifierPattern>(make<Type>(std::move(yystack_[1].value.as < std::string > ())), std::move(yystack_[0].value.as < std::string > ()));
         yylhs.location.begin = yystack_[1].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 762 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 758 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 9: // pattern: "(" pattern_list ")"
-#line 118 "meta/barser.y"
+  case 8: // pattern: "(" pattern_list ")"
+#line 116 "meta/barser.y"
                                  {
         yylhs.value.as < Child<Pattern> > () = make<TuplePattern>(std::move(yystack_[1].value.as < TuplePattern > ()));
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 772 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 768 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 10: // general_pattern: "identifier"
-#line 126 "meta/barser.y"
+  case 9: // general_pattern: "identifier"
+#line 124 "meta/barser.y"
              {
         yylhs.value.as < Child<Pattern> > () = make<IdentifierPattern>(nullptr, std::move(yystack_[0].value.as < std::string > ()));
         yylhs.location = yystack_[0].location;
     }
-#line 781 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 777 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 11: // general_pattern: "constant identifier"
-#line 130 "meta/barser.y"
+  case 10: // general_pattern: "constant identifier"
+#line 128 "meta/barser.y"
                    {
         yylhs.value.as < Child<Pattern> > () = make<IdentifierPattern>(nullptr, std::move(yystack_[0].value.as < std::string > ()));
         yylhs.location = yystack_[0].location;
     }
-#line 790 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 786 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 12: // general_pattern: "(" pattern_list ")"
-#line 134 "meta/barser.y"
+  case 11: // general_pattern: "(" pattern_list ")"
+#line 132 "meta/barser.y"
                                  {
         yylhs.value.as < Child<Pattern> > () = make<TuplePattern>(std::move(yystack_[1].value.as < TuplePattern > ()));
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 800 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 796 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 13: // type: "type identifier"
-#line 142 "meta/barser.y"
+  case 12: // type: "type identifier"
+#line 140 "meta/barser.y"
                  {
         yylhs.value.as < Child<Type> > () = make<Type>(std::move(yystack_[0].value.as < std::string > ()));
         yylhs.location = yystack_[0].location;
     }
-#line 809 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 805 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 14: // statement: expression ";"
-#line 149 "meta/barser.y"
+  case 13: // statement: expression ";"
+#line 147 "meta/barser.y"
                            {
         yylhs.value.as < Child<Statement> > () = make<ExpressionStatement>(std::move(yystack_[1].value.as < Child<Expression> > ()));
         yylhs.location.begin = yystack_[1].location.begin;
         yylhs.location.end = yystack_[1].location.end;
     }
-#line 819 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 815 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 15: // statement: "let" general_pattern "=" expression ";"
-#line 154 "meta/barser.y"
+  case 14: // statement: "let" general_pattern "=" expression ";"
+#line 152 "meta/barser.y"
                                                           {
         yylhs.value.as < Child<Statement> > () = make<VariableDefinition>(VariableDefinition::Mutability::Immutable, std::move(yystack_[3].value.as < Child<Pattern> > ()), std::move(yystack_[1].value.as < Child<Expression> > ()));
         yylhs.location.begin = yystack_[4].location.begin;
         yylhs.location.end = yystack_[1].location.end;
     }
-#line 829 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 825 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 16: // statement: "var" general_pattern "=" expression ";"
-#line 159 "meta/barser.y"
+  case 15: // statement: "var" general_pattern "=" expression ";"
+#line 157 "meta/barser.y"
                                                           {
         yylhs.value.as < Child<Statement> > () = make<VariableDefinition>(VariableDefinition::Mutability::Mutable, std::move(yystack_[3].value.as < Child<Pattern> > ()), std::move(yystack_[1].value.as < Child<Expression> > ()));
         yylhs.location.begin = yystack_[4].location.begin;
         yylhs.location.end = yystack_[1].location.end;
     }
-#line 839 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 835 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 17: // expression: expression "+" expression
-#line 167 "meta/barser.y"
+  case 16: // statement_list: statement_list statement
+#line 165 "meta/barser.y"
+                                           {
+        yylhs.value.as < std::vector<Child<Statement>> > () = std::move(yystack_[1].value.as < std::vector<Child<Statement>> > ());
+        yylhs.value.as < std::vector<Child<Statement>> > ().emplace_back(std::move(yystack_[0].value.as < Child<Statement> > ()));
+        yylhs.location.begin = yystack_[1].location.begin;
+        yylhs.location.end = yystack_[0].location.end;
+    }
+#line 846 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+    break;
+
+  case 17: // statement_list: %empty
+#line 171 "meta/barser.y"
+             {}
+#line 852 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+    break;
+
+  case 18: // expression: expression "+" expression
+#line 175 "meta/barser.y"
                                              {
         yylhs.value.as < Child<Expression> > () = make<Binary>(Binary::Operator::Add, std::move(yystack_[2].value.as < Child<Expression> > ()), std::move(yystack_[0].value.as < Child<Expression> > ()));
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 849 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 862 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 18: // expression: expression "*" expression
-#line 172 "meta/barser.y"
+  case 19: // expression: expression "*" expression
+#line 180 "meta/barser.y"
                                              {
         yylhs.value.as < Child<Expression> > () = make<Binary>(Binary::Operator::Multiply, std::move(yystack_[2].value.as < Child<Expression> > ()), std::move(yystack_[0].value.as < Child<Expression> > ()));
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 859 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 872 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 19: // expression: expression "-" expression
-#line 177 "meta/barser.y"
+  case 20: // expression: expression "-" expression
+#line 185 "meta/barser.y"
                                              {
         yylhs.value.as < Child<Expression> > () = make<Binary>(Binary::Operator::Subtract, std::move(yystack_[2].value.as < Child<Expression> > ()), std::move(yystack_[0].value.as < Child<Expression> > ()));
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 869 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 882 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 20: // expression: expression "/" expression
-#line 182 "meta/barser.y"
+  case 21: // expression: expression "/" expression
+#line 190 "meta/barser.y"
                                              {
         yylhs.value.as < Child<Expression> > () = make<Binary>(Binary::Operator::Divide, std::move(yystack_[2].value.as < Child<Expression> > ()), std::move(yystack_[0].value.as < Child<Expression> > ()));
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 879 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 892 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 21: // expression: expression "==" expression
-#line 187 "meta/barser.y"
+  case 22: // expression: expression "==" expression
+#line 195 "meta/barser.y"
                                               {
         yylhs.value.as < Child<Expression> > () = make<Binary>(Binary::Operator::Equals, std::move(yystack_[2].value.as < Child<Expression> > ()), std::move(yystack_[0].value.as < Child<Expression> > ()));
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 889 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 902 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 22: // expression: expression "<" expression
-#line 192 "meta/barser.y"
+  case 23: // expression: expression "<" expression
+#line 200 "meta/barser.y"
                                              {
         yylhs.value.as < Child<Expression> > () = make<Binary>(Binary::Operator::LittleThan, std::move(yystack_[2].value.as < Child<Expression> > ()), std::move(yystack_[0].value.as < Child<Expression> > ()));
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 899 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 912 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 23: // expression: expression ">" expression
-#line 197 "meta/barser.y"
+  case 24: // expression: expression ">" expression
+#line 205 "meta/barser.y"
                                              {
         yylhs.value.as < Child<Expression> > () = make<Binary>(Binary::Operator::GreaterThan, std::move(yystack_[2].value.as < Child<Expression> > ()), std::move(yystack_[0].value.as < Child<Expression> > ()));
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 909 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 922 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 24: // expression: expression "<=" expression
-#line 202 "meta/barser.y"
+  case 25: // expression: expression "<=" expression
+#line 210 "meta/barser.y"
                                               {
         yylhs.value.as < Child<Expression> > () = make<Binary>(Binary::Operator::LittleEquals, std::move(yystack_[2].value.as < Child<Expression> > ()), std::move(yystack_[0].value.as < Child<Expression> > ()));
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 919 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 932 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 25: // expression: expression ">=" expression
-#line 207 "meta/barser.y"
+  case 26: // expression: expression ">=" expression
+#line 215 "meta/barser.y"
                                               {
         yylhs.value.as < Child<Expression> > () = make<Binary>(Binary::Operator::GreaterEquals, std::move(yystack_[2].value.as < Child<Expression> > ()), std::move(yystack_[0].value.as < Child<Expression> > ()));
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 929 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 942 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 26: // expression: expression "!=" expression
-#line 212 "meta/barser.y"
+  case 27: // expression: expression "!=" expression
+#line 220 "meta/barser.y"
                                               {
         yylhs.value.as < Child<Expression> > () = make<Binary>(Binary::Operator::NotEquals, std::move(yystack_[2].value.as < Child<Expression> > ()), std::move(yystack_[0].value.as < Child<Expression> > ()));
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 939 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 952 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 27: // expression: expression "and" expression
-#line 217 "meta/barser.y"
+  case 28: // expression: expression "and" expression
+#line 225 "meta/barser.y"
                                                {
         yylhs.value.as < Child<Expression> > () = make<Binary>(Binary::Operator::And, std::move(yystack_[2].value.as < Child<Expression> > ()), std::move(yystack_[0].value.as < Child<Expression> > ()));
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 949 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 962 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 28: // expression: expression "or" expression
-#line 222 "meta/barser.y"
+  case 29: // expression: expression "or" expression
+#line 230 "meta/barser.y"
                                               {
         yylhs.value.as < Child<Expression> > () = make<Binary>(Binary::Operator::Or, std::move(yystack_[2].value.as < Child<Expression> > ()), std::move(yystack_[0].value.as < Child<Expression> > ()));
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 959 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 972 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 29: // expression: expression "&" expression
-#line 227 "meta/barser.y"
+  case 30: // expression: expression "&" expression
+#line 235 "meta/barser.y"
                                              {
         yylhs.value.as < Child<Expression> > () = make<Binary>(Binary::Operator::Band, std::move(yystack_[2].value.as < Child<Expression> > ()), std::move(yystack_[0].value.as < Child<Expression> > ()));
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 969 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 982 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 30: // expression: expression "|" expression
-#line 232 "meta/barser.y"
+  case 31: // expression: expression "|" expression
+#line 240 "meta/barser.y"
                                              {
         yylhs.value.as < Child<Expression> > () = make<Binary>(Binary::Operator::Bor, std::move(yystack_[2].value.as < Child<Expression> > ()), std::move(yystack_[0].value.as < Child<Expression> > ()));
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 979 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 992 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 31: // expression: expression "xor" expression
-#line 237 "meta/barser.y"
+  case 32: // expression: expression "xor" expression
+#line 245 "meta/barser.y"
                                                {
         yylhs.value.as < Child<Expression> > () = make<Binary>(Binary::Operator::Xor, std::move(yystack_[2].value.as < Child<Expression> > ()), std::move(yystack_[0].value.as < Child<Expression> > ()));
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 989 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 1002 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 32: // expression: "-" expression
-#line 242 "meta/barser.y"
+  case 33: // expression: "-" expression
+#line 250 "meta/barser.y"
                                        {
         yylhs.value.as < Child<Expression> > () = make<Unary>(Unary::Operator::Negate, std::move(yystack_[0].value.as < Child<Expression> > ()));
         yylhs.location.begin = yystack_[1].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 999 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 1012 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 33: // expression: "not" expression
-#line 247 "meta/barser.y"
+  case 34: // expression: "not" expression
+#line 255 "meta/barser.y"
                                          {
         yylhs.value.as < Child<Expression> > () = make<Unary>(Unary::Operator::Not, std::move(yystack_[0].value.as < Child<Expression> > ()));
         yylhs.location.begin = yystack_[1].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 1009 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 1022 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 34: // expression: "~" expression
-#line 252 "meta/barser.y"
+  case 35: // expression: "~" expression
+#line 260 "meta/barser.y"
                                        {
         yylhs.value.as < Child<Expression> > () = make<Unary>(Unary::Operator::Bnot, std::move(yystack_[0].value.as < Child<Expression> > ()));
         yylhs.location.begin = yystack_[1].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 1019 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 1032 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 35: // expression: type expression
-#line 257 "meta/barser.y"
+  case 36: // expression: type expression
+#line 265 "meta/barser.y"
                                           {
         yylhs.value.as < Child<Expression> > () = make<Cast>(std::move(yystack_[1].value.as < Child<Type> > ()), std::move(yystack_[0].value.as < Child<Expression> > ()));
         yylhs.location.begin = yystack_[1].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 1029 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 1042 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 36: // expression: "identifier"
-#line 262 "meta/barser.y"
+  case 37: // expression: "identifier"
+#line 270 "meta/barser.y"
               {
         yylhs.value.as < Child<Expression> > () = make<Identifier>(yystack_[0].value.as < std::string > ());
         yylhs.location = yystack_[0].location;
     }
-#line 1038 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 1051 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 37: // expression: "constant identifier"
-#line 266 "meta/barser.y"
+  case 38: // expression: "constant identifier"
+#line 274 "meta/barser.y"
                     {
         yylhs.value.as < Child<Expression> > () = make<Identifier>(yystack_[0].value.as < std::string > ());
         yylhs.location = yystack_[0].location;
     }
-#line 1047 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 1060 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 38: // expression: "(" expression ")"
-#line 270 "meta/barser.y"
+  case 39: // expression: "(" expression ")"
+#line 278 "meta/barser.y"
                                {
         yylhs.value.as < Child<Expression> > () = std::move(yystack_[1].value.as < Child<Expression> > ());
         yylhs.location.begin = yystack_[2].location.begin;
         yylhs.location.end = yystack_[0].location.end;
     }
-#line 1057 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 1070 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+    break;
+
+  case 40: // expression: "{" statement_list "}"
+#line 283 "meta/barser.y"
+                                         {
+        yylhs.value.as < Child<Expression> > () = make<Block>(std::move(yystack_[1].value.as < std::vector<Child<Statement>> > ()));
+        yylhs.location.begin = yystack_[2].location.begin;
+        yylhs.location.end = yystack_[0].location.end;
+    }
+#line 1080 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
 
-#line 1061 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 1084 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
 
             default:
               break;
@@ -1246,7 +1269,7 @@ namespace pec {
   ">", "<=", ">=", "!=", "not", "and", "or", "&", "|", "xor", "~", "=",
   "(", ")", "[", "]", "{", "}", "let", "var", "const", ",", ";", "CAST",
   "UNARY", "$accept", "program", "pattern_list", "pattern",
-  "general_pattern", "type", "statement", "expression", YY_NULLPTR
+  "general_pattern", "type", "statement", "statement_list", "expression", YY_NULLPTR
     };
     return yy_sname[yysymbol];
   }
@@ -1515,127 +1538,137 @@ namespace pec {
   }
 
 
-  const signed char parser::yypact_ninf_ = -58;
+  const signed char parser::yypact_ninf_ = -36;
 
   const signed char parser::yytable_ninf_ = -1;
 
   const short
   parser::yypact_[] =
   {
-     -58,    36,   -58,   -58,   -58,   -58,   117,   117,   117,   117,
-      13,    13,   117,   -58,    62,   -58,   -58,   -58,   136,   -58,
-     -58,    10,   -18,   -15,   156,   117,   117,   117,   117,   117,
-     117,   117,   117,   117,   117,   117,   117,   117,   117,   117,
-     -58,   -58,   -58,     4,   -58,    10,   -21,   -58,   117,   117,
-      26,   176,   176,    26,   172,   172,   172,   172,   172,   172,
-      42,    42,   -58,   -58,   -58,   -58,   -16,   -58,    10,    80,
-      98,   -58,   -58,   -58,   -58
+     -36,     6,   125,   -36,   -36,   -36,   -36,   135,   135,   135,
+     135,   -36,    15,    15,   135,   -36,    41,   -36,   -36,   -36,
+     158,    96,   -36,   -36,    12,   -12,    -9,   178,   135,   135,
+     135,   135,   135,   135,   135,   135,   135,   135,   135,   135,
+     135,   135,   135,   -36,   -36,   -36,   -36,    16,   -36,    12,
+     -21,   -36,   135,   135,   -11,   214,   214,   -11,   194,   194,
+     194,   194,   194,   194,   198,   198,   -36,   -36,   -36,   -36,
+     -20,   -36,    12,    59,    77,   -36,   -36,   -36,   -36
   };
 
   const signed char
   parser::yydefact_[] =
   {
-       3,     0,     1,    36,    13,    37,     0,     0,     0,     0,
-       0,     0,     0,     2,     0,    32,    33,    34,     0,    10,
-      11,     0,     0,     0,    35,     0,     0,     0,     0,     0,
+      17,     0,     2,     1,    37,    12,    38,     0,     0,     0,
+       0,    17,     0,     0,     0,    16,     0,    33,    34,    35,
+       0,     0,     9,    10,     0,     0,     0,    36,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-      14,    38,     6,     0,     7,     0,     0,     5,     0,     0,
-      18,    17,    19,    20,    21,    22,    23,    24,    25,    26,
-      27,    28,    29,    30,    31,     8,     0,    12,     0,     0,
-       0,     9,     4,    15,    16
+       0,     0,     0,    13,    39,    40,     5,     0,     6,     0,
+       0,     4,     0,     0,    19,    18,    20,    21,    22,    23,
+      24,    25,    26,    27,    28,    29,    30,    31,    32,     7,
+       0,    11,     0,     0,     0,     8,     3,    14,    15
   };
 
   const signed char
   parser::yypgoto_[] =
   {
-     -58,   -58,   -35,   -57,    24,   -58,   -58,    -6
+     -36,   -36,    -8,   -35,    25,   -36,   -36,    29,    -7
   };
 
   const signed char
   parser::yydefgoto_[] =
   {
-       0,     1,    46,    47,    22,    12,    13,    14
+       0,     1,    50,    51,    25,    14,    15,     2,    16
   };
 
   const signed char
   parser::yytable_[] =
   {
-      15,    16,    17,    18,    67,    48,    24,    65,    49,    71,
-      66,    72,    68,    42,    43,    44,    19,    68,    20,    50,
-      51,    52,    53,    54,    55,    56,    57,    58,    59,    60,
-      61,    62,    63,    64,    45,    23,     2,    21,     0,     3,
-       4,     5,    69,    70,     6,    37,    38,    39,    25,    26,
-      27,    28,     7,     0,     0,     0,     0,     0,     8,     0,
-       9,    37,    38,    39,     0,     0,    10,    11,    25,    26,
-      27,    28,    29,    30,    31,    32,    33,    34,     0,    35,
-      36,    37,    38,    39,     0,     0,    25,    26,    27,    28,
-      29,    30,    31,    32,    33,    34,    40,    35,    36,    37,
-      38,    39,     0,     0,    25,    26,    27,    28,    29,    30,
-      31,    32,    33,    34,    73,    35,    36,    37,    38,    39,
-       3,     4,     5,     0,     0,     6,     0,     0,     0,     0,
-       0,     0,    74,     7,     0,     0,     0,     0,     0,     8,
-       0,     9,    25,    26,    27,    28,    29,    30,    31,    32,
-      33,    34,     0,    35,    36,    37,    38,    39,     0,     0,
-       0,    41,    25,    26,    27,    28,    29,    30,    31,    32,
-      33,    34,     0,    35,    36,    37,    38,    39,    25,    26,
-      27,    28,    25,     0,     0,    28,     0,     0,     0,    35,
-      36,    37,    38,    39,     0,    37,    38,    39
+      17,    18,    19,    20,    71,    75,     3,    27,    40,    41,
+      42,    52,    72,    72,    53,    46,    47,    48,    22,    69,
+      23,    54,    55,    56,    57,    58,    59,    60,    61,    62,
+      63,    64,    65,    66,    67,    68,    49,    76,    26,    24,
+      21,    70,     0,     0,     0,    73,    74,    28,    29,    30,
+      31,    32,    33,    34,    35,    36,    37,     0,    38,    39,
+      40,    41,    42,     0,     0,    28,    29,    30,    31,    32,
+      33,    34,    35,    36,    37,    43,    38,    39,    40,    41,
+      42,     0,     0,    28,    29,    30,    31,    32,    33,    34,
+      35,    36,    37,    77,    38,    39,    40,    41,    42,     4,
+       5,     6,     0,     0,     7,     0,     0,     0,     0,     0,
+       0,    78,     8,     0,     0,     0,     0,     0,     9,     0,
+      10,     0,     0,     0,    11,    45,    12,    13,     4,     5,
+       6,     0,     0,     7,     0,     0,     0,     0,     4,     5,
+       6,     8,     0,     7,     0,     0,     0,     9,     0,    10,
+       0,     8,     0,    11,     0,    12,    13,     9,     0,    10,
+       0,     0,     0,    11,    28,    29,    30,    31,    32,    33,
+      34,    35,    36,    37,     0,    38,    39,    40,    41,    42,
+       0,     0,     0,    44,    28,    29,    30,    31,    32,    33,
+      34,    35,    36,    37,     0,    38,    39,    40,    41,    42,
+      28,    29,    30,    31,    28,    29,    30,    31,     0,     0,
+       0,    38,    39,    40,    41,    42,     0,    40,    41,    42,
+      28,     0,     0,    31,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,    40,    41,    42
   };
 
   const signed char
   parser::yycheck_[] =
   {
-       6,     7,     8,     9,    25,    23,    12,     3,    23,    25,
-      45,    68,    33,     3,     4,     5,     3,    33,     5,    25,
-      26,    27,    28,    29,    30,    31,    32,    33,    34,    35,
-      36,    37,    38,    39,    24,    11,     0,    24,    -1,     3,
-       4,     5,    48,    49,     8,    19,    20,    21,     6,     7,
-       8,     9,    16,    -1,    -1,    -1,    -1,    -1,    22,    -1,
-      24,    19,    20,    21,    -1,    -1,    30,    31,     6,     7,
-       8,     9,    10,    11,    12,    13,    14,    15,    -1,    17,
-      18,    19,    20,    21,    -1,    -1,     6,     7,     8,     9,
-      10,    11,    12,    13,    14,    15,    34,    17,    18,    19,
-      20,    21,    -1,    -1,     6,     7,     8,     9,    10,    11,
-      12,    13,    14,    15,    34,    17,    18,    19,    20,    21,
-       3,     4,     5,    -1,    -1,     8,    -1,    -1,    -1,    -1,
-      -1,    -1,    34,    16,    -1,    -1,    -1,    -1,    -1,    22,
-      -1,    24,     6,     7,     8,     9,    10,    11,    12,    13,
-      14,    15,    -1,    17,    18,    19,    20,    21,    -1,    -1,
-      -1,    25,     6,     7,     8,     9,    10,    11,    12,    13,
-      14,    15,    -1,    17,    18,    19,    20,    21,     6,     7,
-       8,     9,     6,    -1,    -1,     9,    -1,    -1,    -1,    17,
-      18,    19,    20,    21,    -1,    19,    20,    21
+       7,     8,     9,    10,    25,    25,     0,    14,    19,    20,
+      21,    23,    33,    33,    23,     3,     4,     5,     3,     3,
+       5,    28,    29,    30,    31,    32,    33,    34,    35,    36,
+      37,    38,    39,    40,    41,    42,    24,    72,    13,    24,
+      11,    49,    -1,    -1,    -1,    52,    53,     6,     7,     8,
+       9,    10,    11,    12,    13,    14,    15,    -1,    17,    18,
+      19,    20,    21,    -1,    -1,     6,     7,     8,     9,    10,
+      11,    12,    13,    14,    15,    34,    17,    18,    19,    20,
+      21,    -1,    -1,     6,     7,     8,     9,    10,    11,    12,
+      13,    14,    15,    34,    17,    18,    19,    20,    21,     3,
+       4,     5,    -1,    -1,     8,    -1,    -1,    -1,    -1,    -1,
+      -1,    34,    16,    -1,    -1,    -1,    -1,    -1,    22,    -1,
+      24,    -1,    -1,    -1,    28,    29,    30,    31,     3,     4,
+       5,    -1,    -1,     8,    -1,    -1,    -1,    -1,     3,     4,
+       5,    16,    -1,     8,    -1,    -1,    -1,    22,    -1,    24,
+      -1,    16,    -1,    28,    -1,    30,    31,    22,    -1,    24,
+      -1,    -1,    -1,    28,     6,     7,     8,     9,    10,    11,
+      12,    13,    14,    15,    -1,    17,    18,    19,    20,    21,
+      -1,    -1,    -1,    25,     6,     7,     8,     9,    10,    11,
+      12,    13,    14,    15,    -1,    17,    18,    19,    20,    21,
+       6,     7,     8,     9,     6,     7,     8,     9,    -1,    -1,
+      -1,    17,    18,    19,    20,    21,    -1,    19,    20,    21,
+       6,    -1,    -1,     9,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    -1,    19,    20,    21
   };
 
   const signed char
   parser::yystos_[] =
   {
-       0,    38,     0,     3,     4,     5,     8,    16,    22,    24,
-      30,    31,    42,    43,    44,    44,    44,    44,    44,     3,
-       5,    24,    41,    41,    44,     6,     7,     8,     9,    10,
-      11,    12,    13,    14,    15,    17,    18,    19,    20,    21,
-      34,    25,     3,     4,     5,    24,    39,    40,    23,    23,
-      44,    44,    44,    44,    44,    44,    44,    44,    44,    44,
-      44,    44,    44,    44,    44,     3,    39,    25,    33,    44,
-      44,    25,    40,    34,    34
+       0,    38,    44,     0,     3,     4,     5,     8,    16,    22,
+      24,    28,    30,    31,    42,    43,    45,    45,    45,    45,
+      45,    44,     3,     5,    24,    41,    41,    45,     6,     7,
+       8,     9,    10,    11,    12,    13,    14,    15,    17,    18,
+      19,    20,    21,    34,    25,    29,     3,     4,     5,    24,
+      39,    40,    23,    23,    45,    45,    45,    45,    45,    45,
+      45,    45,    45,    45,    45,    45,    45,    45,    45,     3,
+      39,    25,    33,    45,    45,    25,    40,    34,    34
   };
 
   const signed char
   parser::yyr1_[] =
   {
-       0,    37,    38,    38,    39,    39,    40,    40,    40,    40,
-      41,    41,    41,    42,    43,    43,    43,    44,    44,    44,
-      44,    44,    44,    44,    44,    44,    44,    44,    44,    44,
-      44,    44,    44,    44,    44,    44,    44,    44,    44
+       0,    37,    38,    39,    39,    40,    40,    40,    40,    41,
+      41,    41,    42,    43,    43,    43,    44,    44,    45,    45,
+      45,    45,    45,    45,    45,    45,    45,    45,    45,    45,
+      45,    45,    45,    45,    45,    45,    45,    45,    45,    45,
+      45
   };
 
   const signed char
   parser::yyr2_[] =
   {
-       0,     2,     2,     0,     3,     1,     1,     1,     2,     3,
-       1,     1,     3,     1,     2,     5,     5,     3,     3,     3,
+       0,     2,     1,     3,     1,     1,     1,     2,     3,     1,
+       1,     3,     1,     2,     5,     5,     2,     0,     3,     3,
        3,     3,     3,     3,     3,     3,     3,     3,     3,     3,
-       3,     3,     2,     2,     2,     2,     1,     1,     3
+       3,     3,     3,     2,     2,     2,     2,     1,     1,     3,
+       3
   };
 
 
@@ -1645,10 +1678,11 @@ namespace pec {
   const short
   parser::yyrline_[] =
   {
-       0,    84,    84,    87,    92,    98,   105,   109,   113,   118,
-     126,   130,   134,   142,   149,   154,   159,   167,   172,   177,
-     182,   187,   192,   197,   202,   207,   212,   217,   222,   227,
-     232,   237,   242,   247,   252,   257,   262,   266,   270
+       0,    86,    86,    90,    96,   103,   107,   111,   116,   124,
+     128,   132,   140,   147,   152,   157,   165,   171,   175,   180,
+     185,   190,   195,   200,   205,   210,   215,   220,   225,   230,
+     235,   240,   245,   250,   255,   260,   265,   270,   274,   278,
+     283
   };
 
   void
@@ -1681,6 +1715,6 @@ namespace pec {
 
 #line 8 "meta/barser.y"
 } // pec
-#line 1685 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
+#line 1719 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
 
-#line 277 "meta/barser.y"
+#line 290 "meta/barser.y"
