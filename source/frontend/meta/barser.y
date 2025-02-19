@@ -57,6 +57,7 @@ extern "C" pec::parser::symbol_type yylex(void*);
 %token VAR "var"
 %token CONST "const"
 
+%token COMMA ","
 %token SEMICOLON ";"
 
 %left CAST
@@ -67,7 +68,10 @@ extern "C" pec::parser::symbol_type yylex(void*);
 %left "&" "|" "xor"
 %left UNARY
 
-%nterm <Pattern>pattern
+%nterm <Child<Type>>type
+%nterm <TuplePattern>pattern_list
+%nterm <Child<Pattern>>general_pattern
+%nterm <Child<Pattern>>pattern
 %nterm <std::vector<Child<Statement>>>program
 %nterm <Child<Expression>>expression
 %nterm <Child<Statement>>statement
@@ -84,14 +88,60 @@ program
     }
     ;
 
+pattern_list
+    : pattern_list[list] "," pattern[pat] {
+        $$ = std::move($list);
+        $$.elements.emplace_back(std::move($pat));
+        @$.begin = @list.begin;
+        @$.end = @pat.end;
+    }
+    | pattern[pat] {
+        $$.elements.emplace_back(std::move($pat));
+        @$ = @pat;
+    }
+    ;
+
 pattern
     : ID[id] {
-        $$ = Pattern(std::move($id));
+        $$ = make<IdentifierPattern>(nullptr, std::move($id));
         @$ = @id;
     }
     | CONSTANT[id] {
-        $$ = Pattern(std::move($id));
+        $$ = make<IdentifierPattern>(nullptr, std::move($id));
         @$ = @id;
+    }
+    | TYPE[type] ID[id] %prec CAST {
+        $$ = make<IdentifierPattern>(make<Type>(std::move($type)), std::move($id));
+        @$.begin = @type.begin;
+        @$.end = @id.end;
+    }
+    | "(" pattern_list[list] ")" {
+        $$ = make<TuplePattern>(std::move($list));
+        @$.begin = @1.begin;
+        @$.end = @3.end;
+    }
+    ;
+
+general_pattern
+    : ID[id] {
+        $$ = make<IdentifierPattern>(nullptr, std::move($id));
+        @$ = @id;
+    }
+    | CONSTANT[id] {
+        $$ = make<IdentifierPattern>(nullptr, std::move($id));
+        @$ = @id;
+    }
+    | "(" pattern_list[list] ")" {
+        $$ = make<TuplePattern>(std::move($list));
+        @$.begin = @1.begin;
+        @$.end = @3.end;
+    }
+    ;
+
+type
+    : TYPE[name] {
+        $$ = make<Type>(std::move($name));
+        @$ = @name;
     }
     ;
 
@@ -101,12 +151,12 @@ statement
         @$.begin = @1.begin;
         @$.end = @expr.end;
     }
-    | "let" pattern[pat] "=" expression[expr] ";" {
+    | "let" general_pattern[pat] "=" expression[expr] ";" {
         $$ = make<VariableDefinition>(VariableDefinition::Mutability::Immutable, std::move($pat), std::move($expr));
         @$.begin = @1.begin;
         @$.end = @expr.end;
     }
-    | "var" pattern[pat] "=" expression[expr] ";" {
+    | "var" general_pattern[pat] "=" expression[expr] ";" {
         $$ = make<VariableDefinition>(VariableDefinition::Mutability::Mutable, std::move($pat), std::move($expr));
         @$.begin = @1.begin;
         @$.end = @expr.end;
@@ -204,9 +254,9 @@ expression
         @$.begin = @1.begin;
         @$.end = @expr.end;
     }
-    | TYPE[type] expression[expr] %prec CAST {
-        $$ = make<Cast>($type, std::move($expr));
-        @$.begin = @1.begin;
+    | type[t] expression[expr] %prec CAST {
+        $$ = make<Cast>(std::move($t), std::move($expr));
+        @$.begin = @t.begin;
         @$.end = @expr.end;
     }
     | ID[val] {

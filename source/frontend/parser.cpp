@@ -15,10 +15,34 @@ static std::string repeat(std::string const& str, int count) {
 #define INDENT (repeat("    ", indentation))
 #define NEXT_INDENT (repeat("    ", indentation + 1))
 
-pec::Pattern::Pattern(std::string id) : id(std::move(id)) {}
+pec::Type::Type(std::string name) : name(std::move(name)) {}
 
-std::ostream& pec::Pattern::print(std::ostream& os, int indentation) const {
+std::ostream& pec::Type::print(std::ostream& os, int indentation) const {
+    return os << name;
+}
+
+pec::IdentifierPattern::IdentifierPattern(Child<Type> type, std::string id)
+    : type(std::move(type)), id(std::move(id)) {}
+
+std::ostream& pec::IdentifierPattern::print(std::ostream& os, int indentation) const {
+    if (type) {
+        type->print(os, indentation);
+        os << " ";
+    }
     return os << id;
+}
+pec::TuplePattern::TuplePattern(std::vector<Child<Pattern>> elements) : elements(std::move(elements)) {}
+
+std::ostream& pec::TuplePattern::print(std::ostream& os, int indentation) const {
+    os << "(";
+    for (size_t i = 0; i < elements.size(); i++) {
+        elements[i]->print(os, 0);
+        if (i != elements.size() - 1) {
+            os << ", ";
+        }
+    }
+    os << ")";
+    return os;
 }
 
 pec::ExpressionStatement::ExpressionStatement(Child<Expression> expression) : expression(std::move(expression)) {}
@@ -30,7 +54,7 @@ std::ostream& pec::ExpressionStatement::print(std::ostream& os, int indentation)
     os << "\n" << INDENT << ")";
     return os;
 }
-pec::VariableDefinition::VariableDefinition(Mutability mutability, Pattern pattern, Child<Expression> expression)
+pec::VariableDefinition::VariableDefinition(Mutability mutability, Child<Pattern> pattern, Child<Expression> expression)
     : mutability(mutability), pattern(std::move(pattern)), expression(std::move(expression)) {}
 
 std::ostream& pec::VariableDefinition::print(std::ostream& os, int indentation) const {
@@ -45,7 +69,7 @@ std::ostream& pec::VariableDefinition::print(std::ostream& os, int indentation) 
             os << "Mutable ";
             break;
     }
-    pattern.print(os, 0);
+    pattern->print(os, 0);
     os << " = (\n";
     os << NEXT_INDENT;
     expression->print(os, indentation + 1);
@@ -83,7 +107,7 @@ std::ostream& pec::Unary::print(std::ostream& os, int indentation) const {
     return os;
 }
 
-pec::Cast::Cast(std::string type, Child<Expression> expression)
+pec::Cast::Cast(Child<Type> type, Child<Expression> expression)
     : type(std::move(type)), expression(std::move(expression)) {}
 
 std::ostream& pec::Cast::print(std::ostream& os, int indentation) const {

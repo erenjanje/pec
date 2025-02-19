@@ -384,19 +384,26 @@ namespace pec {
       // expression
       char dummy1[sizeof (Child<Expression>)];
 
-      // statement
-      char dummy2[sizeof (Child<Statement>)];
-
       // pattern
-      char dummy3[sizeof (Pattern)];
+      // general_pattern
+      char dummy2[sizeof (Child<Pattern>)];
+
+      // statement
+      char dummy3[sizeof (Child<Statement>)];
+
+      // type
+      char dummy4[sizeof (Child<Type>)];
+
+      // pattern_list
+      char dummy5[sizeof (TuplePattern)];
 
       // "identifier"
       // "type identifier"
       // "constant identifier"
-      char dummy4[sizeof (std::string)];
+      char dummy6[sizeof (std::string)];
 
       // program
-      char dummy5[sizeof (std::vector<Child<Statement>>)];
+      char dummy7[sizeof (std::vector<Child<Statement>>)];
     };
 
     /// The size of the largest semantic type.
@@ -476,9 +483,10 @@ namespace pec {
     LET = 285,                     // "let"
     VAR = 286,                     // "var"
     CONST = 287,                   // "const"
-    SEMICOLON = 288,               // ";"
-    CAST = 289,                    // CAST
-    UNARY = 290                    // UNARY
+    COMMA = 288,                   // ","
+    SEMICOLON = 289,               // ";"
+    CAST = 290,                    // CAST
+    UNARY = 291                    // UNARY
       };
       /// Backward compatibility alias (Bison 3.6).
       typedef token_kind_type yytokentype;
@@ -495,7 +503,7 @@ namespace pec {
     {
       enum symbol_kind_type
       {
-        YYNTOKENS = 36, ///< Number of tokens.
+        YYNTOKENS = 37, ///< Number of tokens.
         S_YYEMPTY = -2,
         S_YYEOF = 0,                             // "end of file"
         S_YYerror = 1,                           // error
@@ -530,14 +538,18 @@ namespace pec {
         S_LET = 30,                              // "let"
         S_VAR = 31,                              // "var"
         S_CONST = 32,                            // "const"
-        S_SEMICOLON = 33,                        // ";"
-        S_CAST = 34,                             // CAST
-        S_UNARY = 35,                            // UNARY
-        S_YYACCEPT = 36,                         // $accept
-        S_program = 37,                          // program
-        S_pattern = 38,                          // pattern
-        S_statement = 39,                        // statement
-        S_expression = 40                        // expression
+        S_COMMA = 33,                            // ","
+        S_SEMICOLON = 34,                        // ";"
+        S_CAST = 35,                             // CAST
+        S_UNARY = 36,                            // UNARY
+        S_YYACCEPT = 37,                         // $accept
+        S_program = 38,                          // program
+        S_pattern_list = 39,                     // pattern_list
+        S_pattern = 40,                          // pattern
+        S_general_pattern = 41,                  // general_pattern
+        S_type = 42,                             // type
+        S_statement = 43,                        // statement
+        S_expression = 44                        // expression
       };
     };
 
@@ -578,12 +590,21 @@ namespace pec {
         value.move< Child<Expression> > (std::move (that.value));
         break;
 
+      case symbol_kind::S_pattern: // pattern
+      case symbol_kind::S_general_pattern: // general_pattern
+        value.move< Child<Pattern> > (std::move (that.value));
+        break;
+
       case symbol_kind::S_statement: // statement
         value.move< Child<Statement> > (std::move (that.value));
         break;
 
-      case symbol_kind::S_pattern: // pattern
-        value.move< Pattern > (std::move (that.value));
+      case symbol_kind::S_type: // type
+        value.move< Child<Type> > (std::move (that.value));
+        break;
+
+      case symbol_kind::S_pattern_list: // pattern_list
+        value.move< TuplePattern > (std::move (that.value));
         break;
 
       case symbol_kind::S_ID: // "identifier"
@@ -634,6 +655,20 @@ namespace pec {
 #endif
 
 #if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, Child<Pattern>&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const Child<Pattern>& v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+
+#if 201103L <= YY_CPLUSPLUS
       basic_symbol (typename Base::kind_type t, Child<Statement>&& v, location_type&& l)
         : Base (t)
         , value (std::move (v))
@@ -648,13 +683,27 @@ namespace pec {
 #endif
 
 #if 201103L <= YY_CPLUSPLUS
-      basic_symbol (typename Base::kind_type t, Pattern&& v, location_type&& l)
+      basic_symbol (typename Base::kind_type t, Child<Type>&& v, location_type&& l)
         : Base (t)
         , value (std::move (v))
         , location (std::move (l))
       {}
 #else
-      basic_symbol (typename Base::kind_type t, const Pattern& v, const location_type& l)
+      basic_symbol (typename Base::kind_type t, const Child<Type>& v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+
+#if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, TuplePattern&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const TuplePattern& v, const location_type& l)
         : Base (t)
         , value (v)
         , location (l)
@@ -717,12 +766,21 @@ switch (yykind)
         value.template destroy< Child<Expression> > ();
         break;
 
+      case symbol_kind::S_pattern: // pattern
+      case symbol_kind::S_general_pattern: // general_pattern
+        value.template destroy< Child<Pattern> > ();
+        break;
+
       case symbol_kind::S_statement: // statement
         value.template destroy< Child<Statement> > ();
         break;
 
-      case symbol_kind::S_pattern: // pattern
-        value.template destroy< Pattern > ();
+      case symbol_kind::S_type: // type
+        value.template destroy< Child<Type> > ();
+        break;
+
+      case symbol_kind::S_pattern_list: // pattern_list
+        value.template destroy< TuplePattern > ();
         break;
 
       case symbol_kind::S_ID: // "identifier"
@@ -1385,6 +1443,21 @@ switch (yykind)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
+      make_COMMA (location_type l)
+      {
+        return symbol_type (token::COMMA, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_COMMA (const location_type& l)
+      {
+        return symbol_type (token::COMMA, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
       make_SEMICOLON (location_type l)
       {
         return symbol_type (token::SEMICOLON, std::move (l));
@@ -1535,7 +1608,7 @@ switch (yykind)
 
 #if YYDEBUG
     // YYRLINE[YYN] -- Source line where rule number YYN was defined.
-    static const unsigned char yyrline_[];
+    static const short yyrline_[];
     /// Report on the debug stream that the rule \a r is going to be reduced.
     virtual void yy_reduce_print_ (int r) const;
     /// Print the state stack on the debug stream.
@@ -1771,8 +1844,8 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 194,     ///< Last index in yytable_.
-      yynnts_ = 5,  ///< Number of nonterminal symbols.
+      yylast_ = 197,     ///< Last index in yytable_.
+      yynnts_ = 8,  ///< Number of nonterminal symbols.
       yyfinal_ = 2 ///< Termination state number.
     };
 
@@ -1822,10 +1895,10 @@ switch (yykind)
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-      35
+      35,    36
     };
     // Last valid token kind.
-    const int code_max = 290;
+    const int code_max = 291;
 
     if (t <= 0)
       return symbol_kind::S_YYEOF;
@@ -1848,12 +1921,21 @@ switch (yykind)
         value.copy< Child<Expression> > (YY_MOVE (that.value));
         break;
 
+      case symbol_kind::S_pattern: // pattern
+      case symbol_kind::S_general_pattern: // general_pattern
+        value.copy< Child<Pattern> > (YY_MOVE (that.value));
+        break;
+
       case symbol_kind::S_statement: // statement
         value.copy< Child<Statement> > (YY_MOVE (that.value));
         break;
 
-      case symbol_kind::S_pattern: // pattern
-        value.copy< Pattern > (YY_MOVE (that.value));
+      case symbol_kind::S_type: // type
+        value.copy< Child<Type> > (YY_MOVE (that.value));
+        break;
+
+      case symbol_kind::S_pattern_list: // pattern_list
+        value.copy< TuplePattern > (YY_MOVE (that.value));
         break;
 
       case symbol_kind::S_ID: // "identifier"
@@ -1901,12 +1983,21 @@ switch (yykind)
         value.move< Child<Expression> > (YY_MOVE (s.value));
         break;
 
+      case symbol_kind::S_pattern: // pattern
+      case symbol_kind::S_general_pattern: // general_pattern
+        value.move< Child<Pattern> > (YY_MOVE (s.value));
+        break;
+
       case symbol_kind::S_statement: // statement
         value.move< Child<Statement> > (YY_MOVE (s.value));
         break;
 
-      case symbol_kind::S_pattern: // pattern
-        value.move< Pattern > (YY_MOVE (s.value));
+      case symbol_kind::S_type: // type
+        value.move< Child<Type> > (YY_MOVE (s.value));
+        break;
+
+      case symbol_kind::S_pattern_list: // pattern_list
+        value.move< TuplePattern > (YY_MOVE (s.value));
         break;
 
       case symbol_kind::S_ID: // "identifier"
@@ -1986,7 +2077,7 @@ switch (yykind)
 
 #line 8 "meta/barser.y"
 } // pec
-#line 1990 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.hpp"
+#line 2081 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.hpp"
 
 
 

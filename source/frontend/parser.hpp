@@ -11,26 +11,70 @@ namespace pec {
 template <typename T>
 using Child = std::unique_ptr<T>;
 
-struct Pattern {
-    std::string id;
-
-    Pattern() = default;
-    explicit Pattern(std::string id);
-    std::ostream& print(std::ostream& os, int indentation) const;
-};
-
-struct Expression;
-struct ExpressionStatement;
-
 template <typename T, typename... Args>
 Child<T> make(Args&&... args) {
     return std::make_unique<T>(std::forward<Args>(args)...);
 }
 
+struct Expression;
+struct ExpressionStatement;
+
 struct ParserNode {
     virtual ~ParserNode() = default;
     virtual std::ostream& print(std::ostream& os, int indentation) const = 0;
 };
+
+////////////////////////////////////////////
+
+struct Type {
+    std::string name;
+
+    Type() = default;
+    explicit Type(std::string name);
+    std::ostream& print(std::ostream& os, int indentation) const;
+
+    Type(Type&&) = default;
+    Type& operator=(Type&&) = default;
+    Type(Type const&) = delete;
+    Type& operator=(Type const&) = delete;
+    ~Type() = default;
+};
+
+////////////////////////////////////////////
+
+struct Pattern {
+    virtual ~Pattern() = default;
+    virtual std::ostream& print(std::ostream& os, int indentation) const = 0;
+};
+
+struct IdentifierPattern final : Pattern {
+    Child<Type> type;
+    std::string id;
+
+    IdentifierPattern() = default;
+    explicit IdentifierPattern(Child<Type> type, std::string id);
+    std::ostream& print(std::ostream& os, int indentation) const override;
+
+    IdentifierPattern(IdentifierPattern&&) = default;
+    IdentifierPattern& operator=(IdentifierPattern&&) = default;
+    IdentifierPattern(const IdentifierPattern&) = default;
+    IdentifierPattern& operator=(const IdentifierPattern&) = default;
+};
+
+struct TuplePattern final : Pattern {
+    std::vector<Child<Pattern>> elements;
+
+    TuplePattern() = default;
+    explicit TuplePattern(std::vector<Child<Pattern>> elements);
+    std::ostream& print(std::ostream& os, int indentation) const override;
+
+    TuplePattern(TuplePattern&&) = default;
+    TuplePattern& operator=(TuplePattern&&) = default;
+    TuplePattern(const TuplePattern&) = default;
+    TuplePattern& operator=(const TuplePattern&) = default;
+};
+
+///////////////////////////////////////////
 
 struct Statement : ParserNode {};
 
@@ -47,12 +91,14 @@ struct VariableDefinition final : Statement {
         Immutable,
         Mutable,
     } mutability;
-    Pattern pattern;
+    Child<Pattern> pattern;
     Child<Expression> expression;
 
-    explicit VariableDefinition(Mutability mutability, Pattern pattern, Child<Expression> expression);
+    explicit VariableDefinition(Mutability mutability, Child<Pattern> pattern, Child<Expression> expression);
     std::ostream& print(std::ostream& os, int indentation) const override;
 };
+
+/////////////////////////////////////////////
 
 struct Expression : ParserNode {};
 
@@ -103,10 +149,10 @@ struct Unary final : Expression {
 std::ostream& operator<<(std::ostream& os, Unary::Operator op);
 
 struct Cast final : Expression {
-    std::string type;
+    Child<Type> type;
     Child<Expression> expression;
 
-    Cast(std::string type, Child<Expression> expression);
+    Cast(Child<Type> type, Child<Expression> expression);
     std::ostream& print(std::ostream& os, int indentation) const override;
 };
 

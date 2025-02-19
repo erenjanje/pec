@@ -11,11 +11,15 @@ int main() {
     loc.end.initialize(&filename, 1, 1);
     yyset_extra(loc, scanner);
     const auto data = std::string(
-        "let $ZORT = a;"
-        "let x = (Int32 a) + !(b + c);\n"
-        "var y = Int64 Float $X / g;\n"
-        "x & x;"
+        // "let $ZORT = a;"
+        // "let x = (Int32 a) + !(b + c);\n"
+        // "var y = Int64 Float $X / g;\n"
+        // "x & x;\n"
+        // "let (a, b) = x;"
+        // "let ((a, b), ((c, d), e, f, g)) = z;"
+        "let ((a, Int32 b), ((c, d), e, f, g)) = z;"
     );
+
     const auto buf = yy_scan_bytes(data.data(), data.size(), scanner);
     // yy_switch_to_buffer(buf, scanner);
     auto nodes = std::vector<pec::Child<pec::Statement>>();

@@ -63,6 +63,7 @@ constant "$"[a-zA-Z_][a-zA-Z0-9_]*
 "}" { return pec::parser::make_RBRACE(loc); }
 
 ";" { return pec::parser::make_SEMICOLON(loc); }
+"," { return pec::parser::make_COMMA(loc); }
 
 {constant} { return pec::parser::make_CONSTANT(yytext, loc); }
 {identifier} { return pec::parser::make_ID(yytext, loc); }
