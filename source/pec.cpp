@@ -12,13 +12,18 @@ int main() {
     yyset_extra(loc, scanner);
     const auto data = std::string(
         "let x = (Int32 a) + !(b + c);\n"
-        "var y = int64 Float x / g;"
+        "var y = Int64 Float x / g;\n"
+        "x & x;"
     );
     const auto buf = yy_scan_bytes(data.data(), data.size(), scanner);
     // yy_switch_to_buffer(buf, scanner);
-    auto parser = pec::parser(scanner);
-    const int x = parser.parse();
-    std::cout << "Result: " << x << "\n";
+    auto nodes = std::vector<pec::Child<pec::Statement>>();
+    auto parser = pec::parser(scanner, nodes);
+    const int value = parser.parse();
+    for (auto const& node : nodes) {
+        node->print(std::cout, 0);
+        std::cout << "\n";
+    }
     yy_delete_buffer(buf, scanner);
     yylex_destroy(scanner);
 }

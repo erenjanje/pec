@@ -45,7 +45,7 @@
 #ifndef YY_YY_D_DESKTOP_PROGRAMLAMA_CPP_PEC_SOURCE_FRONTEND_META_BARSER_HPP_INCLUDED
 # define YY_YY_D_DESKTOP_PROGRAMLAMA_CPP_PEC_SOURCE_FRONTEND_META_BARSER_HPP_INCLUDED
 // "%code requires" blocks.
-#line 11 "meta/barser.y"
+#line 13 "meta/barser.y"
 
 #include "frontend/parser.hpp"
 
@@ -183,7 +183,7 @@
 # define YYDEBUG 0
 #endif
 
-#line 7 "meta/barser.y"
+#line 8 "meta/barser.y"
 namespace pec {
 #line 189 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.hpp"
 
@@ -382,12 +382,21 @@ namespace pec {
     union union_type
     {
       // expression
-      char dummy1[sizeof (pec::Child<pec::Expression>)];
+      char dummy1[sizeof (Child<Expression>)];
+
+      // statement
+      char dummy2[sizeof (Child<Statement>)];
+
+      // pattern
+      char dummy3[sizeof (Pattern)];
 
       // "identifier"
       // "type identifier"
       // "constant identifier"
-      char dummy2[sizeof (std::string)];
+      char dummy4[sizeof (std::string)];
+
+      // program
+      char dummy5[sizeof (std::vector<Child<Statement>>)];
     };
 
     /// The size of the largest semantic type.
@@ -526,8 +535,9 @@ namespace pec {
         S_UNARY = 35,                            // UNARY
         S_YYACCEPT = 36,                         // $accept
         S_program = 37,                          // program
-        S_statement = 38,                        // statement
-        S_expression = 39                        // expression
+        S_pattern = 38,                          // pattern
+        S_statement = 39,                        // statement
+        S_expression = 40                        // expression
       };
     };
 
@@ -565,13 +575,25 @@ namespace pec {
         switch (this->kind ())
     {
       case symbol_kind::S_expression: // expression
-        value.move< pec::Child<pec::Expression> > (std::move (that.value));
+        value.move< Child<Expression> > (std::move (that.value));
+        break;
+
+      case symbol_kind::S_statement: // statement
+        value.move< Child<Statement> > (std::move (that.value));
+        break;
+
+      case symbol_kind::S_pattern: // pattern
+        value.move< Pattern > (std::move (that.value));
         break;
 
       case symbol_kind::S_ID: // "identifier"
       case symbol_kind::S_TYPE: // "type identifier"
       case symbol_kind::S_CONSTANT: // "constant identifier"
         value.move< std::string > (std::move (that.value));
+        break;
+
+      case symbol_kind::S_program: // program
+        value.move< std::vector<Child<Statement>> > (std::move (that.value));
         break;
 
       default:
@@ -598,13 +620,41 @@ namespace pec {
 #endif
 
 #if 201103L <= YY_CPLUSPLUS
-      basic_symbol (typename Base::kind_type t, pec::Child<pec::Expression>&& v, location_type&& l)
+      basic_symbol (typename Base::kind_type t, Child<Expression>&& v, location_type&& l)
         : Base (t)
         , value (std::move (v))
         , location (std::move (l))
       {}
 #else
-      basic_symbol (typename Base::kind_type t, const pec::Child<pec::Expression>& v, const location_type& l)
+      basic_symbol (typename Base::kind_type t, const Child<Expression>& v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+
+#if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, Child<Statement>&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const Child<Statement>& v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+
+#if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, Pattern&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const Pattern& v, const location_type& l)
         : Base (t)
         , value (v)
         , location (l)
@@ -619,6 +669,20 @@ namespace pec {
       {}
 #else
       basic_symbol (typename Base::kind_type t, const std::string& v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+
+#if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, std::vector<Child<Statement>>&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const std::vector<Child<Statement>>& v, const location_type& l)
         : Base (t)
         , value (v)
         , location (l)
@@ -650,13 +714,25 @@ namespace pec {
 switch (yykind)
     {
       case symbol_kind::S_expression: // expression
-        value.template destroy< pec::Child<pec::Expression> > ();
+        value.template destroy< Child<Expression> > ();
+        break;
+
+      case symbol_kind::S_statement: // statement
+        value.template destroy< Child<Statement> > ();
+        break;
+
+      case symbol_kind::S_pattern: // pattern
+        value.template destroy< Pattern > ();
         break;
 
       case symbol_kind::S_ID: // "identifier"
       case symbol_kind::S_TYPE: // "type identifier"
       case symbol_kind::S_CONSTANT: // "constant identifier"
         value.template destroy< std::string > ();
+        break;
+
+      case symbol_kind::S_program: // program
+        value.template destroy< std::vector<Child<Statement>> > ();
         break;
 
       default:
@@ -766,7 +842,7 @@ switch (yykind)
     };
 
     /// Build a parser object.
-    parser (void* yyscanner_yyarg);
+    parser (void* yyscanner_yyarg, std::vector<pec::Child<pec::Statement>>& ret_yyarg);
     virtual ~parser ();
 
 #if 201103L <= YY_CPLUSPLUS
@@ -1695,14 +1771,15 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 216,     ///< Last index in yytable_.
-      yynnts_ = 4,  ///< Number of nonterminal symbols.
+      yylast_ = 217,     ///< Last index in yytable_.
+      yynnts_ = 5,  ///< Number of nonterminal symbols.
       yyfinal_ = 2 ///< Termination state number.
     };
 
 
     // User arguments.
     void* yyscanner;
+    std::vector<pec::Child<pec::Statement>>& ret;
 
   };
 
@@ -1768,13 +1845,25 @@ switch (yykind)
     switch (this->kind ())
     {
       case symbol_kind::S_expression: // expression
-        value.copy< pec::Child<pec::Expression> > (YY_MOVE (that.value));
+        value.copy< Child<Expression> > (YY_MOVE (that.value));
+        break;
+
+      case symbol_kind::S_statement: // statement
+        value.copy< Child<Statement> > (YY_MOVE (that.value));
+        break;
+
+      case symbol_kind::S_pattern: // pattern
+        value.copy< Pattern > (YY_MOVE (that.value));
         break;
 
       case symbol_kind::S_ID: // "identifier"
       case symbol_kind::S_TYPE: // "type identifier"
       case symbol_kind::S_CONSTANT: // "constant identifier"
         value.copy< std::string > (YY_MOVE (that.value));
+        break;
+
+      case symbol_kind::S_program: // program
+        value.copy< std::vector<Child<Statement>> > (YY_MOVE (that.value));
         break;
 
       default:
@@ -1809,13 +1898,25 @@ switch (yykind)
     switch (this->kind ())
     {
       case symbol_kind::S_expression: // expression
-        value.move< pec::Child<pec::Expression> > (YY_MOVE (s.value));
+        value.move< Child<Expression> > (YY_MOVE (s.value));
+        break;
+
+      case symbol_kind::S_statement: // statement
+        value.move< Child<Statement> > (YY_MOVE (s.value));
+        break;
+
+      case symbol_kind::S_pattern: // pattern
+        value.move< Pattern > (YY_MOVE (s.value));
         break;
 
       case symbol_kind::S_ID: // "identifier"
       case symbol_kind::S_TYPE: // "type identifier"
       case symbol_kind::S_CONSTANT: // "constant identifier"
         value.move< std::string > (YY_MOVE (s.value));
+        break;
+
+      case symbol_kind::S_program: // program
+        value.move< std::vector<Child<Statement>> > (YY_MOVE (s.value));
         break;
 
       default:
@@ -1883,9 +1984,9 @@ switch (yykind)
   }
 
 
-#line 7 "meta/barser.y"
+#line 8 "meta/barser.y"
 } // pec
-#line 1889 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.hpp"
+#line 1990 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.hpp"
 
 
 

@@ -1,6 +1,7 @@
 #include "parser.hpp"
 
 #include <iostream>
+#include <utility>
 
 static std::string repeat(std::string const& str, int count) {
     auto ret = std::string();
@@ -14,13 +15,51 @@ static std::string repeat(std::string const& str, int count) {
 #define INDENT (repeat("    ", indentation))
 #define NEXT_INDENT (repeat("    ", indentation + 1))
 
-pec::Identifier::Identifier(std::string const& name) : name(name) {}
+pec::Pattern::Pattern(std::string id) : id(std::move(id)) {}
+
+std::ostream& pec::Pattern::print(std::ostream& os, int indentation) const {
+    return os << id;
+}
+
+pec::ExpressionStatement::ExpressionStatement(Child<Expression> expression) : expression(std::move(expression)) {}
+
+std::ostream& pec::ExpressionStatement::print(std::ostream& os, int indentation) const {
+    os << "ExpressionStatement(\n";
+    os << NEXT_INDENT;
+    expression->print(os, indentation + 1);
+    os << "\n" << INDENT << ")";
+    return os;
+}
+pec::VariableDefinition::VariableDefinition(Mutability mutability, Pattern pattern, Child<Expression> expression)
+    : mutability(mutability), pattern(std::move(pattern)), expression(std::move(expression)) {}
+
+std::ostream& pec::VariableDefinition::print(std::ostream& os, int indentation) const {
+    switch (mutability) {
+        case Comptime:
+            os << "Comptime ";
+            break;
+        case Immutable:
+            os << "Immutable ";
+            break;
+        case Mutable:
+            os << "Mutable ";
+            break;
+    }
+    pattern.print(os, 0);
+    os << " = (\n";
+    os << NEXT_INDENT;
+    expression->print(os, indentation + 1);
+    os << "\n" << INDENT << ")";
+    return os;
+}
+
+pec::Identifier::Identifier(std::string name) : name(std::move(name)) {}
 
 std::ostream& pec::Identifier::print(std::ostream& os, int indentation) const {
     return os << "Id(" << name << ")";
 }
 
-pec::Constant::Constant(std::string const& name) : name(name) {}
+pec::Constant::Constant(std::string name) : name(std::move(name)) {}
 
 std::ostream& pec::Constant::print(std::ostream& os, int indentation) const {
     return os << "Const(" << name << ")";
@@ -36,7 +75,7 @@ std::ostream& pec::Binary::print(std::ostream& os, int indentation) const {
     os << "\n";
     os << NEXT_INDENT;
     right->print(os, indentation + 1);
-    os << "\n" << INDENT << ")\n";
+    os << "\n" << INDENT << ")";
     return os;
 }
 
@@ -46,18 +85,18 @@ std::ostream& pec::Unary::print(std::ostream& os, int indentation) const {
     os << "Unop(" << op << ")(\n";
     os << NEXT_INDENT;
     expression->print(os, indentation + 1);
-    os << "\n" << INDENT << ")\n";
+    os << "\n" << INDENT << ")";
     return os;
 }
 
-pec::Cast::Cast(std::string const& type, Child<Expression> expression)
-    : type(type), expression(std::move(expression)) {}
+pec::Cast::Cast(std::string type, Child<Expression> expression)
+    : type(std::move(type)), expression(std::move(expression)) {}
 
 std::ostream& pec::Cast::print(std::ostream& os, int indentation) const {
     os << "Cast(" << type << ")(\n";
     os << NEXT_INDENT;
     expression->print(os, indentation + 1);
-    os << "\n" << INDENT << ")\n";
+    os << "\n" << INDENT << ")";
     return os;
 }
 

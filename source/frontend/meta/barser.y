@@ -1,5 +1,6 @@
 %require "3.2"
 %language "c++"
+
 %define parse.error detailed
 %define parse.lac full
 %locations
@@ -7,6 +8,7 @@
 %define api.namespace {pec}
 %define api.token.constructor
 %param {void* yyscanner}
+%parse-param {std::vector<pec::Child<pec::Statement>>& ret}
 
 %code requires {
 #include "frontend/parser.hpp"
@@ -65,32 +67,48 @@ extern "C" pec::parser::symbol_type yylex(void*);
 %left "&" "|" "xor"
 %left UNARY
 
-%nterm <pec::Child<pec::Expression>>expression
-%nterm statement
+%nterm <Pattern>pattern
+%nterm <std::vector<Child<Statement>>>program
+%nterm <Child<Expression>>expression
+%nterm <Child<Statement>>statement
 
 %start program
 
 %%
 
 program
-    : program statement
-    | 
+    : program[others] statement[stmt] {
+        ret.emplace_back(std::move($stmt));
+    }
+    | %empty {
+    }
+    ;
+
+pattern
+    : ID[id] {
+        $$ = Pattern(std::move($id));
+        @$ = @id;
+    }
     ;
 
 statement
-    : expression ";"
-    | "let" ID[id] "=" expression[expr] ";" {
-        std::cout << "let " << "(" << $id << ")" << " = "; $expr->print(std::cout, 0); "\n";
+    : expression[expr] ";" {
+        $$ = make<ExpressionStatement>(std::move($expr));
         @$.begin = @1.begin;
         @$.end = @expr.end;
     }
-    | "var" ID[id] "=" expression[expr] ";" {
-        std::cout << "var " << "(" << $id << ")" << " = "; $expr->print(std::cout, 0); "\n";
+    | "const" pattern[pat] "=" expression[expr] ";" {
+        $$ = make<VariableDefinition>(VariableDefinition::Mutability::Comptime, std::move($pat), std::move($expr));
         @$.begin = @1.begin;
         @$.end = @expr.end;
     }
-    | "const" CONSTANT[id] "=" expression[expr] ";" {
-        std::cout << "const " << "(" << $id << ")" << " = "; $expr->print(std::cout, 0); "\n";
+    | "let" pattern[pat] "=" expression[expr] ";" {
+        $$ = make<VariableDefinition>(VariableDefinition::Mutability::Immutable, std::move($pat), std::move($expr));
+        @$.begin = @1.begin;
+        @$.end = @expr.end;
+    }
+    | "var" pattern[pat] "=" expression[expr] ";" {
+        $$ = make<VariableDefinition>(VariableDefinition::Mutability::Mutable, std::move($pat), std::move($expr));
         @$.begin = @1.begin;
         @$.end = @expr.end;
     }
