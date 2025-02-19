@@ -163,4 +163,13 @@ struct Block final : Expression {
     std::ostream& print(std::ostream& os, int indentation) const override;
 };
 
+struct Conditional final : Expression {
+    Child<Expression> condition;
+    Child<Statement> then;
+    Child<Statement> otherwise;
+
+    explicit Conditional(Child<Expression> condition, Child<Statement> then, Child<Statement> otherwise);
+    std::ostream& print(std::ostream& os, int indentation) const override;
+};
+
 }  // namespace pec

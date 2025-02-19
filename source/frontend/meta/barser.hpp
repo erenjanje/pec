@@ -382,6 +382,8 @@ namespace pec {
     union union_type
     {
       // expression
+      // top_level_expression
+      // block_expression
       char dummy1[sizeof (Child<Expression>)];
 
       // pattern
@@ -481,13 +483,15 @@ namespace pec {
     RBRACK = 282,                  // "]"
     LBRACE = 283,                  // "{"
     RBRACE = 284,                  // "}"
-    LET = 285,                     // "let"
-    VAR = 286,                     // "var"
-    CONST = 287,                   // "const"
-    COMMA = 288,                   // ","
-    SEMICOLON = 289,               // ";"
-    CAST = 290,                    // CAST
-    UNARY = 291                    // UNARY
+    IF = 285,                      // "if"
+    ELSE = 286,                    // "else"
+    LET = 287,                     // "let"
+    VAR = 288,                     // "var"
+    CONST = 289,                   // "const"
+    COMMA = 290,                   // ","
+    SEMICOLON = 291,               // ";"
+    CAST = 292,                    // CAST
+    UNARY = 293                    // UNARY
       };
       /// Backward compatibility alias (Bison 3.6).
       typedef token_kind_type yytokentype;
@@ -504,7 +508,7 @@ namespace pec {
     {
       enum symbol_kind_type
       {
-        YYNTOKENS = 37, ///< Number of tokens.
+        YYNTOKENS = 39, ///< Number of tokens.
         S_YYEMPTY = -2,
         S_YYEOF = 0,                             // "end of file"
         S_YYerror = 1,                           // error
@@ -536,22 +540,26 @@ namespace pec {
         S_RBRACK = 27,                           // "]"
         S_LBRACE = 28,                           // "{"
         S_RBRACE = 29,                           // "}"
-        S_LET = 30,                              // "let"
-        S_VAR = 31,                              // "var"
-        S_CONST = 32,                            // "const"
-        S_COMMA = 33,                            // ","
-        S_SEMICOLON = 34,                        // ";"
-        S_CAST = 35,                             // CAST
-        S_UNARY = 36,                            // UNARY
-        S_YYACCEPT = 37,                         // $accept
-        S_program = 38,                          // program
-        S_pattern_list = 39,                     // pattern_list
-        S_pattern = 40,                          // pattern
-        S_top_level_pattern = 41,                // top_level_pattern
+        S_IF = 30,                               // "if"
+        S_ELSE = 31,                             // "else"
+        S_LET = 32,                              // "let"
+        S_VAR = 33,                              // "var"
+        S_CONST = 34,                            // "const"
+        S_COMMA = 35,                            // ","
+        S_SEMICOLON = 36,                        // ";"
+        S_CAST = 37,                             // CAST
+        S_UNARY = 38,                            // UNARY
+        S_YYACCEPT = 39,                         // $accept
+        S_program = 40,                          // program
+        S_statement_list = 41,                   // statement_list
         S_type = 42,                             // type
         S_statement = 43,                        // statement
-        S_statement_list = 44,                   // statement_list
-        S_expression = 45                        // expression
+        S_expression = 44,                       // expression
+        S_top_level_expression = 45,             // top_level_expression
+        S_block_expression = 46,                 // block_expression
+        S_pattern_list = 47,                     // pattern_list
+        S_pattern = 48,                          // pattern
+        S_top_level_pattern = 49                 // top_level_pattern
       };
     };
 
@@ -589,6 +597,8 @@ namespace pec {
         switch (this->kind ())
     {
       case symbol_kind::S_expression: // expression
+      case symbol_kind::S_top_level_expression: // top_level_expression
+      case symbol_kind::S_block_expression: // block_expression
         value.move< Child<Expression> > (std::move (that.value));
         break;
 
@@ -766,6 +776,8 @@ namespace pec {
 switch (yykind)
     {
       case symbol_kind::S_expression: // expression
+      case symbol_kind::S_top_level_expression: // top_level_expression
+      case symbol_kind::S_block_expression: // block_expression
         value.template destroy< Child<Expression> > ();
         break;
 
@@ -1402,6 +1414,36 @@ switch (yykind)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
+      make_IF (location_type l)
+      {
+        return symbol_type (token::IF, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_IF (const location_type& l)
+      {
+        return symbol_type (token::IF, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_ELSE (location_type l)
+      {
+        return symbol_type (token::ELSE, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_ELSE (const location_type& l)
+      {
+        return symbol_type (token::ELSE, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
       make_LET (location_type l)
       {
         return symbol_type (token::LET, std::move (l));
@@ -1544,7 +1586,7 @@ switch (yykind)
     void yy_lac_discard_ (const char* event);
 
     /// Stored state numbers (used for stacks).
-    typedef signed char state_type;
+    typedef unsigned char state_type;
 
     /// The arguments of the error message.
     int yy_syntax_error_arguments_ (const context& yyctx,
@@ -1595,9 +1637,9 @@ switch (yykind)
     // YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
     // positive, shift that token.  If negative, reduce the rule whose
     // number is the opposite.  If YYTABLE_NINF, syntax error.
-    static const signed char yytable_[];
+    static const unsigned char yytable_[];
 
-    static const signed char yycheck_[];
+    static const short yycheck_[];
 
     // YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
     // state STATE-NUM.
@@ -1848,8 +1890,8 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 235,     ///< Last index in yytable_.
-      yynnts_ = 9,  ///< Number of nonterminal symbols.
+      yylast_ = 380,     ///< Last index in yytable_.
+      yynnts_ = 11,  ///< Number of nonterminal symbols.
       yyfinal_ = 3 ///< Termination state number.
     };
 
@@ -1899,10 +1941,10 @@ switch (yykind)
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-      35,    36
+      35,    36,    37,    38
     };
     // Last valid token kind.
-    const int code_max = 291;
+    const int code_max = 293;
 
     if (t <= 0)
       return symbol_kind::S_YYEOF;
@@ -1922,6 +1964,8 @@ switch (yykind)
     switch (this->kind ())
     {
       case symbol_kind::S_expression: // expression
+      case symbol_kind::S_top_level_expression: // top_level_expression
+      case symbol_kind::S_block_expression: // block_expression
         value.copy< Child<Expression> > (YY_MOVE (that.value));
         break;
 
@@ -1985,6 +2029,8 @@ switch (yykind)
     switch (this->kind ())
     {
       case symbol_kind::S_expression: // expression
+      case symbol_kind::S_top_level_expression: // top_level_expression
+      case symbol_kind::S_block_expression: // block_expression
         value.move< Child<Expression> > (YY_MOVE (s.value));
         break;
 
@@ -2083,7 +2129,7 @@ switch (yykind)
 
 #line 8 "meta/barser.y"
 } // pec
-#line 2087 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.hpp"
+#line 2133 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.hpp"
 
 
 

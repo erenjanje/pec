@@ -135,6 +135,25 @@ std::ostream& Block::print(std::ostream& os, int indentation) const {
     return os;
 }
 
+Conditional::Conditional(Child<Expression> condition, Child<Statement> then, Child<Statement> otherwise)
+    : condition(std::move(condition)), then(std::move(then)), otherwise(std::move(otherwise)) {}
+
+std::ostream& Conditional::print(std::ostream& os, int indentation) const {
+    os << "Conditional(";
+    condition->print(os, 0);
+    os << ") {\n";
+    os << NEXT_INDENT;
+    then->print(os, indentation + 1);
+    if (otherwise) {
+        os << "\n";
+        os << INDENT << "} else {\n";
+        os << NEXT_INDENT;
+        otherwise->print(os, indentation + 1);
+    }
+    os << "\n" << INDENT << "}";
+    return os;
+}
+
 auto pec::operator<<(std::ostream& os, Binary::Operator op) -> std::ostream& {
     switch (op) {
         case Binary::Operator::Add:

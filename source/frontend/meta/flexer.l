@@ -25,6 +25,9 @@ constant "$"[a-zA-Z_][a-zA-Z0-9_]*
 %%
     auto loc = pec::parser::location_type();
 
+"if" { return pec::parser::make_IF(loc); }
+"else" { return pec::parser::make_ELSE(loc); }
+
 "let" { return pec::parser::make_LET(loc); }
 "var" { return pec::parser::make_VAR(loc); }
 "const" { return pec::parser::make_CONST(loc); }
