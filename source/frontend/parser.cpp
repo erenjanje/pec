@@ -1,5 +1,6 @@
 #include "parser.hpp"
 
+#include <charconv>
 #include <iostream>
 #include <utility>
 
@@ -16,6 +17,21 @@ static auto repeat(std::string const& str, int count) -> std::string {
 
 #define INDENT (repeat("    ", indentation))
 #define NEXT_INDENT (repeat("    ", indentation + 1))
+
+namespace pec {
+uintmax_t makeInteger(std::string const& s, int base) {
+    auto buf = std::string();
+    buf.reserve(s.size());
+    for (const auto i : s) {
+        if (i != '\'') {
+            buf.push_back(i);
+        }
+    }
+    auto ret = uintmax_t();
+    std::from_chars(buf.data(), buf.data() + s.size(), ret, base);
+    return ret;
+}
+}  // namespace pec
 
 Type::Type(std::string name) : name(std::move(name)) {}
 
@@ -113,7 +129,9 @@ auto Unary::print(std::ostream& os, int indentation) const -> std::ostream& {
 Cast::Cast(Child<Type> type, Child<Expression> expression) : type(std::move(type)), expression(std::move(expression)) {}
 
 auto Cast::print(std::ostream& os, int indentation) const -> std::ostream& {
-    os << "Cast(" << type << ")(\n";
+    os << "Cast(";
+    type->print(os, 0);
+    os << ")(\n";
     os << NEXT_INDENT;
     expression->print(os, indentation + 1);
     os << "\n" << INDENT << ")";
@@ -152,6 +170,12 @@ std::ostream& Conditional::print(std::ostream& os, int indentation) const {
     }
     os << "\n" << INDENT << "}";
     return os;
+}
+
+Integer::Integer(intmax_t value) : value(value) {}
+
+std::ostream& Integer::print(std::ostream& os, int indentation) const {
+    return os << "Integer(" << value << ")";
 }
 
 auto pec::operator<<(std::ostream& os, Binary::Operator op) -> std::ostream& {

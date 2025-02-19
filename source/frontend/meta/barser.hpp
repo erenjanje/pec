@@ -48,8 +48,11 @@
 #line 13 "meta/barser.y"
 
 #include "frontend/parser.hpp"
+namespace pec {
+uintmax_t makeInteger(std::string const& s, int base);
+}
 
-#line 53 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.hpp"
+#line 56 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.hpp"
 
 
 # include <cstdlib> // std::abort
@@ -185,7 +188,7 @@
 
 #line 8 "meta/barser.y"
 namespace pec {
-#line 189 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.hpp"
+#line 192 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.hpp"
 
 
 
@@ -407,6 +410,9 @@ namespace pec {
       // program
       // statement_list
       char dummy7[sizeof (std::vector<Child<Statement>>)];
+
+      // "integer"
+      char dummy8[sizeof (uintmax_t)];
     };
 
     /// The size of the largest semantic type.
@@ -459,39 +465,40 @@ namespace pec {
     ID = 258,                      // "identifier"
     TYPE = 259,                    // "type identifier"
     CONSTANT = 260,                // "constant identifier"
-    ASTERIKS = 261,                // "*"
-    PLUS = 262,                    // "+"
-    MINUS = 263,                   // "-"
-    SLASH = 264,                   // "/"
-    EQUALS = 265,                  // "=="
-    LT = 266,                      // "<"
-    GT = 267,                      // ">"
-    LE = 268,                      // "<="
-    GE = 269,                      // ">="
-    NEQUALS = 270,                 // "!="
-    NOT = 271,                     // "not"
-    AND = 272,                     // "and"
-    OR = 273,                      // "or"
-    BAND = 274,                    // "&"
-    BOR = 275,                     // "|"
-    XOR = 276,                     // "xor"
-    BNOT = 277,                    // "~"
-    ASSIGN = 278,                  // "="
-    LPAREN = 279,                  // "("
-    RPAREN = 280,                  // ")"
-    LBRACK = 281,                  // "["
-    RBRACK = 282,                  // "]"
-    LBRACE = 283,                  // "{"
-    RBRACE = 284,                  // "}"
-    IF = 285,                      // "if"
-    ELSE = 286,                    // "else"
-    LET = 287,                     // "let"
-    VAR = 288,                     // "var"
-    CONST = 289,                   // "const"
-    COMMA = 290,                   // ","
-    SEMICOLON = 291,               // ";"
-    CAST = 292,                    // CAST
-    UNARY = 293                    // UNARY
+    INTEGER = 261,                 // "integer"
+    ASTERIKS = 262,                // "*"
+    PLUS = 263,                    // "+"
+    MINUS = 264,                   // "-"
+    SLASH = 265,                   // "/"
+    EQUALS = 266,                  // "=="
+    LT = 267,                      // "<"
+    GT = 268,                      // ">"
+    LE = 269,                      // "<="
+    GE = 270,                      // ">="
+    NEQUALS = 271,                 // "!="
+    NOT = 272,                     // "not"
+    AND = 273,                     // "and"
+    OR = 274,                      // "or"
+    BAND = 275,                    // "&"
+    BOR = 276,                     // "|"
+    XOR = 277,                     // "xor"
+    BNOT = 278,                    // "~"
+    ASSIGN = 279,                  // "="
+    LPAREN = 280,                  // "("
+    RPAREN = 281,                  // ")"
+    LBRACK = 282,                  // "["
+    RBRACK = 283,                  // "]"
+    LBRACE = 284,                  // "{"
+    RBRACE = 285,                  // "}"
+    IF = 286,                      // "if"
+    ELSE = 287,                    // "else"
+    LET = 288,                     // "let"
+    VAR = 289,                     // "var"
+    CONST = 290,                   // "const"
+    COMMA = 291,                   // ","
+    SEMICOLON = 292,               // ";"
+    CAST = 293,                    // CAST
+    UNARY = 294                    // UNARY
       };
       /// Backward compatibility alias (Bison 3.6).
       typedef token_kind_type yytokentype;
@@ -508,7 +515,7 @@ namespace pec {
     {
       enum symbol_kind_type
       {
-        YYNTOKENS = 39, ///< Number of tokens.
+        YYNTOKENS = 40, ///< Number of tokens.
         S_YYEMPTY = -2,
         S_YYEOF = 0,                             // "end of file"
         S_YYerror = 1,                           // error
@@ -516,50 +523,51 @@ namespace pec {
         S_ID = 3,                                // "identifier"
         S_TYPE = 4,                              // "type identifier"
         S_CONSTANT = 5,                          // "constant identifier"
-        S_ASTERIKS = 6,                          // "*"
-        S_PLUS = 7,                              // "+"
-        S_MINUS = 8,                             // "-"
-        S_SLASH = 9,                             // "/"
-        S_EQUALS = 10,                           // "=="
-        S_LT = 11,                               // "<"
-        S_GT = 12,                               // ">"
-        S_LE = 13,                               // "<="
-        S_GE = 14,                               // ">="
-        S_NEQUALS = 15,                          // "!="
-        S_NOT = 16,                              // "not"
-        S_AND = 17,                              // "and"
-        S_OR = 18,                               // "or"
-        S_BAND = 19,                             // "&"
-        S_BOR = 20,                              // "|"
-        S_XOR = 21,                              // "xor"
-        S_BNOT = 22,                             // "~"
-        S_ASSIGN = 23,                           // "="
-        S_LPAREN = 24,                           // "("
-        S_RPAREN = 25,                           // ")"
-        S_LBRACK = 26,                           // "["
-        S_RBRACK = 27,                           // "]"
-        S_LBRACE = 28,                           // "{"
-        S_RBRACE = 29,                           // "}"
-        S_IF = 30,                               // "if"
-        S_ELSE = 31,                             // "else"
-        S_LET = 32,                              // "let"
-        S_VAR = 33,                              // "var"
-        S_CONST = 34,                            // "const"
-        S_COMMA = 35,                            // ","
-        S_SEMICOLON = 36,                        // ";"
-        S_CAST = 37,                             // CAST
-        S_UNARY = 38,                            // UNARY
-        S_YYACCEPT = 39,                         // $accept
-        S_program = 40,                          // program
-        S_statement_list = 41,                   // statement_list
-        S_type = 42,                             // type
-        S_statement = 43,                        // statement
-        S_expression = 44,                       // expression
-        S_top_level_expression = 45,             // top_level_expression
-        S_block_expression = 46,                 // block_expression
-        S_pattern_list = 47,                     // pattern_list
-        S_pattern = 48,                          // pattern
-        S_top_level_pattern = 49                 // top_level_pattern
+        S_INTEGER = 6,                           // "integer"
+        S_ASTERIKS = 7,                          // "*"
+        S_PLUS = 8,                              // "+"
+        S_MINUS = 9,                             // "-"
+        S_SLASH = 10,                            // "/"
+        S_EQUALS = 11,                           // "=="
+        S_LT = 12,                               // "<"
+        S_GT = 13,                               // ">"
+        S_LE = 14,                               // "<="
+        S_GE = 15,                               // ">="
+        S_NEQUALS = 16,                          // "!="
+        S_NOT = 17,                              // "not"
+        S_AND = 18,                              // "and"
+        S_OR = 19,                               // "or"
+        S_BAND = 20,                             // "&"
+        S_BOR = 21,                              // "|"
+        S_XOR = 22,                              // "xor"
+        S_BNOT = 23,                             // "~"
+        S_ASSIGN = 24,                           // "="
+        S_LPAREN = 25,                           // "("
+        S_RPAREN = 26,                           // ")"
+        S_LBRACK = 27,                           // "["
+        S_RBRACK = 28,                           // "]"
+        S_LBRACE = 29,                           // "{"
+        S_RBRACE = 30,                           // "}"
+        S_IF = 31,                               // "if"
+        S_ELSE = 32,                             // "else"
+        S_LET = 33,                              // "let"
+        S_VAR = 34,                              // "var"
+        S_CONST = 35,                            // "const"
+        S_COMMA = 36,                            // ","
+        S_SEMICOLON = 37,                        // ";"
+        S_CAST = 38,                             // CAST
+        S_UNARY = 39,                            // UNARY
+        S_YYACCEPT = 40,                         // $accept
+        S_program = 41,                          // program
+        S_statement_list = 42,                   // statement_list
+        S_type = 43,                             // type
+        S_statement = 44,                        // statement
+        S_expression = 45,                       // expression
+        S_top_level_expression = 46,             // top_level_expression
+        S_block_expression = 47,                 // block_expression
+        S_pattern_list = 48,                     // pattern_list
+        S_pattern = 49,                          // pattern
+        S_top_level_pattern = 50                 // top_level_pattern
       };
     };
 
@@ -628,6 +636,10 @@ namespace pec {
       case symbol_kind::S_program: // program
       case symbol_kind::S_statement_list: // statement_list
         value.move< std::vector<Child<Statement>> > (std::move (that.value));
+        break;
+
+      case symbol_kind::S_INTEGER: // "integer"
+        value.move< uintmax_t > (std::move (that.value));
         break;
 
       default:
@@ -751,6 +763,20 @@ namespace pec {
       {}
 #endif
 
+#if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, uintmax_t&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const uintmax_t& v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+
       /// Destroy the symbol.
       ~basic_symbol ()
       {
@@ -807,6 +833,10 @@ switch (yykind)
       case symbol_kind::S_program: // program
       case symbol_kind::S_statement_list: // statement_list
         value.template destroy< std::vector<Child<Statement>> > ();
+        break;
+
+      case symbol_kind::S_INTEGER: // "integer"
+        value.template destroy< uintmax_t > ();
         break;
 
       default:
@@ -910,6 +940,14 @@ switch (yykind)
         : super_type (token_kind_type (tok), std::move (v), std::move (l))
 #else
       symbol_type (int tok, const std::string& v, const location_type& l)
+        : super_type (token_kind_type (tok), v, l)
+#endif
+      {}
+#if 201103L <= YY_CPLUSPLUS
+      symbol_type (int tok, uintmax_t v, location_type l)
+        : super_type (token_kind_type (tok), std::move (v), std::move (l))
+#else
+      symbol_type (int tok, const uintmax_t& v, const location_type& l)
         : super_type (token_kind_type (tok), v, l)
 #endif
       {}
@@ -1049,6 +1087,21 @@ switch (yykind)
       make_CONSTANT (const std::string& v, const location_type& l)
       {
         return symbol_type (token::CONSTANT, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_INTEGER (uintmax_t v, location_type l)
+      {
+        return symbol_type (token::INTEGER, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_INTEGER (const uintmax_t& v, const location_type& l)
+      {
+        return symbol_type (token::INTEGER, v, l);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
@@ -1890,7 +1943,7 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 380,     ///< Last index in yytable_.
+      yylast_ = 387,     ///< Last index in yytable_.
       yynnts_ = 11,  ///< Number of nonterminal symbols.
       yyfinal_ = 3 ///< Termination state number.
     };
@@ -1941,10 +1994,10 @@ switch (yykind)
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-      35,    36,    37,    38
+      35,    36,    37,    38,    39
     };
     // Last valid token kind.
-    const int code_max = 293;
+    const int code_max = 294;
 
     if (t <= 0)
       return symbol_kind::S_YYEOF;
@@ -1995,6 +2048,10 @@ switch (yykind)
       case symbol_kind::S_program: // program
       case symbol_kind::S_statement_list: // statement_list
         value.copy< std::vector<Child<Statement>> > (YY_MOVE (that.value));
+        break;
+
+      case symbol_kind::S_INTEGER: // "integer"
+        value.copy< uintmax_t > (YY_MOVE (that.value));
         break;
 
       default:
@@ -2060,6 +2117,10 @@ switch (yykind)
       case symbol_kind::S_program: // program
       case symbol_kind::S_statement_list: // statement_list
         value.move< std::vector<Child<Statement>> > (YY_MOVE (s.value));
+        break;
+
+      case symbol_kind::S_INTEGER: // "integer"
+        value.move< uintmax_t > (YY_MOVE (s.value));
         break;
 
       default:
@@ -2129,7 +2190,7 @@ switch (yykind)
 
 #line 8 "meta/barser.y"
 } // pec
-#line 2133 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.hpp"
+#line 2194 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.hpp"
 
 
 

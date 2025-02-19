@@ -22,6 +22,23 @@ identifier [a-z_][a-zA-Z0-9_]*
 type [A-Z]{identifier_inner}[a-z]{identifier_inner}
 constant "$"[a-zA-Z_][a-zA-Z0-9_]*
 
+leading_decimal_digit [1-9]
+decimal_digit [0-9\']
+
+leading_binary_digit [0-1]
+binary_digit [0-1\']
+
+leading_hex_digit [0-9a-fA-F]
+hex_digit [0-9a-fA-F\']
+
+leading_octal_digit [0-7]
+octal_digit [0-7\']
+
+decimal_integer {leading_decimal_digit}{decimal_digit}*
+binary_integer "0b"{leading_binary_digit}{binary_digit}*
+hex_integer "0x"{leading_hex_digit}{hex_digit}*
+octal_integer "0o"{leading_octal_digit}{octal_digit}*
+
 %%
     auto loc = pec::parser::location_type();
 
@@ -71,6 +88,11 @@ constant "$"[a-zA-Z_][a-zA-Z0-9_]*
 {constant} { return pec::parser::make_CONSTANT(yytext, loc); }
 {identifier} { return pec::parser::make_ID(yytext, loc); }
 {type} { return pec::parser::make_TYPE(yytext, loc); }
+
+{decimal_integer} { return pec::parser::make_INTEGER(pec::makeInteger(yytext, 10), loc); }
+{binary_integer} { return pec::parser::make_INTEGER(pec::makeInteger(yytext + 2, 2), loc); }
+{hex_integer} { return pec::parser::make_INTEGER(pec::makeInteger(yytext + 2, 16), loc); }
+{octal_integer} { return pec::parser::make_INTEGER(pec::makeInteger(yytext + 2, 8), loc); }
 
 \n {
     yyextra.begin.line += 1;

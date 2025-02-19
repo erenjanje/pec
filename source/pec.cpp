@@ -21,7 +21,11 @@ auto main() -> int {
         // "let a = y;\n"
         // "let b = z;\n"
         // "};"
-        "if(true) { a; } else if(false) { b; } - b;"
+        // "if(true) { a; } else if(false) { b; } - b;"
+        "let x = Int32 -2'147'483'648;\n"
+        "let x = Int32 0xDEAD'beef;\n"
+        "let x = Int32 0o777;\n"
+        "let x = Int32 0b101010;"
     );
 
     const auto buf = yy_scan_bytes(data.data(), static_cast<int>(data.size()), scanner);

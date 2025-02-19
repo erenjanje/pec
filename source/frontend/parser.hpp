@@ -172,4 +172,11 @@ struct Conditional final : Expression {
     std::ostream& print(std::ostream& os, int indentation) const override;
 };
 
+struct Integer final : Expression {
+    intmax_t value;
+
+    explicit Integer(intmax_t value);
+    std::ostream& print(std::ostream& os, int indentation) const override;
+};
+
 }  // namespace pec

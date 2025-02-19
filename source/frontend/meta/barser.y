@@ -12,6 +12,9 @@
 
 %code requires {
 #include "frontend/parser.hpp"
+namespace pec {
+uintmax_t makeInteger(std::string const& s, int base);
+}
 }
 
 %code {
@@ -22,6 +25,8 @@ extern "C" pec::parser::symbol_type yylex(void*);
 %token <std::string>ID "identifier"
 %token <std::string>TYPE "type identifier"
 %token <std::string>CONSTANT "constant identifier"
+
+%token <uintmax_t>INTEGER "integer"
 
 %token ASTERIKS "*"
 %token PLUS "+"
@@ -238,6 +243,10 @@ expression
         $$ = make<Identifier>($val);
         @$ = @val;
     }
+    | INTEGER[val] {
+        $$ = make<Integer>($val);
+        @$ = @val;
+    }
     | "(" expression[expr] ")" {
         $$ = std::move($expr);
         @$.begin = @1.begin;
@@ -351,6 +360,10 @@ top_level_expression
     }
     | CONSTANT[val] {
         $$ = make<Identifier>($val);
+        @$ = @val;
+    }
+    | INTEGER[val] {
+        $$ = make<Integer>($val);
         @$ = @val;
     }
     | "(" expression[expr] ")" {
