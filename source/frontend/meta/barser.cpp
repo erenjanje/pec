@@ -215,7 +215,7 @@ namespace pec {
         break;
 
       case symbol_kind::S_pattern: // pattern
-      case symbol_kind::S_general_pattern: // general_pattern
+      case symbol_kind::S_top_level_pattern: // top_level_pattern
         value.YY_MOVE_OR_COPY< Child<Pattern> > (YY_MOVE (that.value));
         break;
 
@@ -262,7 +262,7 @@ namespace pec {
         break;
 
       case symbol_kind::S_pattern: // pattern
-      case symbol_kind::S_general_pattern: // general_pattern
+      case symbol_kind::S_top_level_pattern: // top_level_pattern
         value.move< Child<Pattern> > (YY_MOVE (that.value));
         break;
 
@@ -309,7 +309,7 @@ namespace pec {
         break;
 
       case symbol_kind::S_pattern: // pattern
-      case symbol_kind::S_general_pattern: // general_pattern
+      case symbol_kind::S_top_level_pattern: // top_level_pattern
         value.copy< Child<Pattern> > (that.value);
         break;
 
@@ -355,7 +355,7 @@ namespace pec {
         break;
 
       case symbol_kind::S_pattern: // pattern
-      case symbol_kind::S_general_pattern: // general_pattern
+      case symbol_kind::S_top_level_pattern: // top_level_pattern
         value.move< Child<Pattern> > (that.value);
         break;
 
@@ -656,7 +656,7 @@ namespace pec {
         break;
 
       case symbol_kind::S_pattern: // pattern
-      case symbol_kind::S_general_pattern: // general_pattern
+      case symbol_kind::S_top_level_pattern: // top_level_pattern
         yylhs.value.emplace< Child<Pattern> > ();
         break;
 
@@ -767,7 +767,7 @@ namespace pec {
 #line 768 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 9: // general_pattern: "identifier"
+  case 9: // top_level_pattern: "identifier"
 #line 124 "meta/barser.y"
              {
         yylhs.value.as < Child<Pattern> > () = make<IdentifierPattern>(nullptr, std::move(yystack_[0].value.as < std::string > ()));
@@ -776,7 +776,7 @@ namespace pec {
 #line 777 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 10: // general_pattern: "constant identifier"
+  case 10: // top_level_pattern: "constant identifier"
 #line 128 "meta/barser.y"
                    {
         yylhs.value.as < Child<Pattern> > () = make<IdentifierPattern>(nullptr, std::move(yystack_[0].value.as < std::string > ()));
@@ -785,7 +785,7 @@ namespace pec {
 #line 786 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 11: // general_pattern: "(" pattern_list ")"
+  case 11: // top_level_pattern: "(" pattern_list ")"
 #line 132 "meta/barser.y"
                                  {
         yylhs.value.as < Child<Pattern> > () = make<TuplePattern>(std::move(yystack_[1].value.as < TuplePattern > ()));
@@ -814,9 +814,9 @@ namespace pec {
 #line 815 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 14: // statement: "let" general_pattern "=" expression ";"
+  case 14: // statement: "let" top_level_pattern "=" expression ";"
 #line 152 "meta/barser.y"
-                                                          {
+                                                            {
         yylhs.value.as < Child<Statement> > () = make<VariableDefinition>(VariableDefinition::Mutability::Immutable, std::move(yystack_[3].value.as < Child<Pattern> > ()), std::move(yystack_[1].value.as < Child<Expression> > ()));
         yylhs.location.begin = yystack_[4].location.begin;
         yylhs.location.end = yystack_[1].location.end;
@@ -824,9 +824,9 @@ namespace pec {
 #line 825 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
     break;
 
-  case 15: // statement: "var" general_pattern "=" expression ";"
+  case 15: // statement: "var" top_level_pattern "=" expression ";"
 #line 157 "meta/barser.y"
-                                                          {
+                                                            {
         yylhs.value.as < Child<Statement> > () = make<VariableDefinition>(VariableDefinition::Mutability::Mutable, std::move(yystack_[3].value.as < Child<Pattern> > ()), std::move(yystack_[1].value.as < Child<Expression> > ()));
         yylhs.location.begin = yystack_[4].location.begin;
         yylhs.location.end = yystack_[1].location.end;
@@ -1269,7 +1269,7 @@ namespace pec {
   ">", "<=", ">=", "!=", "not", "and", "or", "&", "|", "xor", "~", "=",
   "(", ")", "[", "]", "{", "}", "let", "var", "const", ",", ";", "CAST",
   "UNARY", "$accept", "program", "pattern_list", "pattern",
-  "general_pattern", "type", "statement", "statement_list", "expression", YY_NULLPTR
+  "top_level_pattern", "type", "statement", "statement_list", "expression", YY_NULLPTR
     };
     return yy_sname[yysymbol];
   }

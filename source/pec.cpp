@@ -23,7 +23,7 @@ auto main() -> int {
         "};"
     );
 
-    const auto buf = yy_scan_bytes(data.data(), data.size(), scanner);
+    const auto buf = yy_scan_bytes(data.data(), static_cast<int>(data.size()), scanner);
     // yy_switch_to_buffer(buf, scanner);
     auto nodes = std::vector<pec::Child<pec::Statement>>();
     auto parser = pec::parser(scanner, nodes);

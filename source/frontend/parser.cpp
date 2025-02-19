@@ -119,6 +119,7 @@ auto Cast::print(std::ostream& os, int indentation) const -> std::ostream& {
     os << "\n" << INDENT << ")";
     return os;
 }
+
 Block::Block(std::vector<Child<Statement>> statements) : statements(std::move(statements)) {}
 
 std::ostream& Block::print(std::ostream& os, int indentation) const {

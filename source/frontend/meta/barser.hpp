@@ -385,7 +385,7 @@ namespace pec {
       char dummy1[sizeof (Child<Expression>)];
 
       // pattern
-      // general_pattern
+      // top_level_pattern
       char dummy2[sizeof (Child<Pattern>)];
 
       // statement
@@ -547,7 +547,7 @@ namespace pec {
         S_program = 38,                          // program
         S_pattern_list = 39,                     // pattern_list
         S_pattern = 40,                          // pattern
-        S_general_pattern = 41,                  // general_pattern
+        S_top_level_pattern = 41,                // top_level_pattern
         S_type = 42,                             // type
         S_statement = 43,                        // statement
         S_statement_list = 44,                   // statement_list
@@ -593,7 +593,7 @@ namespace pec {
         break;
 
       case symbol_kind::S_pattern: // pattern
-      case symbol_kind::S_general_pattern: // general_pattern
+      case symbol_kind::S_top_level_pattern: // top_level_pattern
         value.move< Child<Pattern> > (std::move (that.value));
         break;
 
@@ -770,7 +770,7 @@ switch (yykind)
         break;
 
       case symbol_kind::S_pattern: // pattern
-      case symbol_kind::S_general_pattern: // general_pattern
+      case symbol_kind::S_top_level_pattern: // top_level_pattern
         value.template destroy< Child<Pattern> > ();
         break;
 
@@ -1926,7 +1926,7 @@ switch (yykind)
         break;
 
       case symbol_kind::S_pattern: // pattern
-      case symbol_kind::S_general_pattern: // general_pattern
+      case symbol_kind::S_top_level_pattern: // top_level_pattern
         value.copy< Child<Pattern> > (YY_MOVE (that.value));
         break;
 
@@ -1989,7 +1989,7 @@ switch (yykind)
         break;
 
       case symbol_kind::S_pattern: // pattern
-      case symbol_kind::S_general_pattern: // general_pattern
+      case symbol_kind::S_top_level_pattern: // top_level_pattern
         value.move< Child<Pattern> > (YY_MOVE (s.value));
         break;
 

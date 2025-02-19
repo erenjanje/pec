@@ -74,7 +74,7 @@ extern "C" pec::parser::symbol_type yylex(void*);
 
 %nterm <Child<Type>>type
 %nterm <TuplePattern>pattern_list
-%nterm <Child<Pattern>>general_pattern
+%nterm <Child<Pattern>>top_level_pattern
 %nterm <Child<Pattern>>pattern
 %nterm <Child<Expression>>expression
 
@@ -120,7 +120,7 @@ pattern
     }
     ;
 
-general_pattern
+top_level_pattern
     : ID[id] {
         $$ = make<IdentifierPattern>(nullptr, std::move($id));
         @$ = @id;
@@ -149,12 +149,12 @@ statement
         @$.begin = @1.begin;
         @$.end = @expr.end;
     }
-    | "let" general_pattern[pat] "=" expression[expr] ";" {
+    | "let" top_level_pattern[pat] "=" expression[expr] ";" {
         $$ = make<VariableDefinition>(VariableDefinition::Mutability::Immutable, std::move($pat), std::move($expr));
         @$.begin = @1.begin;
         @$.end = @expr.end;
     }
-    | "var" general_pattern[pat] "=" expression[expr] ";" {
+    | "var" top_level_pattern[pat] "=" expression[expr] ";" {
         $$ = make<VariableDefinition>(VariableDefinition::Mutability::Mutable, std::move($pat), std::move($expr));
         @$.begin = @1.begin;
         @$.end = @expr.end;
