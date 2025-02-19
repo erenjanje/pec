@@ -2,7 +2,7 @@
 
 #include "frontend/flexer.hpp"
 
-int main() {
+auto main() -> int {
     auto scanner = yyscan_t();
     yylex_init(&scanner);
     auto loc = pec::parser::location_type();

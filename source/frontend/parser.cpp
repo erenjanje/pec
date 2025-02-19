@@ -3,7 +3,9 @@
 #include <iostream>
 #include <utility>
 
-static std::string repeat(std::string const& str, int count) {
+using namespace pec;
+
+static auto repeat(std::string const& str, int count) -> std::string {
     auto ret = std::string();
     ret.reserve(str.size() * count);
     for (int i = 0; i < count; i++) {
@@ -15,25 +17,25 @@ static std::string repeat(std::string const& str, int count) {
 #define INDENT (repeat("    ", indentation))
 #define NEXT_INDENT (repeat("    ", indentation + 1))
 
-pec::Type::Type(std::string name) : name(std::move(name)) {}
+Type::Type(std::string name) : name(std::move(name)) {}
 
-std::ostream& pec::Type::print(std::ostream& os, int indentation) const {
+auto Type::print(std::ostream& os, int) const -> std::ostream& {
     return os << name;
 }
 
-pec::IdentifierPattern::IdentifierPattern(Child<Type> type, std::string id)
-    : type(std::move(type)), id(std::move(id)) {}
+IdentifierPattern::IdentifierPattern(Child<Type> type, std::string id) : type(std::move(type)), id(std::move(id)) {}
 
-std::ostream& pec::IdentifierPattern::print(std::ostream& os, int indentation) const {
+auto IdentifierPattern::print(std::ostream& os, int indentation) const -> std::ostream& {
     if (type) {
         type->print(os, indentation);
         os << " ";
     }
     return os << id;
 }
-pec::TuplePattern::TuplePattern(std::vector<Child<Pattern>> elements) : elements(std::move(elements)) {}
 
-std::ostream& pec::TuplePattern::print(std::ostream& os, int indentation) const {
+TuplePattern::TuplePattern(std::vector<Child<Pattern>> elements) : elements(std::move(elements)) {}
+
+auto TuplePattern::print(std::ostream& os, int indentation) const -> std::ostream& {
     os << "(";
     for (size_t i = 0; i < elements.size(); i++) {
         elements[i]->print(os, 0);
@@ -45,19 +47,20 @@ std::ostream& pec::TuplePattern::print(std::ostream& os, int indentation) const 
     return os;
 }
 
-pec::ExpressionStatement::ExpressionStatement(Child<Expression> expression) : expression(std::move(expression)) {}
+ExpressionStatement::ExpressionStatement(Child<Expression> expression) : expression(std::move(expression)) {}
 
-std::ostream& pec::ExpressionStatement::print(std::ostream& os, int indentation) const {
+auto ExpressionStatement::print(std::ostream& os, int indentation) const -> std::ostream& {
     os << "ExpressionStatement(\n";
     os << NEXT_INDENT;
     expression->print(os, indentation + 1);
     os << "\n" << INDENT << ")";
     return os;
 }
-pec::VariableDefinition::VariableDefinition(Mutability mutability, Child<Pattern> pattern, Child<Expression> expression)
+
+VariableDefinition::VariableDefinition(Mutability mutability, Child<Pattern> pattern, Child<Expression> expression)
     : mutability(mutability), pattern(std::move(pattern)), expression(std::move(expression)) {}
 
-std::ostream& pec::VariableDefinition::print(std::ostream& os, int indentation) const {
+auto VariableDefinition::print(std::ostream& os, int indentation) const -> std::ostream& {
     switch (mutability) {
         case Comptime:
             os << "Comptime ";
@@ -77,16 +80,16 @@ std::ostream& pec::VariableDefinition::print(std::ostream& os, int indentation) 
     return os;
 }
 
-pec::Identifier::Identifier(std::string name) : name(std::move(name)) {}
+Identifier::Identifier(std::string name) : name(std::move(name)) {}
 
-std::ostream& pec::Identifier::print(std::ostream& os, int indentation) const {
+auto Identifier::print(std::ostream& os, int indentation) const -> std::ostream& {
     return os << "Id(" << name << ")";
 }
 
-pec::Binary::Binary(Operator op, Child<Expression> left, Child<Expression> right)
+Binary::Binary(Operator op, Child<Expression> left, Child<Expression> right)
     : op(op), left(std::move(left)), right(std::move(right)) {}
 
-std::ostream& pec::Binary::print(std::ostream& os, int indentation) const {
+auto Binary::print(std::ostream& os, int indentation) const -> std::ostream& {
     os << "Binop(" << op << ")" << "(\n";
     os << NEXT_INDENT;
     left->print(os, indentation + 1);
@@ -97,9 +100,9 @@ std::ostream& pec::Binary::print(std::ostream& os, int indentation) const {
     return os;
 }
 
-pec::Unary::Unary(Operator op, Child<Expression> expression) : op(op), expression(std::move(expression)) {}
+Unary::Unary(Operator op, Child<Expression> expression) : op(op), expression(std::move(expression)) {}
 
-std::ostream& pec::Unary::print(std::ostream& os, int indentation) const {
+auto Unary::print(std::ostream& os, int indentation) const -> std::ostream& {
     os << "Unop(" << op << ")(\n";
     os << NEXT_INDENT;
     expression->print(os, indentation + 1);
@@ -107,10 +110,9 @@ std::ostream& pec::Unary::print(std::ostream& os, int indentation) const {
     return os;
 }
 
-pec::Cast::Cast(Child<Type> type, Child<Expression> expression)
-    : type(std::move(type)), expression(std::move(expression)) {}
+Cast::Cast(Child<Type> type, Child<Expression> expression) : type(std::move(type)), expression(std::move(expression)) {}
 
-std::ostream& pec::Cast::print(std::ostream& os, int indentation) const {
+auto Cast::print(std::ostream& os, int indentation) const -> std::ostream& {
     os << "Cast(" << type << ")(\n";
     os << NEXT_INDENT;
     expression->print(os, indentation + 1);
@@ -118,7 +120,7 @@ std::ostream& pec::Cast::print(std::ostream& os, int indentation) const {
     return os;
 }
 
-std::ostream& pec::operator<<(std::ostream& os, Binary::Operator op) {
+auto pec::operator<<(std::ostream& os, Binary::Operator op) -> std::ostream& {
     switch (op) {
         case Binary::Operator::Add:
             return os << "+";
@@ -154,7 +156,7 @@ std::ostream& pec::operator<<(std::ostream& os, Binary::Operator op) {
     return os;
 }
 
-std::ostream& pec::operator<<(std::ostream& os, Unary::Operator op) {
+auto pec::operator<<(std::ostream& os, Unary::Operator op) -> std::ostream& {
     switch (op) {
         case Unary::Operator::Bnot:
             return os << "~";
