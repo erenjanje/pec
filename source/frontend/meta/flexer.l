@@ -20,7 +20,7 @@
 identifier_inner [a-zA-Z0-9]*
 identifier [a-z_][a-zA-Z0-9_]*
 type [A-Z]{identifier_inner}[a-z]{identifier_inner}
-constant [A-Z][A-Z0-9_]*
+constant "$"[a-zA-Z_][a-zA-Z0-9_]*
 
 %%
     auto loc = pec::parser::location_type();
@@ -64,9 +64,9 @@ constant [A-Z][A-Z0-9_]*
 
 ";" { return pec::parser::make_SEMICOLON(loc); }
 
+{constant} { return pec::parser::make_CONSTANT(yytext, loc); }
 {identifier} { return pec::parser::make_ID(yytext, loc); }
 {type} { return pec::parser::make_TYPE(yytext, loc); }
-{constant} { return pec::parser::make_CONSTANT(yytext, loc); }
 
 \n {
     yyextra.begin.line += 1;

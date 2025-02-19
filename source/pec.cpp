@@ -11,8 +11,9 @@ int main() {
     loc.end.initialize(&filename, 1, 1);
     yyset_extra(loc, scanner);
     const auto data = std::string(
+        "let $ZORT = a;"
         "let x = (Int32 a) + !(b + c);\n"
-        "var y = Int64 Float X / g;\n"
+        "var y = Int64 Float $X / g;\n"
         "x & x;"
     );
     const auto buf = yy_scan_bytes(data.data(), data.size(), scanner);

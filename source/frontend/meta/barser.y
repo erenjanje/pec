@@ -89,16 +89,15 @@ pattern
         $$ = Pattern(std::move($id));
         @$ = @id;
     }
+    | CONSTANT[id] {
+        $$ = Pattern(std::move($id));
+        @$ = @id;
+    }
     ;
 
 statement
     : expression[expr] ";" {
         $$ = make<ExpressionStatement>(std::move($expr));
-        @$.begin = @1.begin;
-        @$.end = @expr.end;
-    }
-    | "const" pattern[pat] "=" expression[expr] ";" {
-        $$ = make<VariableDefinition>(VariableDefinition::Mutability::Comptime, std::move($pat), std::move($expr));
         @$.begin = @1.begin;
         @$.end = @expr.end;
     }
