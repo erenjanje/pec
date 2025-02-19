@@ -215,7 +215,7 @@ expression
         @$ = @val;
     }
     | CONSTANT[val] {
-        $$ = make<Constant>($val);
+        $$ = make<Identifier>($val);
         @$ = @val;
     }
     | "(" expression[expr] ")" {

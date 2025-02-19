@@ -63,13 +63,6 @@ struct Identifier final : Expression {
     std::ostream& print(std::ostream& os, int indentation) const override;
 };
 
-struct Constant final : Expression {
-    std::string name;
-
-    explicit Constant(std::string name);
-    std::ostream& print(std::ostream& os, int indentation) const override;
-};
-
 struct Binary final : Expression {
     enum class Operator {
         Add,

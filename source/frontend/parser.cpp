@@ -59,12 +59,6 @@ std::ostream& pec::Identifier::print(std::ostream& os, int indentation) const {
     return os << "Id(" << name << ")";
 }
 
-pec::Constant::Constant(std::string name) : name(std::move(name)) {}
-
-std::ostream& pec::Constant::print(std::ostream& os, int indentation) const {
-    return os << "Const(" << name << ")";
-}
-
 pec::Binary::Binary(Operator op, Child<Expression> left, Child<Expression> right)
     : op(op), left(std::move(left)), right(std::move(right)) {}
 

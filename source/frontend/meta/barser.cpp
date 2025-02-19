@@ -919,7 +919,7 @@ namespace pec {
   case 29: // expression: "constant identifier"
 #line 217 "meta/barser.y"
                     {
-        yylhs.value.as < Child<Expression> > () = make<Constant>(yystack_[0].value.as < std::string > ());
+        yylhs.value.as < Child<Expression> > () = make<Identifier>(yystack_[0].value.as < std::string > ());
         yylhs.location = yystack_[0].location;
     }
 #line 926 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.cpp"
