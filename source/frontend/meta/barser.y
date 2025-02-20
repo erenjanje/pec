@@ -27,6 +27,7 @@ extern "C" pec::parser::symbol_type yylex(void*);
 %token <std::string>CONSTANT "constant identifier"
 
 %token <uintmax_t>INTEGER "integer"
+%token <long double>REAL "real number"
 
 %token ASTERIKS "*"
 %token PLUS "+"

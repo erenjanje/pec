@@ -402,17 +402,20 @@ namespace pec {
       // pattern_list
       char dummy5[sizeof (TuplePattern)];
 
+      // "real number"
+      char dummy6[sizeof (long double)];
+
       // "identifier"
       // "type identifier"
       // "constant identifier"
-      char dummy6[sizeof (std::string)];
+      char dummy7[sizeof (std::string)];
 
       // program
       // statement_list
-      char dummy7[sizeof (std::vector<Child<Statement>>)];
+      char dummy8[sizeof (std::vector<Child<Statement>>)];
 
       // "integer"
-      char dummy8[sizeof (uintmax_t)];
+      char dummy9[sizeof (uintmax_t)];
     };
 
     /// The size of the largest semantic type.
@@ -466,39 +469,40 @@ namespace pec {
     TYPE = 259,                    // "type identifier"
     CONSTANT = 260,                // "constant identifier"
     INTEGER = 261,                 // "integer"
-    ASTERIKS = 262,                // "*"
-    PLUS = 263,                    // "+"
-    MINUS = 264,                   // "-"
-    SLASH = 265,                   // "/"
-    EQUALS = 266,                  // "=="
-    LT = 267,                      // "<"
-    GT = 268,                      // ">"
-    LE = 269,                      // "<="
-    GE = 270,                      // ">="
-    NEQUALS = 271,                 // "!="
-    NOT = 272,                     // "not"
-    AND = 273,                     // "and"
-    OR = 274,                      // "or"
-    BAND = 275,                    // "&"
-    BOR = 276,                     // "|"
-    XOR = 277,                     // "xor"
-    BNOT = 278,                    // "~"
-    ASSIGN = 279,                  // "="
-    LPAREN = 280,                  // "("
-    RPAREN = 281,                  // ")"
-    LBRACK = 282,                  // "["
-    RBRACK = 283,                  // "]"
-    LBRACE = 284,                  // "{"
-    RBRACE = 285,                  // "}"
-    IF = 286,                      // "if"
-    ELSE = 287,                    // "else"
-    LET = 288,                     // "let"
-    VAR = 289,                     // "var"
-    CONST = 290,                   // "const"
-    COMMA = 291,                   // ","
-    SEMICOLON = 292,               // ";"
-    CAST = 293,                    // CAST
-    UNARY = 294                    // UNARY
+    REAL = 262,                    // "real number"
+    ASTERIKS = 263,                // "*"
+    PLUS = 264,                    // "+"
+    MINUS = 265,                   // "-"
+    SLASH = 266,                   // "/"
+    EQUALS = 267,                  // "=="
+    LT = 268,                      // "<"
+    GT = 269,                      // ">"
+    LE = 270,                      // "<="
+    GE = 271,                      // ">="
+    NEQUALS = 272,                 // "!="
+    NOT = 273,                     // "not"
+    AND = 274,                     // "and"
+    OR = 275,                      // "or"
+    BAND = 276,                    // "&"
+    BOR = 277,                     // "|"
+    XOR = 278,                     // "xor"
+    BNOT = 279,                    // "~"
+    ASSIGN = 280,                  // "="
+    LPAREN = 281,                  // "("
+    RPAREN = 282,                  // ")"
+    LBRACK = 283,                  // "["
+    RBRACK = 284,                  // "]"
+    LBRACE = 285,                  // "{"
+    RBRACE = 286,                  // "}"
+    IF = 287,                      // "if"
+    ELSE = 288,                    // "else"
+    LET = 289,                     // "let"
+    VAR = 290,                     // "var"
+    CONST = 291,                   // "const"
+    COMMA = 292,                   // ","
+    SEMICOLON = 293,               // ";"
+    CAST = 294,                    // CAST
+    UNARY = 295                    // UNARY
       };
       /// Backward compatibility alias (Bison 3.6).
       typedef token_kind_type yytokentype;
@@ -515,7 +519,7 @@ namespace pec {
     {
       enum symbol_kind_type
       {
-        YYNTOKENS = 40, ///< Number of tokens.
+        YYNTOKENS = 41, ///< Number of tokens.
         S_YYEMPTY = -2,
         S_YYEOF = 0,                             // "end of file"
         S_YYerror = 1,                           // error
@@ -524,50 +528,51 @@ namespace pec {
         S_TYPE = 4,                              // "type identifier"
         S_CONSTANT = 5,                          // "constant identifier"
         S_INTEGER = 6,                           // "integer"
-        S_ASTERIKS = 7,                          // "*"
-        S_PLUS = 8,                              // "+"
-        S_MINUS = 9,                             // "-"
-        S_SLASH = 10,                            // "/"
-        S_EQUALS = 11,                           // "=="
-        S_LT = 12,                               // "<"
-        S_GT = 13,                               // ">"
-        S_LE = 14,                               // "<="
-        S_GE = 15,                               // ">="
-        S_NEQUALS = 16,                          // "!="
-        S_NOT = 17,                              // "not"
-        S_AND = 18,                              // "and"
-        S_OR = 19,                               // "or"
-        S_BAND = 20,                             // "&"
-        S_BOR = 21,                              // "|"
-        S_XOR = 22,                              // "xor"
-        S_BNOT = 23,                             // "~"
-        S_ASSIGN = 24,                           // "="
-        S_LPAREN = 25,                           // "("
-        S_RPAREN = 26,                           // ")"
-        S_LBRACK = 27,                           // "["
-        S_RBRACK = 28,                           // "]"
-        S_LBRACE = 29,                           // "{"
-        S_RBRACE = 30,                           // "}"
-        S_IF = 31,                               // "if"
-        S_ELSE = 32,                             // "else"
-        S_LET = 33,                              // "let"
-        S_VAR = 34,                              // "var"
-        S_CONST = 35,                            // "const"
-        S_COMMA = 36,                            // ","
-        S_SEMICOLON = 37,                        // ";"
-        S_CAST = 38,                             // CAST
-        S_UNARY = 39,                            // UNARY
-        S_YYACCEPT = 40,                         // $accept
-        S_program = 41,                          // program
-        S_statement_list = 42,                   // statement_list
-        S_type = 43,                             // type
-        S_statement = 44,                        // statement
-        S_expression = 45,                       // expression
-        S_top_level_expression = 46,             // top_level_expression
-        S_block_expression = 47,                 // block_expression
-        S_pattern_list = 48,                     // pattern_list
-        S_pattern = 49,                          // pattern
-        S_top_level_pattern = 50                 // top_level_pattern
+        S_REAL = 7,                              // "real number"
+        S_ASTERIKS = 8,                          // "*"
+        S_PLUS = 9,                              // "+"
+        S_MINUS = 10,                            // "-"
+        S_SLASH = 11,                            // "/"
+        S_EQUALS = 12,                           // "=="
+        S_LT = 13,                               // "<"
+        S_GT = 14,                               // ">"
+        S_LE = 15,                               // "<="
+        S_GE = 16,                               // ">="
+        S_NEQUALS = 17,                          // "!="
+        S_NOT = 18,                              // "not"
+        S_AND = 19,                              // "and"
+        S_OR = 20,                               // "or"
+        S_BAND = 21,                             // "&"
+        S_BOR = 22,                              // "|"
+        S_XOR = 23,                              // "xor"
+        S_BNOT = 24,                             // "~"
+        S_ASSIGN = 25,                           // "="
+        S_LPAREN = 26,                           // "("
+        S_RPAREN = 27,                           // ")"
+        S_LBRACK = 28,                           // "["
+        S_RBRACK = 29,                           // "]"
+        S_LBRACE = 30,                           // "{"
+        S_RBRACE = 31,                           // "}"
+        S_IF = 32,                               // "if"
+        S_ELSE = 33,                             // "else"
+        S_LET = 34,                              // "let"
+        S_VAR = 35,                              // "var"
+        S_CONST = 36,                            // "const"
+        S_COMMA = 37,                            // ","
+        S_SEMICOLON = 38,                        // ";"
+        S_CAST = 39,                             // CAST
+        S_UNARY = 40,                            // UNARY
+        S_YYACCEPT = 41,                         // $accept
+        S_program = 42,                          // program
+        S_statement_list = 43,                   // statement_list
+        S_type = 44,                             // type
+        S_statement = 45,                        // statement
+        S_expression = 46,                       // expression
+        S_top_level_expression = 47,             // top_level_expression
+        S_block_expression = 48,                 // block_expression
+        S_pattern_list = 49,                     // pattern_list
+        S_pattern = 50,                          // pattern
+        S_top_level_pattern = 51                 // top_level_pattern
       };
     };
 
@@ -625,6 +630,10 @@ namespace pec {
 
       case symbol_kind::S_pattern_list: // pattern_list
         value.move< TuplePattern > (std::move (that.value));
+        break;
+
+      case symbol_kind::S_REAL: // "real number"
+        value.move< long double > (std::move (that.value));
         break;
 
       case symbol_kind::S_ID: // "identifier"
@@ -736,6 +745,20 @@ namespace pec {
 #endif
 
 #if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, long double&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const long double& v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+
+#if 201103L <= YY_CPLUSPLUS
       basic_symbol (typename Base::kind_type t, std::string&& v, location_type&& l)
         : Base (t)
         , value (std::move (v))
@@ -822,6 +845,10 @@ switch (yykind)
 
       case symbol_kind::S_pattern_list: // pattern_list
         value.template destroy< TuplePattern > ();
+        break;
+
+      case symbol_kind::S_REAL: // "real number"
+        value.template destroy< long double > ();
         break;
 
       case symbol_kind::S_ID: // "identifier"
@@ -933,6 +960,14 @@ switch (yykind)
 #else
       symbol_type (int tok, const location_type& l)
         : super_type (token_kind_type (tok), l)
+#endif
+      {}
+#if 201103L <= YY_CPLUSPLUS
+      symbol_type (int tok, long double v, location_type l)
+        : super_type (token_kind_type (tok), std::move (v), std::move (l))
+#else
+      symbol_type (int tok, const long double& v, const location_type& l)
+        : super_type (token_kind_type (tok), v, l)
 #endif
       {}
 #if 201103L <= YY_CPLUSPLUS
@@ -1102,6 +1137,21 @@ switch (yykind)
       make_INTEGER (const uintmax_t& v, const location_type& l)
       {
         return symbol_type (token::INTEGER, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_REAL (long double v, location_type l)
+      {
+        return symbol_type (token::REAL, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_REAL (const long double& v, const location_type& l)
+      {
+        return symbol_type (token::REAL, v, l);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
@@ -1943,7 +1993,7 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 387,     ///< Last index in yytable_.
+      yylast_ = 403,     ///< Last index in yytable_.
       yynnts_ = 11,  ///< Number of nonterminal symbols.
       yyfinal_ = 3 ///< Termination state number.
     };
@@ -1994,10 +2044,10 @@ switch (yykind)
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-      35,    36,    37,    38,    39
+      35,    36,    37,    38,    39,    40
     };
     // Last valid token kind.
-    const int code_max = 294;
+    const int code_max = 295;
 
     if (t <= 0)
       return symbol_kind::S_YYEOF;
@@ -2037,6 +2087,10 @@ switch (yykind)
 
       case symbol_kind::S_pattern_list: // pattern_list
         value.copy< TuplePattern > (YY_MOVE (that.value));
+        break;
+
+      case symbol_kind::S_REAL: // "real number"
+        value.copy< long double > (YY_MOVE (that.value));
         break;
 
       case symbol_kind::S_ID: // "identifier"
@@ -2106,6 +2160,10 @@ switch (yykind)
 
       case symbol_kind::S_pattern_list: // pattern_list
         value.move< TuplePattern > (YY_MOVE (s.value));
+        break;
+
+      case symbol_kind::S_REAL: // "real number"
+        value.move< long double > (YY_MOVE (s.value));
         break;
 
       case symbol_kind::S_ID: // "identifier"
@@ -2190,7 +2248,7 @@ switch (yykind)
 
 #line 8 "meta/barser.y"
 } // pec
-#line 2194 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.hpp"
+#line 2252 "D:/Desktop/Programlama/cpp/pec/source/frontend/meta/barser.hpp"
 
 
 

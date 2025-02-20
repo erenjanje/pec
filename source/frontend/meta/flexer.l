@@ -49,6 +49,17 @@ octal_integer "0o"{leading_octal_digit}{octal_digit}*
 "var" { return pec::parser::make_VAR(loc); }
 "const" { return pec::parser::make_CONST(loc); }
 
+"int8" { return pec::parser::make_TYPE("int8", loc); }
+"uint8" { return pec::parser::make_TYPE("uint8", loc); }
+"int16" { return pec::parser::make_TYPE("int16", loc); }
+"uint16" { return pec::parser::make_TYPE("uint16", loc); }
+"int32" { return pec::parser::make_TYPE("int32", loc); }
+"uint32" { return pec::parser::make_TYPE("uint32", loc); }
+"int64" { return pec::parser::make_TYPE("int64", loc); }
+"uint64" { return pec::parser::make_TYPE("uint64", loc); }
+"intsize" { return pec::parser::make_TYPE("intsize", loc); }
+"uintsize" { return pec::parser::make_TYPE("uintsize", loc); }
+
 "+" { return pec::parser::make_PLUS(loc); }
 "*" { return pec::parser::make_ASTERIKS(loc); }
 "-" { return pec::parser::make_MINUS(loc); }
